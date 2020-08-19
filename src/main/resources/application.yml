@@ -1,0 +1,56 @@
+server:
+  http2:
+    enabled: true
+  undertow:
+    buffer-size: 2048
+    direct-buffers: true
+    io-threads: 4
+    worker-threads: 20
+  port: 8082
+
+
+#mybatis-plus
+mybatis-plus:
+  mapper-locations: /mapper/*/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+spring:
+  datasource:
+    #mysql 8.0 和北京时区相差8个小时 所以这里需要指定时区为上海  或者也可以使用北京时区或香港时区
+    url: jdbc:mysql://123.206.195.122:3306/rf-backstage?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: kdw0517
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    database: 2
+    host: 123.206.195.122
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: 30000ms
+        min-idle: 1
+    password: kdw$%0517
+    port: 6666
+    timeout: 6000ms
+# JWT配置
+jwt:
+  # 密匙KEY
+  secret: JWTSecret
+  # HeaderKEY
+  tokenHeader: Authorization
+  # Token前缀字符
+  tokenPrefix: Kang-
+  # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
+  expiration: 8640
+  # 配置不需要认证的接口
+  antMatchers: /user/test,/login/**,/user/code,/swagger-ui.html,/webjars/**,/swagger-resources/**,/v2/*,/sms/send,/user/verify/**
+# 七牛云配置
+qiniu:
+  accessKey: UbCrflztjlJGdhBTis77726z4UtxGc2CjcW107KN
+  secretKey: __XybZxprcQ87YP-EtDV2gUEj3FF6vUwyIn8GID3
+  bucket: rf-backstage
+  path: qf30yvzam.hn-bkt.clouddn.com
+
+baseUploadUrl: /Users/kang/temp
