@@ -118,7 +118,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 // 放行Security相关请求
-                .antMatchers("/user/code","/user/test"
+                .antMatchers("/user/code","/user/test","/menu/basisTree"
                         ,"/swagger-ui.html","/webjars/**","/swagger-resources/**"
                         ,"/v2/*","/druid/**","/sms/send","/user/verify/**")
                 .anonymous()

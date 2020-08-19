@@ -56,4 +56,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public List<MenuTreeVo> selectMenuTreeByUserId(Long userId) {
         return this.baseMapper.selectMenuTreeByUserId(userId);
     }
+
+    @Override
+    public List<MenuTreeVo> selectBasisMenuTreeByUserId(Long userId) {
+        return this.baseMapper.selectBasisMenuTreeByUserId(userId);
+
+    }
 }

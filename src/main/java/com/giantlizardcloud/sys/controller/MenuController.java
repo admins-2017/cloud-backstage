@@ -41,4 +41,15 @@ public class MenuController {
             List<MenuTreeVo> menuList = ParseMenuTreeUtil.parseMenuTree(menus);
             return JSONResult.ok(menuList);
     }
+
+
+    /**
+     * 根据权限动态加载功能栏
+     */
+    @GetMapping("/basisTree")
+    public JSONResult getBasisMenuByUser(){
+        List<MenuTreeVo> menus = userService.selectBasisMenuTreeByUserId(SecurityUntil.getUserId());
+        List<MenuTreeVo> menuList = ParseMenuTreeUtil.parseMenuTree(menus);
+        return JSONResult.ok(menuList);
+    }
 }

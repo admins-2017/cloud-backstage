@@ -27,4 +27,7 @@ public interface IUserService extends IService<User> {
     User selectUserByPhoneNumber(String s);
 
     List<MenuTreeVo> selectMenuTreeByUserId(Long userId);
+
+    List<MenuTreeVo> selectBasisMenuTreeByUserId(Long userId);
+
 }

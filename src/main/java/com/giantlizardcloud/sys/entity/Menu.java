@@ -38,8 +38,8 @@ public class Menu implements Serializable {
     @ApiModelProperty(value = "前端跳转URL")
     private String path;
 
-    @ApiModelProperty(value = "菜单组件")
-    private String component;
+    @ApiModelProperty(value = "权限icon图标")
+    private String iCon;
 
     @ApiModelProperty(value = "父菜单ID")
     private Long parentId;

@@ -25,4 +25,7 @@ public interface UserMapper extends BaseMapper<User> {
     User selectUserByPhoneNumber(@Param("number") String s);
 
     List<MenuTreeVo> selectMenuTreeByUserId(Long userId);
+
+    List<MenuTreeVo> selectBasisMenuTreeByUserId(Long userId);
+
 }
