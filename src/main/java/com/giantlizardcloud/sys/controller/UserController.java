@@ -82,8 +82,7 @@ public class UserController {
 
     @GetMapping("/error")
     public JSONResult getError(){
-        int a =1/0;
-        return JSONResult.ok(a);
+        return JSONResult.errorMsg("错误");
     }
 
     @GetMapping("/verify/{phoneNumber}")
