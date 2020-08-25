@@ -1,15 +1,18 @@
 package com.giantlizardcloud.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.dto.InsertUserDto;
+import com.giantlizardcloud.dto.UpdateUserDto;
 import com.giantlizardcloud.sys.entity.*;
 import com.giantlizardcloud.sys.mapper.RoleMenuMapper;
 import com.giantlizardcloud.sys.mapper.UserDetailsMapper;
 import com.giantlizardcloud.sys.mapper.UserMapper;
 import com.giantlizardcloud.sys.mapper.UserRoleMapper;
+import com.giantlizardcloud.sys.service.IUserDetailsService;
 import com.giantlizardcloud.sys.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.giantlizardcloud.vo.MenuTreeVo;
@@ -43,6 +46,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private RoleMenuMapper roleMenuMapper;
+
+    @Autowired
+    private IUserDetailsService detailsService;
 
     @Override
     public User selectUserByName(String username) {
@@ -111,6 +117,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         userRole.setRoleId(dto.getRoleId());
         userRoleMapper.insert(userRole);
         log.info(userRole.toString());
+
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUser(UpdateUserDto dto) {
+        detailsService.update(new UpdateWrapper<UserDetails>()
+                .set(dto.getUserDetailsAddr()!="","user_details_addr",dto.getUserDetailsAddr())
+                .set(dto.getUserDetailsMail()!="","user_details_mail",dto.getUserDetailsMail())
+                .set(dto.getUserDetailsSex()!=null,"user_details_sex",dto.getUserDetailsSex())
+                .set(dto.getShopId()!=null,"shop_id",dto.getShopId())
+                .eq("user_id",dto.getUserId()));
 
     }
 

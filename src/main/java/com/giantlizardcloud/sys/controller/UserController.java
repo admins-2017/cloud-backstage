@@ -15,6 +15,7 @@ import com.giantlizardcloud.config.redis.RedisOperator;
 import com.giantlizardcloud.config.restTemplate.RestTemplateConfig;
 import com.giantlizardcloud.dto.ChangePasswordDto;
 import com.giantlizardcloud.dto.InsertUserDto;
+import com.giantlizardcloud.dto.UpdateUserDto;
 import com.giantlizardcloud.dto.VerifyCodeDto;
 import com.giantlizardcloud.sys.entity.User;
 import com.giantlizardcloud.sys.entity.UserDetails;
@@ -181,7 +182,16 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public JSONResult updateUser(){
+    public JSONResult updateUser(UpdateUserDto dto){
+        log.info(dto.toString());
+
+        userService.updateUser(dto);
+        return JSONResult.ok("修改完成");
+    }
+
+    @DeleteMapping("/{uid}")
+    public JSONResult deleteUser(@PathVariable Long uid){
+        log.info(String.valueOf(uid));
         return JSONResult.ok();
     }
 }

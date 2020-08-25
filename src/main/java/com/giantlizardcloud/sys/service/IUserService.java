@@ -3,6 +3,7 @@ package com.giantlizardcloud.sys.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.dto.InsertUserDto;
+import com.giantlizardcloud.dto.UpdateUserDto;
 import com.giantlizardcloud.sys.entity.Menu;
 import com.giantlizardcloud.sys.entity.Role;
 import com.giantlizardcloud.sys.entity.User;
@@ -39,4 +40,6 @@ public interface IUserService extends IService<User> {
     IPage<UserDetailsWithRoleAndShopVo> getUserByName(String name,Page<UserDetailsWithRoleAndShopVo> voPage);
 
     void insertUser(InsertUserDto dto);
+
+    void updateUser(UpdateUserDto dto);
 }
