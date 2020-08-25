@@ -1,17 +1,25 @@
 package com.giantlizardcloud.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.giantlizardcloud.sys.entity.Menu;
-import com.giantlizardcloud.sys.entity.Role;
-import com.giantlizardcloud.sys.entity.User;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.config.utils.IdWorker;
+import com.giantlizardcloud.dto.InsertUserDto;
+import com.giantlizardcloud.sys.entity.*;
 import com.giantlizardcloud.sys.mapper.RoleMenuMapper;
+import com.giantlizardcloud.sys.mapper.UserDetailsMapper;
 import com.giantlizardcloud.sys.mapper.UserMapper;
 import com.giantlizardcloud.sys.mapper.UserRoleMapper;
 import com.giantlizardcloud.sys.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.giantlizardcloud.vo.MenuTreeVo;
+import com.giantlizardcloud.vo.UserDetailsWithRoleAndShopVo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,10 +32,14 @@ import java.util.List;
  * @since 2020-08-04
  */
 @Service
+@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     @Autowired
     private UserRoleMapper userRoleMapper;
+
+    @Autowired
+    private UserDetailsMapper detailsMapper;
 
     @Autowired
     private RoleMenuMapper roleMenuMapper;
@@ -62,4 +74,44 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return this.baseMapper.selectBasisMenuTreeByUserId(userId);
 
     }
+
+    @Override
+    public IPage<UserDetailsWithRoleAndShopVo> getAllUser(Page<UserDetailsWithRoleAndShopVo> voPage) {
+        return this.baseMapper.getAll(voPage);
+    }
+
+    @Override
+    public IPage<UserDetailsWithRoleAndShopVo> getUserByName(String name,Page<UserDetailsWithRoleAndShopVo> voPage) {
+        name= name+"%";
+        return this.baseMapper.getUserByName(name,voPage);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void insertUser(InsertUserDto dto) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encode = bCryptPasswordEncoder.encode("123456");
+        log.info(encode);
+        User user =  new User();
+        Long userId = new IdWorker().nextId();
+        user.setUserId(userId);
+        user.setStatus("NORMAL");
+        user.setPassword(encode);
+        user.setUsername(dto.getUsername());
+        this.baseMapper.insert(user);
+        log.info(user.toString());
+        UserDetails userDetails = new UserDetails();
+        BeanUtils.copyProperties(dto,userDetails);
+        userDetails.setUserId(userId);
+        userDetails.setUserDetailsUrl("http://qf30yvzam.hn-bkt.clouddn.com/Fhd44skS5yUk5eXxCcBbJJ8c7Rbj");
+        log.info(userDetails.toString());
+        detailsMapper.insert(userDetails);
+        UserRole userRole = new UserRole();
+        userRole.setUserId(userId);
+        userRole.setRoleId(dto.getRoleId());
+        userRoleMapper.insert(userRole);
+        log.info(userRole.toString());
+
+    }
+
 }

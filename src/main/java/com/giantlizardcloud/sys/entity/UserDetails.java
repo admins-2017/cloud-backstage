@@ -46,7 +46,7 @@ public class UserDetails implements Serializable {
     private String userDetailsTel;
 
     @ApiModelProperty(value = "商铺id")
-    private Integer shopId;
+    private Long shopId;
 
     @ApiModelProperty(value = "对应user-id")
     private Long userId;

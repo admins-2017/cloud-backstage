@@ -1,10 +1,14 @@
 package com.giantlizardcloud.sys.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.dto.InsertUserDto;
 import com.giantlizardcloud.sys.entity.Menu;
 import com.giantlizardcloud.sys.entity.Role;
 import com.giantlizardcloud.sys.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.giantlizardcloud.vo.MenuTreeVo;
+import com.giantlizardcloud.vo.UserDetailsWithRoleAndShopVo;
 
 import java.util.List;
 
@@ -30,4 +34,9 @@ public interface IUserService extends IService<User> {
 
     List<MenuTreeVo> selectBasisMenuTreeByUserId(Long userId);
 
+    IPage<UserDetailsWithRoleAndShopVo> getAllUser(Page<UserDetailsWithRoleAndShopVo> voPage);
+
+    IPage<UserDetailsWithRoleAndShopVo> getUserByName(String name,Page<UserDetailsWithRoleAndShopVo> voPage);
+
+    void insertUser(InsertUserDto dto);
 }

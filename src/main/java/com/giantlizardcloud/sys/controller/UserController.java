@@ -5,18 +5,23 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.aspect.IpUtil;
 import com.giantlizardcloud.config.aspect.SysLoginLog;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.redis.RedisOperator;
 import com.giantlizardcloud.config.restTemplate.RestTemplateConfig;
 import com.giantlizardcloud.dto.ChangePasswordDto;
+import com.giantlizardcloud.dto.InsertUserDto;
 import com.giantlizardcloud.dto.VerifyCodeDto;
 import com.giantlizardcloud.sys.entity.User;
 import com.giantlizardcloud.sys.entity.UserDetails;
 import com.giantlizardcloud.sys.service.IUserDetailsService;
 import com.giantlizardcloud.sys.service.IUserService;
 import com.giantlizardcloud.sys.service.SmsService;
+import com.giantlizardcloud.vo.UserDetailsWithRoleAndShopVo;
 import com.wf.captcha.ArithmeticCaptcha;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -137,5 +142,46 @@ public class UserController {
             put("uuid", uuid);
         }};
         return ResponseEntity.ok(imgResult);
+    }
+
+    @GetMapping("/all/{page}/{size}")
+    public JSONResult getAllUser(@PathVariable Integer page,@PathVariable Integer size){
+        Page<UserDetailsWithRoleAndShopVo> voPage = new Page<>(page, size);
+        IPage<UserDetailsWithRoleAndShopVo> users=userService.getAllUser(voPage);
+        return JSONResult.ok(users);
+    }
+
+    @GetMapping("/{query}/{page}/{size}")
+    public JSONResult getUserByName(@PathVariable String query,@PathVariable Integer page,@PathVariable Integer size){
+        log.info(query);
+        Page<UserDetailsWithRoleAndShopVo> voPage = new Page<>(page, size);
+        IPage<UserDetailsWithRoleAndShopVo> users=userService.getUserByName(query,voPage);
+        return JSONResult.ok(users);
+    }
+
+    @PostMapping
+    public JSONResult insertUser(InsertUserDto dto){
+        log.info(dto.toString());
+        userService.insertUser(dto);
+        return JSONResult.ok();
+    }
+
+    @PutMapping("/start/{id}")
+    public JSONResult updateUserStatusByStart(@PathVariable Long id){
+        log.info(""+id);
+        userService.update(new UpdateWrapper<User>().set("status","NORMAL").eq("user_id",id));
+        return JSONResult.ok("已启用");
+    }
+
+    @PutMapping("/stop/{id}")
+    public JSONResult updateUserStatusByStop(@PathVariable Long id){
+        log.info(""+id);
+        userService.update(new UpdateWrapper<User>().set("status","PROHIBIT").eq("user_id",id));
+        return JSONResult.ok("已停用");
+    }
+
+    @PutMapping("/")
+    public JSONResult updateUser(){
+        return JSONResult.ok();
     }
 }

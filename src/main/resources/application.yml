@@ -1,4 +1,4 @@
-server:
+ server:
   http2:
     enabled: true
   undertow:
@@ -10,11 +10,11 @@ server:
 
 
 #mybatis-plus
-mybatis-plus:
+ mybatis-plus:
   mapper-locations: /mapper/*/*Mapper.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-spring:
+ spring:
   datasource:
     #mysql 8.0 和北京时区相差8个小时 所以这里需要指定时区为上海  或者也可以使用北京时区或香港时区
     url: jdbc:mysql://123.206.195.122:3306/rf-backstage?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
@@ -35,7 +35,7 @@ spring:
     port: 6666
     timeout: 6000ms
 # JWT配置
-jwt:
+ jwt:
   # 密匙KEY
   secret: JWTSecret
   # HeaderKEY
@@ -47,10 +47,10 @@ jwt:
   # 配置不需要认证的接口
   antMatchers: /user/test,/login/**,/user/code,/swagger-ui.html,/webjars/**,/swagger-resources/**,/v2/*,/sms/send,/user/verify/**
 # 七牛云配置
-qiniu:
+ qiniu:
   accessKey: UbCrflztjlJGdhBTis77726z4UtxGc2CjcW107KN
   secretKey: __XybZxprcQ87YP-EtDV2gUEj3FF6vUwyIn8GID3
   bucket: rf-backstage
   path: qf30yvzam.hn-bkt.clouddn.com
 
-baseUploadUrl: /Users/kang/temp
+ baseUploadUrl: /Users/kang/temp
