@@ -39,6 +39,8 @@ public interface IUserService extends IService<User> {
 
     IPage<UserDetailsWithRoleAndShopVo> getUserByName(String name,Page<UserDetailsWithRoleAndShopVo> voPage);
 
+    IPage<UserDetailsWithRoleAndShopVo> getUserByShop(Long shopId,Page<UserDetailsWithRoleAndShopVo> voPage);
+
     void insertUser(InsertUserDto dto);
 
     void updateUser(UpdateUserDto dto);

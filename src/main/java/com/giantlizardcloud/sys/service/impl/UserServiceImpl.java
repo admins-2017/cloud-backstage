@@ -93,6 +93,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
+    public IPage<UserDetailsWithRoleAndShopVo> getUserByShop(Long shopId, Page<UserDetailsWithRoleAndShopVo> voPage) {
+        return this.baseMapper.getUserByShop(shopId,voPage);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void insertUser(InsertUserDto dto) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();

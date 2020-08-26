@@ -154,9 +154,15 @@ public class UserController {
 
     @GetMapping("/{query}/{page}/{size}")
     public JSONResult getUserByName(@PathVariable String query,@PathVariable Integer page,@PathVariable Integer size){
-        log.info(query);
         Page<UserDetailsWithRoleAndShopVo> voPage = new Page<>(page, size);
         IPage<UserDetailsWithRoleAndShopVo> users=userService.getUserByName(query,voPage);
+        return JSONResult.ok(users);
+    }
+
+    @GetMapping("/shop/{shopId}/{page}/{size}")
+    public JSONResult getUserByName(@PathVariable Long shopId,@PathVariable Integer page,@PathVariable Integer size){
+        Page<UserDetailsWithRoleAndShopVo> voPage = new Page<>(page, size);
+        IPage<UserDetailsWithRoleAndShopVo> users=userService.getUserByShop(shopId,voPage);
         return JSONResult.ok(users);
     }
 
