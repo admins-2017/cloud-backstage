@@ -92,6 +92,10 @@ public class LoginUntil {
         if (securityUser.getStatus().equals("PROHIBIT")) {
             throw new LockedException("该用户已被冻结");
         }
+        // 还可以加一些其他信息的判断，比如用户账号已停用等判断
+        if (securityUser.getStatus().equals("DEL")) {
+            throw new LockedException("该用户已被删除");
+        }
         // 角色集合
         Set<GrantedAuthority> authorities = new HashSet<>();
         // 查询用户角色

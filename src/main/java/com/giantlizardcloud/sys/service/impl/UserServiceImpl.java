@@ -129,7 +129,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 .set(dto.getUserDetailsSex()!=null,"user_details_sex",dto.getUserDetailsSex())
                 .set(dto.getShopId()!=null,"shop_id",dto.getShopId())
                 .eq("user_id",dto.getUserId()));
-
+        if (dto.getRoleId()!=null){
+            UserRole userRole = new UserRole();
+            userRole.setUserId(dto.getUserId());
+            userRole.setRoleId(dto.getRoleId());
+            userRoleMapper.update(userRole,new UpdateWrapper<>());
+        }
     }
 
 }

@@ -184,14 +184,13 @@ public class UserController {
     @PutMapping("/")
     public JSONResult updateUser(UpdateUserDto dto){
         log.info(dto.toString());
-
         userService.updateUser(dto);
         return JSONResult.ok("修改完成");
     }
 
     @DeleteMapping("/{uid}")
     public JSONResult deleteUser(@PathVariable Long uid){
-        log.info(String.valueOf(uid));
-        return JSONResult.ok();
+        userService.update(new UpdateWrapper<User>().set("status","DEL").eq("user_id",uid));
+        return JSONResult.ok("删除完成");
     }
 }

@@ -40,7 +40,7 @@ public interface UserMapper extends BaseMapper<User> {
             "\ton sr.role_id = sur.role_id\n" +
             " left join sys_user_details sud\n" +
             " on  sud.user_id = su.user_id\n" +
-            " left join merchant_shop ms on sud.shop_id = ms.shop_id")
+            " left join merchant_shop ms on sud.shop_id = ms.shop_id where su.status != 'DEL'")
     IPage<UserDetailsWithRoleAndShopVo> getAll(Page<UserDetailsWithRoleAndShopVo> voPage);
 
     @Select("select su.user_id, su.username,su.status,sr.role_id,sr.role_name ,\n" +

@@ -33,7 +33,7 @@ public class IdWorker {
     // 数据中心ID最大值
     private final static long MAX_DATACENTER_ID = -1L ^ (-1L << DATACENTER_ID_BITS);
     // 毫秒内自增位
-    private final static long SEQUENCE_BITS = 12L;
+    private final static long SEQUENCE_BITS = 4L;
     // 机器ID偏左移12位
     private final static long WORKER_ID_SHIFT = SEQUENCE_BITS;
     // 数据中心ID左移17位

@@ -34,11 +34,10 @@ public class User implements Serializable {
     @ApiModelProperty(value = "密码")
     private String password;
 
-    @ApiModelProperty(value = "状态 PROHIBIT：禁用   NORMAL：正常")
+    @ApiModelProperty(value = "状态 PROHIBIT：禁用   NORMAL：正常 DEL: 删除")
     private String status;
 
     @ApiModelProperty(value = "多租户标示")
     private Long tenantId;
-
 
 }
