@@ -1,7 +1,11 @@
 package com.giantlizardcloud.sys.service;
 
+import com.giantlizardcloud.dto.RoleDto;
 import com.giantlizardcloud.sys.entity.Role;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.giantlizardcloud.vo.RoleWithUserVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IRoleService extends IService<Role> {
 
+    List<RoleWithUserVo> getUserByRoleId(Long roleId);
+
+    void insertRoleWithMenu(RoleDto roleDto);
+
+    void updateRoleStatus(Long roleId);
+
+    void updateRole(RoleDto roleDto);
 }

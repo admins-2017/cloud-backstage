@@ -3,13 +3,12 @@ package com.giantlizardcloud.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.dto.RoleDto;
 import com.giantlizardcloud.sys.entity.Role;
 import com.giantlizardcloud.sys.service.IRoleService;
+import com.giantlizardcloud.vo.RoleWithUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +31,29 @@ public class RoleController {
     public JSONResult getAll(){
         List<Role> roleList = roleService.list(new QueryWrapper<Role>().eq("del_flag", "0"));
         return JSONResult.ok(roleList);
+    }
+
+    @GetMapping("/{roleId}")
+    public JSONResult getUserByRoleId(@PathVariable Long roleId){
+        List<RoleWithUserVo> list=roleService.getUserByRoleId(roleId);
+        return JSONResult.ok(list);
+    }
+
+    @PostMapping
+    public JSONResult addRole(RoleDto roleDto){
+        roleService.insertRoleWithMenu(roleDto);
+        return JSONResult.ok();
+    }
+
+    @PutMapping
+    public JSONResult updateRole(RoleDto roleDto){
+        roleService.updateRole(roleDto);
+        return JSONResult.ok();
+    }
+
+    @DeleteMapping("{roleId}")
+    public JSONResult delRole(@PathVariable Long roleId){
+        roleService.updateRoleStatus(roleId);
+        return JSONResult.ok();
     }
 }
