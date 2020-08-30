@@ -11,6 +11,7 @@ import com.giantlizardcloud.sys.service.IRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.giantlizardcloud.sys.service.IUserRoleService;
 import com.giantlizardcloud.vo.RoleWithUserVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.util.List;
  * @since 2020-08-04
  */
 @Service
+@Slf4j
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
     @Autowired
@@ -47,14 +49,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         BeanUtils.copyProperties(roleDto,role);
         role.setRoleId(id);
         this.baseMapper.insert(role);
+        //缺少权限
     }
 
     @Override
     public void updateRoleStatus(Long roleId) {
-        this.baseMapper.update(null,new UpdateWrapper<Role>().set("del_flag",roleId).eq("role_id",roleId));
+        this.baseMapper.update(null,new UpdateWrapper<Role>().set("del_flag",1).eq("role_id",roleId));
         Long defaultRoleId=this.baseMapper.selectDefaultRole();
+        log.info(defaultRoleId.toString());
         //将删除的角色下的所有用户改为默认用户
-        this.userRoleService.update(new UpdateWrapper<UserRole>().set("role_id",defaultRoleId).eq("role_id",roleId));
+//        this.userRoleService.update(new UpdateWrapper<UserRole>().set("role_id",defaultRoleId).eq("role_id",roleId));
     }
 
     @Override
@@ -67,5 +71,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         if (roleDto.getMenuList().size()!=0&&roleDto.getMenuList()!=null){
             //这里做更新权限
         }
+    }
+
+    @Override
+    public void updateDefaultRole(Long roleId) {
+        //将原默认角色设置为普通角色
+        this.baseMapper.update(null,new UpdateWrapper<Role>().set("default_role",0).eq("default_role",1));
+        //设置默认用户
+        this.baseMapper.update(null,new UpdateWrapper<Role>().set("default_role",1).eq("role_id",roleId));
     }
 }

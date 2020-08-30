@@ -24,4 +24,6 @@ public interface IRoleService extends IService<Role> {
     void updateRoleStatus(Long roleId);
 
     void updateRole(RoleDto roleDto);
+
+    void updateDefaultRole(Long roleId);
 }
