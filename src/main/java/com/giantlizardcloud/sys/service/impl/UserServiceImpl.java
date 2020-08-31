@@ -134,16 +134,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(UpdateUserDto dto) {
         detailsService.update(new UpdateWrapper<UserDetails>()
-                .set(dto.getUserDetailsAddr()!="","user_details_addr",dto.getUserDetailsAddr())
-                .set(dto.getUserDetailsMail()!="","user_details_mail",dto.getUserDetailsMail())
+                .set(dto.getUserDetailsAddr()!=null,"user_details_addr",dto.getUserDetailsAddr())
+                .set(dto.getUserDetailsMail()!=null,"user_details_mail",dto.getUserDetailsMail())
                 .set(dto.getUserDetailsSex()!=null,"user_details_sex",dto.getUserDetailsSex())
                 .set(dto.getShopId()!=null,"shop_id",dto.getShopId())
                 .eq("user_id",dto.getUserId()));
         if (dto.getRoleId()!=null){
-            UserRole userRole = new UserRole();
-            userRole.setUserId(dto.getUserId());
-            userRole.setRoleId(dto.getRoleId());
-            userRoleMapper.update(userRole,new UpdateWrapper<>());
+            userRoleMapper.update(null,new UpdateWrapper<UserRole>()
+                    .set(dto.getRoleId()!=null,"role_id",dto.getRoleId()).eq("user_id",dto.getUserId()));
         }
     }
 

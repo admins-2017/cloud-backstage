@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.dto.RoleDto;
 import com.giantlizardcloud.sys.entity.Role;
+import com.giantlizardcloud.sys.entity.RoleMenu;
 import com.giantlizardcloud.sys.entity.UserRole;
 import com.giantlizardcloud.sys.mapper.RoleMapper;
 import com.giantlizardcloud.sys.service.IRoleMenuService;
@@ -32,7 +33,7 @@ import java.util.List;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
     @Autowired
-    private IRoleMenuService menuService;
+    private IRoleMenuService roleMenuService;
     @Autowired
     private IUserRoleService userRoleService;
 
@@ -49,7 +50,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         BeanUtils.copyProperties(roleDto,role);
         role.setRoleId(id);
         this.baseMapper.insert(role);
-        //缺少权限
+        log.info(String.valueOf(roleDto.getMenuList().size()));
+        //添加权限
+        for (int i = 0; i < roleDto.getMenuList().size(); i++) {
+            roleMenuService.save(new RoleMenu(id,Long.parseLong(roleDto.getMenuList().get(i))));
+        }
     }
 
     @Override
@@ -63,13 +68,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     @Override
     public void updateRole(RoleDto roleDto) {
-        this.baseMapper.update(null,new UpdateWrapper<Role>()
-                .set(roleDto.getRoleName()!="","role_name",roleDto.getRoleName())
-                .set(roleDto.getRoleCode()!="","role_code",roleDto.getRoleCode())
-                .set(roleDto.getRoleDescription()!="","role_description",roleDto.getRoleDescription())
-                .eq("role_id",roleDto.getRoleId()));
-        if (roleDto.getMenuList().size()!=0&&roleDto.getMenuList()!=null){
+        if(!roleDto.getRoleName().equals("")&&!roleDto.getRoleCode().equals("")&&!roleDto.getRoleDescription().equals("")){
+            this.baseMapper.update(null,new UpdateWrapper<Role>()
+                    .set(roleDto.getRoleName()!=null&&!roleDto.getRoleName().equals(""),"role_name",roleDto.getRoleName())
+                    .set(roleDto.getRoleCode()!=null&&!roleDto.getRoleCode().equals(""),"role_code",roleDto.getRoleCode())
+                    .set(roleDto.getRoleDescription()!=null&&!roleDto.getRoleDescription().equals(""),"role_description",roleDto.getRoleDescription())
+                    .eq("role_id",roleDto.getRoleId()));
+        }
+        if (roleDto.getMenuList()!=null){
             //这里做更新权限
+            System.out.println(roleDto.getMenuList().toString());
         }
     }
 

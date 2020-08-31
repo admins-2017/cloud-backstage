@@ -18,5 +18,5 @@ public class RoleDto {
     @ApiModelProperty(value = "角色编码")
     private String roleCode;
 
-    private List<Long> menuList;
+    private List<String> menuList;
 }

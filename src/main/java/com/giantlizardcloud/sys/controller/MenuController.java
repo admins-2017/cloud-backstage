@@ -1,9 +1,11 @@
 package com.giantlizardcloud.sys.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.security.until.SecurityUntil;
 import com.giantlizardcloud.config.utils.ParseMenuTreeUtil;
+import com.giantlizardcloud.sys.entity.RoleMenu;
 import com.giantlizardcloud.sys.service.IMenuService;
 import com.giantlizardcloud.sys.service.IRoleMenuService;
 import com.giantlizardcloud.sys.service.IUserService;
@@ -76,8 +78,9 @@ public class MenuController {
      */
     @GetMapping("/role/{id}")
     public JSONResult getBasisMenuByUser(@PathVariable Long id){
-        List<MenuTreeVo> menus = menuService.getMenuByRole(id);
-        List<MenuTreeVo> menuList = ParseMenuTreeUtil.parseMenuTree(menus);
-        return JSONResult.ok(menuList);
+//        List<MenuTreeVo> menus = menuService.getMenuByRole(id);
+//        List<MenuTreeVo> menuList = ParseMenuTreeUtil.parseMenuTree(menus);
+        List<Long> list = roleMenuService.getRoleMenus(id);
+        return JSONResult.ok(list);
     }
 }

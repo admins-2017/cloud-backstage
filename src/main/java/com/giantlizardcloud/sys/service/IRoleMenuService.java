@@ -3,6 +3,8 @@ package com.giantlizardcloud.sys.service;
 import com.giantlizardcloud.sys.entity.RoleMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 角色与权限关系表 服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IRoleMenuService extends IService<RoleMenu> {
 
+    List<Long> getRoleMenus(Long id);
 }

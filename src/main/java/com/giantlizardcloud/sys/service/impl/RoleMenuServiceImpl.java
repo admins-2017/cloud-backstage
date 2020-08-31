@@ -6,6 +6,8 @@ import com.giantlizardcloud.sys.service.IRoleMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 角色与权限关系表 服务实现类
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> implements IRoleMenuService {
 
+    @Override
+    public List<Long> getRoleMenus(Long id) {
+        return this.baseMapper.getRoleMenuList(id);
+    }
 }

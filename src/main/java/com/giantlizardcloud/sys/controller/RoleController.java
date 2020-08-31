@@ -55,14 +55,14 @@ public class RoleController {
     public JSONResult addRole(RoleDto roleDto){
         log.info(roleDto.toString());
         roleService.insertRoleWithMenu(roleDto);
-        return JSONResult.ok();
+        return JSONResult.ok("新增角色成功");
     }
 
     @PutMapping
     public JSONResult updateRole(RoleDto roleDto){
         log.info(roleDto.toString());
         roleService.updateRole(roleDto);
-        return JSONResult.ok();
+        return JSONResult.ok("修改角色成功");
     }
 
     @DeleteMapping("{roleId}")
