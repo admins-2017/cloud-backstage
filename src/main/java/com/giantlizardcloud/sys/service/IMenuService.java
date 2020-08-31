@@ -2,6 +2,9 @@ package com.giantlizardcloud.sys.service;
 
 import com.giantlizardcloud.sys.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.giantlizardcloud.vo.MenuTreeVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMenuService extends IService<Menu> {
 
+    List<MenuTreeVo> getMenuByRole(Long id);
 }

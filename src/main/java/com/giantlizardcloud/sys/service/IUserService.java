@@ -33,6 +33,8 @@ public interface IUserService extends IService<User> {
 
     List<MenuTreeVo> selectMenuTreeByUserId(Long userId);
 
+    List<MenuTreeVo> selectAllMenu();
+
     List<MenuTreeVo> selectBasisMenuTreeByUserId(Long userId);
 
     IPage<UserDetailsWithRoleAndShopVo> getAllUser(Page<UserDetailsWithRoleAndShopVo> voPage);

@@ -31,6 +31,9 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<MenuTreeVo> selectBasisMenuTreeByUserId(Long userId);
 
+    List<MenuTreeVo> selectAllMenu();
+
+
     @Select("select su.user_id, su.username,su.status,sr.role_id,sr.role_name ,\n" +
             "\tsud.user_details_sex,sud.user_details_addr,sud.user_details_mail,sud.user_details_tel \n" +
             "\t,sud.shop_id,ms.shop_name from sys_user su\n" +

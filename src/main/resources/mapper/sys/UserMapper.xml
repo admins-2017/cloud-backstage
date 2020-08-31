@@ -17,4 +17,9 @@
 			LEFT JOIN sys_menu m ON rm.menu_id = m.menu_id
 		WHERE ur.user_id = #{userId} AND m.type != 2
 	</select>
+
+	<!-- 查询所有的菜单 -->
+	<select id="selectAllMenu" resultType="com.giantlizardcloud.vo.MenuTreeVo">
+		SELECT DISTINCT menu_id,name,permission,path,parent_id,i_con,type from sys_menu WHERE del_flag = 0
+	</select>
 </mapper>
