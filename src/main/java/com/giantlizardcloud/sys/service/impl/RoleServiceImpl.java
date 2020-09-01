@@ -1,5 +1,6 @@
 package com.giantlizardcloud.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.dto.RoleDto;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -52,9 +54,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         this.baseMapper.insert(role);
         log.info(String.valueOf(roleDto.getMenuList().size()));
         //添加权限
-        for (int i = 0; i < roleDto.getMenuList().size(); i++) {
-            roleMenuService.save(new RoleMenu(id,Long.parseLong(roleDto.getMenuList().get(i))));
-        }
+        List<RoleMenu> roleMenus = roleDto.getMenuList().stream().map(String -> {
+            RoleMenu roleMenu = new RoleMenu();
+            roleMenu.setMenuId(Long.parseLong(String));
+            roleMenu.setRoleId(roleDto.getRoleId());
+            return roleMenu;
+        }).collect(Collectors.toList());
+        roleMenuService.saveBatch(roleMenus);
+//        for (int i = 0; i < roleDto.getMenuList().size(); i++) {
+//            roleMenuService.save(new RoleMenu(id,Long.parseLong(roleDto.getMenuList().get(i))));
+//        }
     }
 
     @Override
@@ -63,7 +72,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         Long defaultRoleId=this.baseMapper.selectDefaultRole();
         log.info(defaultRoleId.toString());
         //将删除的角色下的所有用户改为默认用户
-//        this.userRoleService.update(new UpdateWrapper<UserRole>().set("role_id",defaultRoleId).eq("role_id",roleId));
+        this.userRoleService.update(new UpdateWrapper<UserRole>().set("role_id",defaultRoleId).eq("role_id",roleId));
     }
 
     @Override
@@ -75,9 +84,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
                     .set(roleDto.getRoleDescription()!=null&&!roleDto.getRoleDescription().equals(""),"role_description",roleDto.getRoleDescription())
                     .eq("role_id",roleDto.getRoleId()));
         }
+        //这里做更新权限
         if (roleDto.getMenuList()!=null){
-            //这里做更新权限
-            System.out.println(roleDto.getMenuList().toString());
+            //先删除原有权限
+            roleMenuService.remove(new QueryWrapper<RoleMenu>().eq("role_id",roleDto.getRoleId()));
+            List<RoleMenu> roleMenus = roleDto.getMenuList().stream().map(String -> {
+                RoleMenu roleMenu = new RoleMenu();
+                roleMenu.setMenuId(Long.parseLong(String));
+                roleMenu.setRoleId(roleDto.getRoleId());
+                    return roleMenu;
+            }).collect(Collectors.toList());
+            System.out.println(roleMenus.toString());
+            roleMenuService.saveBatch(roleMenus);
         }
     }
 

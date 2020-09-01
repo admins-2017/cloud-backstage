@@ -58,7 +58,9 @@ public class MenuController {
     @GetMapping("/basisTree")
     public JSONResult getBasisMenuByUser(){
         List<MenuTreeVo> menus = userService.selectBasisMenuTreeByUserId(SecurityUntil.getUserId());
+        log.info(menus.toString());
         List<MenuTreeVo> menuList = ParseMenuTreeUtil.parseMenuTree(menus);
+        log.info(menuList.toString());
         return JSONResult.ok(menuList);
     }
 
