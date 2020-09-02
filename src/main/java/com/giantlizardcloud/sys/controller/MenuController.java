@@ -86,6 +86,12 @@ public class MenuController {
         return JSONResult.ok(menus);
     }
 
+    @GetMapping("/type/{number}")
+    public JSONResult getMenuByType(@PathVariable Integer number){
+        List<Menu> list = menuService.list(new QueryWrapper<Menu>().select("menu_id", "name").eq("type", number));
+        return JSONResult.ok(list);
+    }
+
     /**
      * 根据权限动态加载功能栏
      */
