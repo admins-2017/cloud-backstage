@@ -34,10 +34,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
-    @Autowired
-    private IRoleMenuService roleMenuService;
-    @Autowired
-    private IUserRoleService userRoleService;
+    private final IRoleMenuService roleMenuService;
+    private final IUserRoleService userRoleService;
+
+
+    public RoleServiceImpl(IRoleMenuService roleMenuService, IUserRoleService userRoleService) {
+        this.roleMenuService = roleMenuService;
+        this.userRoleService = userRoleService;
+    }
+
+
 
     @Override
     public List<RoleWithUserVo> getUserByRoleId(Long roleId) {
@@ -52,18 +58,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         BeanUtils.copyProperties(roleDto,role);
         role.setRoleId(id);
         this.baseMapper.insert(role);
-        log.info(String.valueOf(roleDto.getMenuList().size()));
+        System.out.println(roleDto.getMenuList().toString());
         //添加权限
         List<RoleMenu> roleMenus = roleDto.getMenuList().stream().map(String -> {
             RoleMenu roleMenu = new RoleMenu();
             roleMenu.setMenuId(Long.parseLong(String));
-            roleMenu.setRoleId(roleDto.getRoleId());
+            roleMenu.setRoleId(role.getRoleId());
             return roleMenu;
         }).collect(Collectors.toList());
+
         roleMenuService.saveBatch(roleMenus);
-//        for (int i = 0; i < roleDto.getMenuList().size(); i++) {
-//            roleMenuService.save(new RoleMenu(id,Long.parseLong(roleDto.getMenuList().get(i))));
-//        }
     }
 
     @Override

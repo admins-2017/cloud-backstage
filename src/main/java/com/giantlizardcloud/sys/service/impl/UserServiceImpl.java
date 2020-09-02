@@ -38,17 +38,20 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
-    @Autowired
-    private UserRoleMapper userRoleMapper;
+    private final UserRoleMapper userRoleMapper;
 
-    @Autowired
-    private UserDetailsMapper detailsMapper;
+    private final UserDetailsMapper detailsMapper;
 
-    @Autowired
-    private RoleMenuMapper roleMenuMapper;
+    private final RoleMenuMapper roleMenuMapper;
 
-    @Autowired
-    private IUserDetailsService detailsService;
+    private final IUserDetailsService detailsService;
+
+    public UserServiceImpl(UserRoleMapper userRoleMapper, UserDetailsMapper detailsMapper, RoleMenuMapper roleMenuMapper, IUserDetailsService detailsService) {
+        this.userRoleMapper = userRoleMapper;
+        this.detailsMapper = detailsMapper;
+        this.roleMenuMapper = roleMenuMapper;
+        this.detailsService = detailsService;
+    }
 
     @Override
     public User selectUserByName(String username) {
@@ -133,12 +136,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(UpdateUserDto dto) {
-        detailsService.update(new UpdateWrapper<UserDetails>()
-                .set(dto.getUserDetailsAddr()!=null,"user_details_addr",dto.getUserDetailsAddr())
-                .set(dto.getUserDetailsMail()!=null,"user_details_mail",dto.getUserDetailsMail())
-                .set(dto.getUserDetailsSex()!=null,"user_details_sex",dto.getUserDetailsSex())
-                .set(dto.getShopId()!=null,"shop_id",dto.getShopId())
-                .eq("user_id",dto.getUserId()));
+        if (!dto.getUserDetailsAddr().equals("")&&!dto.getUserDetailsMail().equals("")&&!dto.getUserDetailsSex().equals("")&&!dto.getShopId().equals("")){
+            detailsService.update(new UpdateWrapper<UserDetails>()
+                    .set(dto.getUserDetailsAddr()!=null&&!dto.getUserDetailsAddr().equals(""),"user_details_addr",dto.getUserDetailsAddr())
+                    .set(dto.getUserDetailsMail()!=null&&!dto.getUserDetailsMail().equals(""),"user_details_mail",dto.getUserDetailsMail())
+                    .set(dto.getUserDetailsSex()!=null&&!dto.getUserDetailsSex().equals(""),"user_details_sex",dto.getUserDetailsSex())
+                    .set(dto.getShopId()!=null&&!dto.getShopId().equals(""),"shop_id",dto.getShopId())
+                    .eq("user_id",dto.getUserId()));
+        }
         if (dto.getRoleId()!=null){
             userRoleMapper.update(null,new UpdateWrapper<UserRole>()
                     .set(dto.getRoleId()!=null,"role_id",dto.getRoleId()).eq("user_id",dto.getUserId()));

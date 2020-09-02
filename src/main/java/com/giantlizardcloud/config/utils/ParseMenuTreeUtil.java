@@ -17,14 +17,6 @@ public class ParseMenuTreeUtil {
      */
     public static List<MenuTreeVo> parseMenuTree(List<MenuTreeVo> list){
         List<MenuTreeVo> result = new ArrayList<>();
-
-        // 1、获取第一级节点
-//        for (MenuTreeVo menu : list) {
-//            if(0 == menu.getParentId()) {
-//                result.add(menu);
-//                list.remove(menu);
-//            }
-//        }
         //使用迭代器进行根目录获取 并将已经添加到result中菜单删除
         Iterator<MenuTreeVo> iterator = list.iterator();
         while (iterator.hasNext()) {
@@ -34,12 +26,10 @@ public class ParseMenuTreeUtil {
                 iterator.remove();
             }
         }
-
         // 2、递归获取子节点
         for (MenuTreeVo parent : result) {
             parent = recursiveTree(parent, list);
         }
-
         // 将没有父级目录的二级菜单 添加到result中
         for (MenuTreeVo menu : list) {
             if(1 == menu.getType()) {
@@ -51,12 +41,6 @@ public class ParseMenuTreeUtil {
     }
 
     public static MenuTreeVo recursiveTree(MenuTreeVo parent, List<MenuTreeVo> list) {
-//        for (MenuTreeVo menu : list) {
-//            if(parent.getMenuId() .equals( menu.getParentId())) {
-//                parent.getChildren().add(menu);
-//                list.remove(menu);
-//            }
-//        }
         //使用迭代器根据父级id进行递归子节点 并将以添加的目录删除
         Iterator<MenuTreeVo> iterator = list.iterator();
         while (iterator.hasNext()) {
