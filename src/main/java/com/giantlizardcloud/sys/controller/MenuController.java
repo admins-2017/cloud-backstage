@@ -4,9 +4,12 @@ package com.giantlizardcloud.sys.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.config.aspect.SysOperationLog;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.security.until.SecurityUntil;
+import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.config.utils.ParseMenuTreeUtil;
+import com.giantlizardcloud.dto.MenuDto;
 import com.giantlizardcloud.sys.entity.Menu;
 import com.giantlizardcloud.sys.entity.RoleMenu;
 import com.giantlizardcloud.sys.service.IMenuService;
@@ -15,12 +18,9 @@ import com.giantlizardcloud.sys.service.IUserService;
 import com.giantlizardcloud.vo.MenuTreeVo;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -80,6 +80,7 @@ public class MenuController {
 
 
     @GetMapping("/{page}/{size}")
+    @SysOperationLog(description = "获取分页权限列表")
     public JSONResult getMenuByPage(@PathVariable Integer page,@PathVariable Integer size){
         Page<Menu> menuPage = new Page<>(page, size);
         IPage<Menu> menus = menuService.page(menuPage, new QueryWrapper<Menu>());
@@ -87,8 +88,9 @@ public class MenuController {
     }
 
     @GetMapping("/type/{number}")
+    @SysOperationLog(description = "根据权限类型获取权限列表")
     public JSONResult getMenuByType(@PathVariable Integer number){
-        List<Menu> list = menuService.list(new QueryWrapper<Menu>().select("menu_id", "name").eq("type", number));
+        List<Menu> list = menuService.list(new QueryWrapper<Menu>().select("menu_id", "name").eq("type", number-1));
         return JSONResult.ok(list);
     }
 
@@ -99,5 +101,18 @@ public class MenuController {
     public JSONResult getBasisMenuByUser(@PathVariable Long id){
         List<Long> list = roleMenuService.getRoleMenus(id);
         return JSONResult.ok(list);
+    }
+
+    @PostMapping
+    @SysOperationLog(description = "新增权限")
+    public JSONResult insertMenu(MenuDto dto){
+        log.info(dto.toString());
+        long menuId = new IdWorker().nextId();
+        Menu menu = new Menu();
+        BeanUtils.copyProperties(dto,menu);
+        menu.setMenuId(menuId);
+        log.info(menu.toString());
+        menuService.save(menu);
+        return JSONResult.ok("新增权限完成");
     }
 }

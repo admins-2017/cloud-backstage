@@ -26,12 +26,13 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
          * fieldVal:需要填充的值
          */
         //该方法判断当前对象中是否含有insertTime属性，有就自动填充 没有就不会自动填充
-        boolean hasSetter =metaObject.hasSetter("insertTime");
+        boolean hasSetter =metaObject.hasSetter("createTime");
         if (hasSetter){
-            this.strictInsertFill(metaObject, "createTime",LocalDateTime.class, LocalDateTime.now());
+            this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
         }
         boolean hasSetter2 =metaObject.hasSetter("record_time");
         if (hasSetter2){
+            System.out.println("执行自动添加");
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             this.strictInsertFill(metaObject, "recordTime", LocalDateTime.class, simpleDateFormat.format(LocalDateTime.now()));
         }

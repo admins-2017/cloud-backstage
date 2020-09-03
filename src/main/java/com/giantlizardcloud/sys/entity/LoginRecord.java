@@ -41,8 +41,6 @@ public class LoginRecord implements Serializable {
     @ApiModelProperty(value = "登录时间")
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-//    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-//    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime recordTime;
 
     @ApiModelProperty(value = "登录ip")
