@@ -30,12 +30,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("sys_login_record")
-@ApiModel(value="LoginRecord对象", description="")
+@ApiModel(value="登录记录对象", description="")
 public class LoginRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "主键",example = "1")
     private Long recordId;
 
     @ApiModelProperty(value = "登录时间")
@@ -49,7 +49,7 @@ public class LoginRecord implements Serializable {
     @ApiModelProperty(value = "登录地址")
     private String recordAddr;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "用户ID",example = "1")
     private Long userId;
 
 }

@@ -10,7 +10,6 @@ import com.giantlizardcloud.sys.service.IUserDetailsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,24 +28,27 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/upload")
-@Api(value = "上传图片controller",tags = "上传对应操作")
+@Api(value = "上传图片模块",tags = "上传图片对应操作")
 @Slf4j
 public class UploadController {
 
 
-    @Autowired
-    FileService fileService;
-    @Autowired
-    private IUserDetailsService detailsService;
+    final FileService fileService;
+    private final IUserDetailsService detailsService;
 
     @Value("${baseUploadUrl}")
     private String url;
     @Value("${qiniu.path}")
     private String path;
 
+    public UploadController(FileService fileService, IUserDetailsService detailsService) {
+        this.fileService = fileService;
+        this.detailsService = detailsService;
+    }
+
     @PostMapping(value = "/uploadImg")
     @ApiOperation(value = "单个图片上传到七牛云")
-    public JSONResult uploadImg(@RequestParam(value = "file") MultipartFile upFile) throws IOException {
+    public JSONResult uploadImg(@RequestParam(value = "file") MultipartFile upFile) {
         String fileName = upFile.getOriginalFilename();
         File file = new File(url + fileName);
         String result="";
@@ -65,14 +66,14 @@ public class UploadController {
 
     @PostMapping(value = "/uploadImgList")
     @ApiOperation(value = "多个图片上传到七牛云")
-    public JSONResult uploadImgList(@RequestParam("files") MultipartFile[] files) throws IOException {
+    public JSONResult uploadImgList(@RequestParam("files") MultipartFile[] files)  {
         log.info("长度，{}",files.length);
 
         List<String> list = new ArrayList<>();
         for (MultipartFile upFile:files) {
             String fileName = upFile.getOriginalFilename();
             File file = new File(url + fileName);
-            String url="";
+            String url;
             try{
                 //将MulitpartFile文件转化为file文件格式
                 upFile.transferTo(file);
@@ -91,12 +92,12 @@ public class UploadController {
 
     @PostMapping(value = "/uploadUserAvatar")
     @ApiOperation(value = "用户头像上传到七牛云")
-    public JSONResult uploadUserAvatar(@RequestParam(value = "file") MultipartFile upFile) throws IOException {
+    public JSONResult uploadUserAvatar(@RequestParam(value = "file") MultipartFile upFile) {
         String fileName = upFile.getOriginalFilename();
         log.info("fileName:"+fileName);
         File file = new File(url + fileName);
         log.info("file:"+file);
-        String url="";
+        String url;
         try{
             //将MulitpartFile文件转化为file文件格式
             upFile.transferTo(file);

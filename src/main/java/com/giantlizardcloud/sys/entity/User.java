@@ -25,7 +25,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "用户ID",example = "1")
     private Long userId;
 
     @ApiModelProperty(value = "用户名")
@@ -37,7 +37,7 @@ public class User implements Serializable {
     @ApiModelProperty(value = "状态 PROHIBIT：禁用   NORMAL：正常 DEL: 删除")
     private String status;
 
-    @ApiModelProperty(value = "多租户标示")
+    @ApiModelProperty(value = "多租户标示",example = "1")
     private Long tenantId;
 
 }

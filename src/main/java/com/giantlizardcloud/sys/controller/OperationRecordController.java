@@ -3,20 +3,17 @@ package com.giantlizardcloud.sys.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.config.aspect.SysOperationLog;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.dto.RecordDto;
 import com.giantlizardcloud.sys.entity.OperationRecord;
 import com.giantlizardcloud.sys.service.IOperationRecordService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * <p>
@@ -28,12 +25,17 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/record")
+@Api(value = "用户操作记录",tags = "操作记录对应操作")
 @Slf4j
 public class OperationRecordController {
 
-    @Autowired
-    private IOperationRecordService recordService;
+    private final IOperationRecordService recordService;
 
+    public OperationRecordController(IOperationRecordService recordService) {
+        this.recordService = recordService;
+    }
+
+    @ApiOperation(value="分页获取操作记录",notes = "页码和条数")
     @GetMapping("/{page}/{size}")
     public JSONResult getRecordByPage(@PathVariable Integer page , @PathVariable Integer size){
         Page<OperationRecord> recordPage = new Page<>(page, size);
@@ -41,15 +43,25 @@ public class OperationRecordController {
         return JSONResult.ok(records);
     }
 
-    @GetMapping
+    @PostMapping
+    @SysOperationLog(description = "查询操作记录")
+    @ApiOperation(value="根据查询条件获取",notes = "记录dto")
     public JSONResult getRecordByCondition(RecordDto dto){
+        Page<OperationRecord> recordPage = new Page<>(dto.getPage(), dto.getSize());
         log.info(dto.toString());
-        List<OperationRecord> list = recordService.list(new QueryWrapper<OperationRecord>()
-                .like(!"".equals(dto.getRequestUser()),"request_user",dto.getRequestUser())
-                .eq(!"".equals(dto.getRequestType()),"request_type",dto.getRequestType())
-                .ge(!"".equals(dto.getStartTime()),"request_time", dto.getStartTime())
-                .le(!"".equals(dto.getEndTime()),"request_time", dto.getEndTime())
-        );
-        return JSONResult.ok(list);
+        Page<OperationRecord> records;
+        if(!"".equals(dto.getEndTime())&&!"".equals(dto.getStartTime())){
+            records = recordService.page(recordPage,new QueryWrapper<OperationRecord>()
+                    .like(!"".equals(dto.getRequestUser()),"request_user",dto.getRequestUser())
+                    .eq(!"".equals(dto.getRequestType()),"request_type",dto.getRequestType())
+                    .between(!"".equals(dto.getEndTime())&&!"".equals(dto.getStartTime()),"request_time"
+                            ,LocalDate.parse(dto.getStartTime()), LocalDate.parse(dto.getEndTime())));
+        }else{
+            records = recordService.page(recordPage, new QueryWrapper<OperationRecord>()
+                    .like(!"".equals(dto.getRequestUser()), "request_user", dto.getRequestUser())
+                    .eq(!"".equals(dto.getRequestType()), "request_type", dto.getRequestType())
+            );
+        }
+        return JSONResult.ok(records);
     }
 }

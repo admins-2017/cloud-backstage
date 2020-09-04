@@ -30,7 +30,7 @@ public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "ID")
+    @ApiModelProperty(value = "ID",example = "1")
     private Long menuId;
 
     @ApiModelProperty(value = "权限名称")
@@ -45,13 +45,13 @@ public class Menu implements Serializable {
     @ApiModelProperty(value = "权限icon图标")
     private String iCon;
 
-    @ApiModelProperty(value = "父菜单ID")
+    @ApiModelProperty(value = "父菜单ID",example = "1")
     private Long parentId;
 
-    @ApiModelProperty(value = "菜单类型 （类型   0：目录   1：菜单   2：按钮）")
+    @ApiModelProperty(value = "菜单类型 （类型   0：目录   1：菜单   2：按钮）",example = "1")
     private Integer type;
 
-    @ApiModelProperty(value = "逻辑删除标记(0--正常 1--删除)")
+    @ApiModelProperty(value = "逻辑删除标记(0--正常 1--删除)" ,example = "1")
     private Integer delFlag;
 
     @ApiModelProperty(value = "创建时间")
@@ -64,7 +64,7 @@ public class Menu implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime updateTime;
 
-    @ApiModelProperty(value = "多租户标示")
+    @ApiModelProperty(value = "多租户标示",example = "1")
     private Long tenantId;
 
 

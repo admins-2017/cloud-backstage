@@ -17,7 +17,7 @@ public class MenuTreeVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "ID")
+    @ApiModelProperty(value = "ID",example = "1")
     private Long menuId;
 
     @ApiModelProperty(value = "权限名称")
@@ -32,10 +32,10 @@ public class MenuTreeVo implements Serializable {
     @ApiModelProperty(value = "权限icon图标")
     private String iCon;
 
-    @ApiModelProperty(value = "父菜单ID")
+    @ApiModelProperty(value = "父菜单ID",example = "1")
     private Long parentId;
 
-    @ApiModelProperty(value = "菜单类型 （类型   0：目录   1：菜单   2：按钮）")
+    @ApiModelProperty(value = "菜单类型 （类型   0：目录   1：菜单   2：按钮）",example = "1")
     private Integer type;
 
     private List<MenuTreeVo> children = new ArrayList<MenuTreeVo>();

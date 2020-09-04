@@ -29,10 +29,10 @@ public class RoleMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "角色ID")
+    @ApiModelProperty(value = "角色ID",example = "1")
     private Long roleId;
 
-    @ApiModelProperty(value = "权限ID")
+    @ApiModelProperty(value = "权限ID",example = "1")
     private Long menuId;
 
 

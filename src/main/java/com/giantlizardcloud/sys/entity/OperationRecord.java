@@ -32,6 +32,7 @@ public class OperationRecord implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "record_id", type = IdType.AUTO)
+    @ApiModelProperty(value = "记录id",example = "1")
     private Integer recordId;
 
     @ApiModelProperty(value = "操作类型 get post put del")

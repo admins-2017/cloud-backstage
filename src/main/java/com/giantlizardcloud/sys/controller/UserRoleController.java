@@ -1,6 +1,7 @@
 package com.giantlizardcloud.sys.controller;
 
 
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-08-04
  */
 @RestController
-@RequestMapping("/sys/user-role")
+@RequestMapping("/userRole")
+@Api(value = "用户角色管理",tags = "用户角色对应操作")
 public class UserRoleController {
 
 }

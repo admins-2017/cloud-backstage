@@ -28,12 +28,13 @@ public class UserDetails implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "user_details_id", type = IdType.AUTO)
+    @ApiModelProperty(value = "用户详情id",example = "1")
     private Integer userDetailsId;
 
     @ApiModelProperty(value = "用户头像")
     private String userDetailsUrl;
 
-    @ApiModelProperty(value = "用户性别 1 男 2女")
+    @ApiModelProperty(value = "用户性别 1 男 2女",example = "1")
     private Integer userDetailsSex;
 
     @ApiModelProperty(value = "用户住址")
@@ -45,10 +46,10 @@ public class UserDetails implements Serializable {
     @ApiModelProperty(value = "用户联系方式")
     private String userDetailsTel;
 
-    @ApiModelProperty(value = "商铺id")
+    @ApiModelProperty(value = "商铺id",example = "1")
     private Long shopId;
 
-    @ApiModelProperty(value = "对应user-id")
+    @ApiModelProperty(value = "对应user-id",example = "1")
     private Long userId;
 
 

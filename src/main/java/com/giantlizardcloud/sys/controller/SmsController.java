@@ -12,6 +12,8 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.redis.RedisOperator;
 import com.giantlizardcloud.dto.SmsLoginDto;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,14 +26,18 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/sms")
+@Api(value = "短信模块",tags = "短信对应操作")
 public class SmsController {
 
-    @Autowired
-    private RedisOperator redisOperator;
+    private final RedisOperator redisOperator;
 
+    public SmsController(RedisOperator redisOperator) {
+        this.redisOperator = redisOperator;
+    }
 
 
     @PostMapping("/send")
+    @ApiOperation(value="发送消息",notes = "消息dto")
     public JSONResult sendMessage(SmsLoginDto dto){
 
         DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI4G7chJ3Ye53r6XpRDZmm"

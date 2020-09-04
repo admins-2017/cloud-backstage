@@ -16,10 +16,14 @@ public class RecordDto {
     private String requestType;
 
     @ApiModelProperty(value = "开始时间")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startTime;
+    private String startTime;
 
     @ApiModelProperty(value = "结束时间")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endTime;
+    private String endTime;
+
+    @ApiModelProperty(value = "页码",example = "1")
+    private Integer page;
+
+    @ApiModelProperty(value = "条数",example = "1")
+    private Integer size;
 }
