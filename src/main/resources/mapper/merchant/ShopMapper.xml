@@ -2,4 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.merchant.mapper.ShopMapper">
 
+    <resultMap id="getPage" type="com.giantlizardcloud.vo.ShopWithUserVo">
+        <id column="shop_id" property="shopId"/>
+        <result column="shop_name" property="shopName"/>
+        <result column="shop_address" property="shopAddress"/>
+        <result column="shop_status" property="shopStatus"/>
+        <result column="insert_time" property="insertTime"/>
+        <result column="insert_user" property="insertUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="shop_tel" property="shopTel"/>
+        <result column="shop_introduction" property="shopIntroduction"/>
+        <!-- 根据 getPageWithConditions 方法返回值再到MerchantPurchaseDetailsMapper 中的getDetailsByNumber 查询 返回值添加到chidren中 传递参数为getPageWithConditions查询出来结果中的purchase_number字段的值-->
+        <collection property="children" ofType="com.giantlizardcloud.vo.UserDetailsVo"
+                    select="com.giantlizardcloud.sys.mapper.UserDetailsMapper.getUserByShopId" column="shop_id">
+        </collection>
+    </resultMap>
+
+    <select id="selectAllShopWithUser" resultMap="getPage">
+        select shop_id, shop_name, shop_address, shop_status, insert_time, insert_user, update_time, update_user,
+        shop_tel,shop_introduction
+         from merchant_shop
+         where 1= 1
+        <if test="shopName != null">
+            AND shop_name like  concat('%',#{shopName},'%')
+        </if>
+        LIMIT #{page},#{size}
+    </select>
 </mapper>

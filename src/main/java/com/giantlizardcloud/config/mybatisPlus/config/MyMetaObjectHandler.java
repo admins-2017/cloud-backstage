@@ -1,6 +1,7 @@
 package com.giantlizardcloud.config.mybatisPlus.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.giantlizardcloud.config.security.until.SecurityUntil;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
 
@@ -36,6 +37,12 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             this.strictInsertFill(metaObject, "recordTime", LocalDateTime.class, simpleDateFormat.format(LocalDateTime.now()));
         }
+        if (metaObject.hasSetter("insertTime")){
+            this.strictInsertFill(metaObject, "insertTime", LocalDateTime.class, LocalDateTime.now());
+        }
+        if (metaObject.hasSetter("insertUser")){
+            this.strictInsertFill(metaObject, "insertUser", Long.class,  SecurityUntil.getUserId());
+        }
     }
 
     /**
@@ -49,10 +56,10 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         if (null==val){
             this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
         }
-//        Object val2=getFieldValByName("updateUser",metaObject);
-//        if (null==val2){
-//            Long updateUser=SecurityUntil.getUserId();
-//            setUpdateFieldValByName("updateUser",updateUser,metaObject);
-//        }
+        Object val2=getFieldValByName("updateUser",metaObject);
+        if (null==val2){
+            Long updateUser= SecurityUntil.getUserId();
+            this.strictUpdateFill(metaObject,"updateUser",Long.class,updateUser);
+        }
     }
 }
