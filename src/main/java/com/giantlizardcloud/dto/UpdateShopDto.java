@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class UpdateShopDto {
-    @ApiModelProperty(value = "商铺id")
+    @ApiModelProperty(value = "商铺id",example = "1")
     private Long shopId;
 
     @ApiModelProperty(value = "商铺名称")

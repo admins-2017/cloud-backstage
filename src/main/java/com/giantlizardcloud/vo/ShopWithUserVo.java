@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 public class ShopWithUserVo {
-    @ApiModelProperty(value = "商铺id")
+    @ApiModelProperty(value = "商铺id",example = "1")
     private Long shopId;
 
     @ApiModelProperty(value = "商铺名称")
@@ -28,14 +28,14 @@ public class ShopWithUserVo {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime insertTime;
 
-    @ApiModelProperty(value = "新增商铺的用户")
+    @ApiModelProperty(value = "新增商铺的用户",example = "1")
     private Long insertUser;
 
     @ApiModelProperty(value = "更新时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime updateTime;
 
-    @ApiModelProperty(value = "更新商铺的用户")
+    @ApiModelProperty(value = "更新商铺的用户",example = "1")
     private Long updateUser;
 
     @ApiModelProperty(value = "商铺联系电话")
