@@ -160,6 +160,13 @@
             <version>4.5.3</version>
         </dependency>
 
+        <!-- Quartz start-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
+        <!-- Quartz end -->
+
         <!-- 七牛云 start-->
         <dependency>
             <groupId>com.qiniu</groupId>
