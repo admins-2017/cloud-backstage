@@ -8,8 +8,10 @@ import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.dto.JobDto;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.giantlizardcloud.sys.service.IScheduleJobService;
+import com.mchange.v2.beans.BeansUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,11 +36,20 @@ public class ScheduleJobController {
 
     @PostMapping
     public JSONResult addJob(JobDto dto){
+        ScheduleJob scheduleJob = new ScheduleJob();
+        BeanUtils.copyProperties(dto,scheduleJob);
+        jobService.save(scheduleJob);
+        jobService.addJob(scheduleJob);
         return JSONResult.ok();
     }
 
     @PutMapping
-    public JSONResult updJob(JobDto dto) throws SchedulerException {
+    public JSONResult updJob(JobDto dto){
+        return JSONResult.ok();
+    }
+
+    @PutMapping("/status")
+    public JSONResult updJobStatus(JobDto dto) throws SchedulerException {
         log.info(dto.toString());
         if (dto.getStatus()!=null){
             jobService.update(new UpdateWrapper<ScheduleJob>().set("status", dto.getStatus()).eq("id", dto.getId()));
@@ -68,11 +79,6 @@ public class ScheduleJobController {
         return JSONResult.ok();
     }
 
-    @DeleteMapping("/{id}")
-    public JSONResult delJob(@PathVariable Integer id){
-        jobService.update(new UpdateWrapper<ScheduleJob>().set("delete_flag",1).eq("id",id));
-        return JSONResult.ok();
-    }
 
     @GetMapping("/{page}/{size}")
     public JSONResult findAllJob(@PathVariable Integer page ,@PathVariable Integer size){

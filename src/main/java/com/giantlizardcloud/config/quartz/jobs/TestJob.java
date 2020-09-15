@@ -1,6 +1,7 @@
 package com.giantlizardcloud.config.quartz.jobs;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  */
 @Component("testJob")
 @Transactional(rollbackFor = Exception.class)
+@Slf4j
 public class TestJob {
 
     /**
@@ -27,8 +29,9 @@ public class TestJob {
     /**
      * 默认执行方法
      */
-    public void test(){
+    public void test(String name){
         System.out.println("time:"+LocalDateTime.now());
         System.out.println("执行了test的方法");
+        log.info("执行test："+name);
     }
  }
