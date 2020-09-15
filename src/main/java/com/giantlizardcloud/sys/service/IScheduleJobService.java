@@ -4,6 +4,8 @@ import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.quartz.SchedulerException;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -56,4 +58,11 @@ public interface IScheduleJobService extends IService<ScheduleJob> {
      * @date 2019/1/28 16:58
      */
     void pauseAllJob() throws SchedulerException;
+
+    /**
+     * 获取所有任务
+     * @return
+     * @throws Exception
+     */
+    List<ScheduleJob> getAllJob() throws Exception;
 }

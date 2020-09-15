@@ -1,6 +1,5 @@
 package com.giantlizardcloud.config.quartz.config;
 
-import com.giantlizardcloud.config.quartz.service.QuartzService;
 import com.giantlizardcloud.sys.service.IScheduleJobService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

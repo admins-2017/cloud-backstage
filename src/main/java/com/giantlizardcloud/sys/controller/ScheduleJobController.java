@@ -8,6 +8,8 @@ import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.dto.JobDto;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.giantlizardcloud.sys.service.IScheduleJobService;
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/job")
+@Slf4j
 public class ScheduleJobController {
 
     private IScheduleJobService jobService;
@@ -35,7 +38,33 @@ public class ScheduleJobController {
     }
 
     @PutMapping
-    public JSONResult updJob(JobDto dto){
+    public JSONResult updJob(JobDto dto) throws SchedulerException {
+        log.info(dto.toString());
+        if (dto.getStatus()!=null){
+            jobService.update(new UpdateWrapper<ScheduleJob>().set("status", dto.getStatus()).eq("id", dto.getId()));
+            ScheduleJob job = jobService.getById(dto.getId());
+            log.info(job.toString());
+            if(dto.getStatus()==1){
+                jobService.operateJob(1,job);
+                return JSONResult.ok("启动任务成功");
+            }else {
+                jobService.operateJob(2,job);
+                return JSONResult.ok("停止任务成功");
+            }
+        }else if(dto.getDeleteFlag()!=null){
+            jobService.update(new UpdateWrapper<ScheduleJob>().set("delete_flag",dto.getDeleteFlag()).eq("id",dto.getId()));
+            if (dto.getDeleteFlag()){
+                ScheduleJob job = jobService.getById(dto.getId());
+                jobService.update(new UpdateWrapper<ScheduleJob>().set("status",2).eq("id",dto.getId()));
+                jobService.operateJob(3,job);
+                return JSONResult.ok("删除任务成功");
+            }else{
+                ScheduleJob job = jobService.getById(dto.getId());
+                jobService.update(new UpdateWrapper<ScheduleJob>().set("status",1).eq("id",dto.getId()));
+                jobService.operateJob(1,job);
+                return JSONResult.ok("恢复任务成功");
+            }
+        }
         return JSONResult.ok();
     }
 
