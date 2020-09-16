@@ -46,6 +46,8 @@ public class QuartzFactory implements Job {
                 String name = "测试";
                 log.info("执行test");
                 try {
+                    Object classObj = Class.forName(url).newInstance();
+                    log.info("class-obj:{}",classObj.toString());
                     User user = new User();
                     user.setUsername("康东伟");
                     user.setPassword("123456");
