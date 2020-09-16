@@ -1,6 +1,7 @@
 package com.giantlizardcloud.config.quartz.jobs;
 
 
+import com.giantlizardcloud.sys.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,9 +30,9 @@ public class TestJob {
     /**
      * 默认执行方法
      */
-    public void test(String name){
+    public void test(User user){
         System.out.println("time:"+LocalDateTime.now());
         System.out.println("执行了test的方法");
-        log.info("执行test："+name);
+        log.info("执行test："+user.toString());
     }
  }

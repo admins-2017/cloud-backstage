@@ -1,13 +1,18 @@
 package com.giantlizardcloud.config.quartz.config;
 
+import com.giantlizardcloud.config.quartz.jobs.TestJob;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
+import com.giantlizardcloud.sys.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.Arrays;
 
 /**
  * @author kang
@@ -29,13 +34,22 @@ public class QuartzFactory implements Job {
         try {
             //利用反射执行对应方法
             if (scheduleJob.getMethodName() .equals("test")){
-                Method method = object.getClass().getMethod(scheduleJob.getMethodName(),String.class);
+//                String className= "com.giantlizardcloud.sys.entity.User";
+                //Class.forName() 将字符串转换为类
+//                获取类的路径
+                String url = User.class.getName();
+//                Method[] methods = TestJob.class.getMethods();
+//                Arrays.stream(methods).forEach(System.out::println);
+                Method method = object.getClass().getMethod(scheduleJob.getMethodName(),Class.forName(url));
                 log.info(method.getName());
                 log.info(method.toString());
                 String name = "测试";
-                    log.info("执行test");
+                log.info("执行test");
                 try {
-                    method.invoke(object,name);
+                    User user = new User();
+                    user.setUsername("康东伟");
+                    user.setPassword("123456");
+                    method.invoke(object,user);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
