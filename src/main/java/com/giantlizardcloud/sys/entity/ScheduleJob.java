@@ -1,8 +1,7 @@
 package com.giantlizardcloud.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -12,6 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
 
 /**
  * <p>
@@ -31,6 +31,7 @@ public class ScheduleJob implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "id",example = "1")
+    @TableId(type = IdType.AUTO )
     private Integer id;
 
     @ApiModelProperty(value = "任务名称")
@@ -55,9 +56,11 @@ public class ScheduleJob implements Serializable {
     private Boolean deleteFlag;
 
     @ApiModelProperty(value = "创建人id",example = "1")
+    @TableField(fill = FieldFill.INSERT)
     private Long creatorId;
 
     @ApiModelProperty(value = "创建人")
+    @TableField(fill = FieldFill.INSERT)
     private String creatorName;
 
     @ApiModelProperty(value = "创建时间")

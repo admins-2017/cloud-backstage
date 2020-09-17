@@ -37,10 +37,11 @@ public class ScheduleJobController {
 
     @PostMapping
     public JSONResult addJob(ScheduleJobWithDetail dto){
+        log.info(dto.toString());
         ScheduleJob scheduleJob = new ScheduleJob();
         BeanUtils.copyProperties(dto,scheduleJob);
         log.info(scheduleJob.toString());
-//        jobService.save(scheduleJob);
+        jobService.save(scheduleJob);
 //        jobService.addJob(scheduleJob);
         return JSONResult.ok();
     }

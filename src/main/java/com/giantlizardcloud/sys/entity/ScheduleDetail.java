@@ -36,5 +36,6 @@ public class ScheduleDetail implements Serializable {
     @ApiModelProperty(value = "执行方法参数类型")
     private String methodArgType;
 
-
+    @ApiModelProperty(value = "执行方法介绍")
+    private String methodIntroduction;
 }

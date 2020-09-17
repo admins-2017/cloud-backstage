@@ -33,7 +33,6 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         }
         boolean hasSetter2 =metaObject.hasSetter("record_time");
         if (hasSetter2){
-            System.out.println("执行自动添加");
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             this.strictInsertFill(metaObject, "recordTime", LocalDateTime.class, simpleDateFormat.format(LocalDateTime.now()));
         }
@@ -42,6 +41,15 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         }
         if (metaObject.hasSetter("insertUser")){
             this.strictInsertFill(metaObject, "insertUser", Long.class,  SecurityUntil.getUserId());
+        }
+        if (metaObject.hasSetter("creatorId")){
+            this.strictInsertFill(metaObject, "creatorId", Long.class,  SecurityUntil.getUserId());
+        }
+        if (metaObject.hasSetter("creatorName")){
+            this.strictInsertFill(metaObject, "creatorName", String.class,  SecurityUntil.getUserName());
+        }
+        if (metaObject.hasSetter("createdTime")){
+            this.strictInsertFill(metaObject, "createdTime", LocalDateTime.class, LocalDateTime.now());
         }
     }
 
