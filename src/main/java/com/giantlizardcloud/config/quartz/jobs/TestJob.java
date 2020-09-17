@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Demo class
@@ -23,16 +24,33 @@ public class TestJob {
      * 默认执行方法
      */
     public void execute(){
-        System.out.println("time:"+LocalDateTime.now());
-        System.out.println("执行了默认的方法");
+        log.info("执行了默认的方法");
     }
 
     /**
      * 默认执行方法
      */
     public void test(User user){
-        System.out.println("time:"+LocalDateTime.now());
-        System.out.println("执行了test的方法");
         log.info("执行test："+user.toString());
+    }
+
+    /**
+     * 默认执行方法
+     */
+    public void getMailUrl(String url){
+        log.info("执行getMailUrl："+url);
+    }
+
+    /**
+     * 默认执行方法
+     */
+    public void testList(List<String> list){
+        log.info("执行testList");
+        list.stream().forEach(System.out::println);
+    }
+
+    public void testObjectList(List<User> list){
+        log.info("执行testObjectList");
+        list.stream().forEach(System.out::println);
     }
  }

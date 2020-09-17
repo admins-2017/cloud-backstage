@@ -2,4 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.sys.mapper.ScheduleJobMapper">
 
+
+    <select id="getTaskByPage" resultType="com.giantlizardcloud.dto.job.ScheduleJobWithDetail">
+        select a.*,b.bean_name,b.method_name,b.method_arg_type from sys_schedule_job a
+            LEFT JOIN sys_schedule_detail b on a.detail_id = b.id
+            LIMIT #{page},#{size}
+    </select>
+
+    <select id="getTaskByLikeName" resultType="com.giantlizardcloud.dto.job.ScheduleJobWithDetail">
+        select a.*,b.bean_name,b.method_name,b.method_arg_type from sys_schedule_job a
+            LEFT JOIN sys_schedule_detail b on a.detail_id = b.id
+            where a.job_name LIKE  concat('%',#{likeName},'%')
+            LIMIT #{page},#{size}
+    </select>
 </mapper>

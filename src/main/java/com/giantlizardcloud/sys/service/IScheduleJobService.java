@@ -1,8 +1,12 @@
 package com.giantlizardcloud.sys.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.dto.job.ScheduleJobWithDetail;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.quartz.SchedulerException;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -31,7 +35,7 @@ public interface IScheduleJobService extends IService<ScheduleJob> {
      * @date 2019/1/28 15:44
      * @param job 任务
      */
-    void addJob(ScheduleJob job);
+    void addJob(ScheduleJobWithDetail job);
 
     /**
      * 操作定时任务
@@ -41,7 +45,7 @@ public interface IScheduleJobService extends IService<ScheduleJob> {
      * @param jobStatus 操作枚举
      * @param job 任务
      */
-    void operateJob(Integer jobStatus, ScheduleJob job) throws SchedulerException;
+    void operateJob(Integer jobStatus, ScheduleJobWithDetail job) throws SchedulerException;
 
     /**
      * 启动所有任务
@@ -64,5 +68,12 @@ public interface IScheduleJobService extends IService<ScheduleJob> {
      * @return
      * @throws Exception
      */
-    List<ScheduleJob> getAllJob() throws Exception;
+    List<ScheduleJobWithDetail> getAllJob() throws Exception;
+
+    ScheduleJobWithDetail getTaskId(Integer id);
+
+    IPage<ScheduleJobWithDetail> getTaskByPage(Integer page , Integer size);
+
+    IPage<ScheduleJobWithDetail> getTaskByLikeName(Integer page , Integer size,String likeName);
+
 }

@@ -1,7 +1,11 @@
 package com.giantlizardcloud.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.quartz.config.QuartzFactory;
+import com.giantlizardcloud.dto.job.ScheduleJobWithDetail;
+import com.giantlizardcloud.merchant.entity.Shop;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.giantlizardcloud.sys.mapper.ScheduleJobMapper;
 import com.giantlizardcloud.sys.service.IScheduleJobService;
@@ -11,6 +15,7 @@ import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +48,14 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     @Override
     public void timingTask() {
         //查询数据库是否存在需要定时的任务
-        List<ScheduleJob> scheduleJobs = jobService.list(new QueryWrapper<ScheduleJob>().eq("status",1)
-        .eq("delete_flag",0));
+        List<ScheduleJobWithDetail> scheduleJobs =this.baseMapper.getTimingTasks();
         if (scheduleJobs != null) {
             scheduleJobs.forEach(this::addJob);
         }
     }
 
     @Override
-    public void addJob(ScheduleJob job) {
+    public void addJob(ScheduleJobWithDetail job) {
         try {
             //创建触发器
             Trigger trigger = TriggerBuilder.newTrigger().withIdentity(job.getJobName())
@@ -75,14 +79,13 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     }
 
     @Override
-    public void operateJob(Integer jobStatus, ScheduleJob job) throws SchedulerException {
+    public void operateJob(Integer jobStatus, ScheduleJobWithDetail job) throws SchedulerException {
         JobKey jobKey = new JobKey(job.getJobName());
         JobDetail jobDetail = scheduler.getJobDetail(jobKey);
         if (null==jobDetail){
             log.error("任务为空");
             addJob(job);
         }
-
         switch (jobStatus){
             case 1:
                 scheduler.resumeJob(jobKey); //恢复任务
@@ -113,15 +116,15 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
      * @return
      */
     @Override
-    public List<ScheduleJob> getAllJob()throws Exception {
+    public List<ScheduleJobWithDetail> getAllJob()throws Exception {
         GroupMatcher<JobKey> matcher = GroupMatcher.anyJobGroup();
-        List<ScheduleJob> jobList = new ArrayList<>();
+        List<ScheduleJobWithDetail> jobList = new ArrayList<>();
         Set<JobKey> jobKeys = null;
         jobKeys = scheduler.getJobKeys(matcher);
         for (JobKey jobKey : jobKeys) {
             List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
             for (Trigger trigger : triggers) {
-                ScheduleJob jobDto = new ScheduleJob();
+                ScheduleJobWithDetail jobDto = new ScheduleJobWithDetail();
 
                 jobDto.setJobName(jobKey.getName());
                 JobDetail jobDetail = scheduler.getJobDetail(jobKey);
@@ -139,4 +142,30 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
         }
         return jobList;
     }
+
+    @Override
+    public ScheduleJobWithDetail getTaskId(Integer id) {
+        return this.baseMapper.getTaskId(id);
+    }
+
+    @Override
+    public IPage<ScheduleJobWithDetail> getTaskByPage(Integer page , Integer size) {
+        page = (page-1)*size;
+        List<ScheduleJobWithDetail> tasks = this.baseMapper.getTaskByPage(page, size);
+        IPage<ScheduleJobWithDetail> jobs = new Page<>();
+        jobs.setRecords(tasks);
+        jobs.setTotal(this.baseMapper.selectCount(new QueryWrapper<>()));
+        return jobs;
+    }
+
+    @Override
+    public IPage<ScheduleJobWithDetail> getTaskByLikeName(Integer page, Integer size, String likeName) {
+        page = (page-1)*size;
+        List<ScheduleJobWithDetail> tasks = this.baseMapper.getTaskByLikeName(page, size,likeName);
+        IPage<ScheduleJobWithDetail> jobs = new Page<>();
+        jobs.setRecords(tasks);
+        jobs.setTotal(this.baseMapper.selectCount(new QueryWrapper<ScheduleJob>().like("job_name",likeName)));
+        return jobs;
+    }
+
 }

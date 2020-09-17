@@ -1,34 +1,15 @@
-package com.giantlizardcloud.sys.entity;
+package com.giantlizardcloud.dto.job;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author jobob
- * @since 2020-09-14
- */
+import java.time.LocalDateTime;
+
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("sys_schedule_job")
-@ApiModel(value="ScheduleJob对象", description="")
-public class ScheduleJob implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class ScheduleJobWithDetail {
 
     @ApiModelProperty(value = "id",example = "1")
     private Integer id;
@@ -44,6 +25,15 @@ public class ScheduleJob implements Serializable {
 
     @ApiModelProperty(value = "任务详情id",example = "1")
     private Integer detailId;
+
+    @ApiModelProperty(value = "执行类的bean名称")
+    private String beanName;
+
+    @ApiModelProperty(value = "执行方法名称")
+    private String methodName;
+
+    @ApiModelProperty(value = "执行方法参数类型")
+    private String methodArgType;
 
     @ApiModelProperty(value = "方法参数")
     private String methodParams;
@@ -69,6 +59,4 @@ public class ScheduleJob implements Serializable {
     @TableField(fill = FieldFill.UPDATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime updatedTime;
-
-
 }

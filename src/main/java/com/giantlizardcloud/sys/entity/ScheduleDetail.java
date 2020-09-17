@@ -24,6 +24,8 @@ import lombok.experimental.Accessors;
 public class ScheduleDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @ApiModelProperty(value = "id",example = "1")
+    private Integer id;
 
     @ApiModelProperty(value = "执行类的bean名称")
     private String beanName;
