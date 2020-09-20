@@ -1,31 +1,23 @@
 package com.giantlizardcloud.config.quartz.config;
 
 import com.giantlizardcloud.config.json.JsonUtils;
-import com.giantlizardcloud.config.quartz.jobs.TestJob;
 import com.giantlizardcloud.dto.job.ScheduleJobWithDetail;
-import com.giantlizardcloud.sys.entity.ScheduleJob;
-import com.giantlizardcloud.sys.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.springframework.util.ClassUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.Arrays;
 
 /**
  * @author kang
- * @date 2019/11/06
+ * 2019/7/10
  */
 @Slf4j
 public class QuartzFactory implements Job {
 
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext)  {
 
         //获取调度数据
         ScheduleJobWithDetail scheduleJob = (ScheduleJobWithDetail) jobExecutionContext.getMergedJobDataMap().get("scheduleJob");

@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.dto.JobDto;
 import com.giantlizardcloud.dto.job.ScheduleJobWithDetail;
+import com.giantlizardcloud.sys.entity.ScheduleDetail;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.giantlizardcloud.sys.service.IScheduleJobService;
 import com.mchange.v2.beans.BeansUtils;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -36,19 +38,36 @@ public class ScheduleJobController {
     }
 
     @PostMapping
+    @Transactional(rollbackFor = Exception.class)
     public JSONResult addJob(ScheduleJobWithDetail dto){
         log.info(dto.toString());
         ScheduleJob scheduleJob = new ScheduleJob();
         BeanUtils.copyProperties(dto,scheduleJob);
         log.info(scheduleJob.toString());
         jobService.save(scheduleJob);
-//        jobService.addJob(scheduleJob);
-        return JSONResult.ok();
+        ScheduleJobWithDetail task = jobService.getTaskId(scheduleJob.getId());
+        jobService.addJob(task);
+        return JSONResult.ok("新建任务完成");
     }
 
     @PutMapping
-    public JSONResult updJob(JobDto dto){
-        return JSONResult.ok();
+    public JSONResult updJob(JobDto dto) throws SchedulerException {
+        String jobName =  jobService.getById(dto.getId()).getJobName();
+        jobService.update(new UpdateWrapper<ScheduleJob>()
+                .set(!"".equals(dto.getJobName()),"job_name",dto.getJobName())
+                .set(!"".equals(dto.getJobIntroduction()),"job_introduction",dto.getJobIntroduction())
+                .set(!"".equals(dto.getCronExpression()),"cron_expression",dto.getCronExpression())
+                .set(!"".equals(dto.getMethodParams()),"method_params",dto.getMethodParams())
+                .set(!"".equals(dto.getDetailId()),"detail_id",dto.getDetailId())
+                .eq("id",dto.getId()));
+//        先将旧任务删除
+        ScheduleJobWithDetail scheduleJobWithDetail = new ScheduleJobWithDetail();
+        scheduleJobWithDetail.setJobName(jobName);
+        jobService.operateJob(3,scheduleJobWithDetail);
+//        再添加新任务
+        ScheduleJobWithDetail newTask = jobService.getTaskId(dto.getId());
+        jobService.addJob(newTask);
+        return JSONResult.ok("修改任务详情完成");
     }
 
     @PutMapping("/status")

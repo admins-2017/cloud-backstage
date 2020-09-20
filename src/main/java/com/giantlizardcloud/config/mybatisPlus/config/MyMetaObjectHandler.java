@@ -69,5 +69,10 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
             Long updateUser= SecurityUntil.getUserId();
             this.strictUpdateFill(metaObject,"updateUser",Long.class,updateUser);
         }
+        Object val3=getFieldValByName("updatedTime",metaObject);
+        if (null==val3){
+            Long updateUser= SecurityUntil.getUserId();
+            this.strictUpdateFill(metaObject,"updateUser",LocalDateTime.class,LocalDateTime.now());
+        }
     }
 }
