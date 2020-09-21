@@ -58,7 +58,7 @@ public class ScheduleJobController {
                 .set(!"".equals(dto.getJobIntroduction()),"job_introduction",dto.getJobIntroduction())
                 .set(!"".equals(dto.getCronExpression()),"cron_expression",dto.getCronExpression())
                 .set(!"".equals(dto.getMethodParams()),"method_params",dto.getMethodParams())
-                .set(!"".equals(dto.getDetailId()),"detail_id",dto.getDetailId())
+                .set(!"".equals(dto.getDetailId())&&dto.getDetailId()!=null,"detail_id",dto.getDetailId())
                 .eq("id",dto.getId()));
 //        先将旧任务删除
         ScheduleJobWithDetail scheduleJobWithDetail = new ScheduleJobWithDetail();
