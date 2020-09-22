@@ -1,9 +1,9 @@
 package com.giantlizardcloud.merchant.entity;
 
 import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -57,15 +57,19 @@ public class Commodity implements Serializable {
     private Long classificationId;
 
     @ApiModelProperty(value = "商品添加时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime insertTime;
 
     @ApiModelProperty(value = "商品添加人员",example = "1")
+    @TableField(fill = FieldFill.INSERT)
     private Long insertUser;
 
     @ApiModelProperty(value = "商品修改时间")
+    @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
     @ApiModelProperty(value = "商品修改人员",example = "1")
+    @TableField(fill = FieldFill.UPDATE)
     private Long updateUser;
 
 

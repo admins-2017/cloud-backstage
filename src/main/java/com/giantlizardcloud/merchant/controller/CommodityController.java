@@ -3,11 +3,14 @@ package com.giantlizardcloud.merchant.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.merchant.dto.AddCommodityDto;
 import com.giantlizardcloud.merchant.dto.FindCommodityByConditionDto;
+import com.giantlizardcloud.merchant.entity.Commodity;
 import com.giantlizardcloud.merchant.service.ICommodityService;
 import com.giantlizardcloud.merchant.vo.CommodityWithClassificationVo;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -39,11 +42,15 @@ public class CommodityController {
     @GetMapping
     public JSONResult getCommodityByCondition(FindCommodityByConditionDto dto){
         log.info(dto.toString());
-        return JSONResult.ok();
+        IPage<CommodityWithClassificationVo> list = commodityService.getCommodityByCondition(dto);
+        return JSONResult.ok(list);
     }
 
     @PostMapping
-    public JSONResult addCommodity(){
+    public JSONResult addCommodity(AddCommodityDto dto){
+        Commodity commodity = new Commodity();
+        BeanUtils.copyProperties(dto,commodity);
+        commodityService.save(commodity);
         return JSONResult.ok();
     }
 
@@ -52,8 +59,10 @@ public class CommodityController {
         return JSONResult.ok();
     }
 
-    @DeleteMapping
-    public JSONResult deleteCommodity(){
+    @PutMapping("/{id}/{status}")
+    public JSONResult updateCommodityStatus(@PathVariable Long id,@PathVariable Integer status){
+        System.out.println(id);
+        System.out.println(status);
         return JSONResult.ok();
     }
 

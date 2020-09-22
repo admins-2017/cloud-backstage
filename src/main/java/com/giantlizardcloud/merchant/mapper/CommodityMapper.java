@@ -2,10 +2,14 @@ package com.giantlizardcloud.merchant.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.merchant.dto.FindCommodityByConditionDto;
 import com.giantlizardcloud.merchant.entity.Commodity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.giantlizardcloud.merchant.vo.CommodityWithClassificationVo;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -22,4 +26,8 @@ public interface CommodityMapper extends BaseMapper<Commodity> {
             "LEFT JOIN sys_user su on su.user_id = m.insert_user \n" +
             "LEFT JOIN sys_user su2 on su2.user_id = m.update_user")
     IPage<CommodityWithClassificationVo> getAllCommodityByPage(Page<CommodityWithClassificationVo> voPage);
+
+    Integer getCommodityCountByCondition(FindCommodityByConditionDto dto);
+
+    List<CommodityWithClassificationVo> getCommodityByCondition(FindCommodityByConditionDto dto);
 }

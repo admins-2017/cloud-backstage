@@ -2,4 +2,77 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.merchant.mapper.CommodityMapper">
 
+
+    <select id="getCommodityByCondition"
+            resultType="com.giantlizardcloud.merchant.vo.CommodityWithClassificationVo">
+        select m.*,mc.classification_code,mc.classification_name,su.username as insert_username,
+            su2.username as update_username from merchant_commodity m
+            LEFT JOIN merchant_classification mc on m.classification_id = mc.classification_id
+            LEFT JOIN sys_user su on su.user_id = m.insert_user
+            LEFT JOIN sys_user su2 on su2.user_id = m.update_user
+            where 1=1
+            <if test="commodityName!=null and commodityName!=''">
+                and m.commodity_name LIKE  concat('%',#{commodityName},'%')
+            </if>
+            <if test="commodityNumber!=null and commodityNumber!=''">
+                and m.commodity_number = #{commodityNumber}
+            </if>
+            <if test="commodityUnit!=null and commodityUnit!=''">
+                and m.commodity_unit = #{commodityUnit}
+            </if>
+            <if test="commodityStatus!=null and commodityStatus!=''">
+                and m.commodity_status = #{commodityStatus}
+            </if>
+            <if test="classificationId!=null and classificationId!=''">
+                and m.classification_id = #{classificationId}
+            </if>
+            <if test="insertStartTime!=null and insertStartTime!='' and insertEndTime!=null and insertEndTime!=''">
+                and m.insert_time BETWEEN #{insertStartTime} AND #{insertEndTime}
+            </if>
+            <if test="insertUser!=null and insertUser!=''">
+                and m.insert_user = #{insertUser}
+            </if>
+            <if test="updateStartTime!=null and updateStartTime!='' and updateEndTime!=null and updateEndTime!='' ">
+                and m.update_time BETWEEN #{updateStartTime} AND #{updateEndTime}
+            </if>
+            <if test="updateUser!=null and updateUser!=''">
+                and m.update_user = #{updateUser}
+            </if>
+            limit #{page},#{size}
+    </select>
+
+    <select id="getCommodityCountByCondition" resultType="java.lang.Integer">
+        select count(1) from merchant_commodity m
+        LEFT JOIN merchant_classification mc on m.classification_id = mc.classification_id
+        LEFT JOIN sys_user su on su.user_id = m.insert_user
+        LEFT JOIN sys_user su2 on su2.user_id = m.update_user
+        where 1=1
+        <if test="commodityName!=null and commodityName!=''">
+            and m.commodity_name LIKE  concat('%',#{commodityName},'%')
+        </if>
+        <if test="commodityNumber!=null and commodityNumber!=''">
+            and m.commodity_number = #{commodityNumber}
+        </if>
+        <if test="commodityUnit!=null and commodityUnit!=''">
+            and m.commodity_unit = #{commodityUnit}
+        </if>
+        <if test="commodityStatus!=null and commodityStatus!=''">
+            and m.commodity_status = #{commodityStatus}
+        </if>
+        <if test="classificationId!=null and classificationId!=''">
+            and m.classification_id = #{classificationId}
+        </if>
+        <if test="insertStartTime!=null and insertStartTime!='' and insertEndTime!=null and insertEndTime!=''">
+            and m.insert_time BETWEEN #{insertStartTime} AND #{insertEndTime}
+        </if>
+        <if test="insertUser!=null and insertUser!=''">
+            and m.insert_user = #{insertUser}
+        </if>
+        <if test="updateStartTime!=null and updateStartTime!='' and updateEndTime!=null and updateEndTime!='' ">
+            and m.update_time BETWEEN #{updateStartTime} AND #{updateEndTime}
+        </if>
+        <if test="updateUser!=null and updateUser!=''">
+            and m.update_user = #{updateUser}
+        </if>
+    </select>
 </mapper>
