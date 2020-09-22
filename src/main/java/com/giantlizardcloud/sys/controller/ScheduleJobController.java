@@ -11,6 +11,7 @@ import com.giantlizardcloud.sys.entity.ScheduleDetail;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.giantlizardcloud.sys.service.IScheduleJobService;
 import com.mchange.v2.beans.BeansUtils;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.SchedulerException;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/job")
+@Api(value = "定时任务",tags = "定时任务对应操作")
 @Slf4j
 public class ScheduleJobController {
 

@@ -4,6 +4,7 @@ package com.giantlizardcloud.sys.controller;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.sys.entity.ScheduleDetail;
 import com.giantlizardcloud.sys.service.IScheduleDetailService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/scheduleDetail")
+@Api(value = "任务详情",tags = "任务详情对应操作")
 public class ScheduleDetailController {
 
     private final IScheduleDetailService detailService;

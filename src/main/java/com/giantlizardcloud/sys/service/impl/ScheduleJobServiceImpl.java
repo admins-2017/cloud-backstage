@@ -72,7 +72,6 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
             jobDetail.getJobDataMap().put("scheduleJob", job);
             //调度作业
             scheduler.scheduleJob(jobDetail, trigger);
-            log.info("修改后添加完成");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
