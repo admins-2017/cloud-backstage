@@ -5,11 +5,7 @@ import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.merchant.service.IClassificationService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -34,4 +30,25 @@ public class ClassificationController {
     public JSONResult getAll(@PathVariable Integer page,@PathVariable Integer size){
         return JSONResult.ok();
     }
+
+    @GetMapping("/{likeName}")
+    public JSONResult getClassificationByName(@PathVariable String likeName){
+        return JSONResult.ok();
+    }
+
+    @PostMapping
+    public JSONResult addClassification(){
+        return JSONResult.ok();
+    }
+
+    @PutMapping
+    public JSONResult updateClassification(){
+        return JSONResult.ok();
+    }
+
+    @DeleteMapping
+    public JSONResult deleteClassification(){
+        return JSONResult.ok();
+    }
+
 }
