@@ -2,6 +2,9 @@ package com.giantlizardcloud.merchant.mapper;
 
 import com.giantlizardcloud.merchant.entity.Classification;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.giantlizardcloud.merchant.vo.ClassificationVo;
+
+import java.util.List;
 
 /**
  * <p>

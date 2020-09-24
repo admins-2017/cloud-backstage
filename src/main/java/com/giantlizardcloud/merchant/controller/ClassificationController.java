@@ -1,11 +1,18 @@
 package com.giantlizardcloud.merchant.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.merchant.entity.Classification;
 import com.giantlizardcloud.merchant.service.IClassificationService;
+import com.giantlizardcloud.merchant.vo.ClassificationVo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -28,7 +35,7 @@ public class ClassificationController {
 
     @GetMapping("/{page}/{size}")
     public JSONResult getAll(@PathVariable Integer page,@PathVariable Integer size){
-        return JSONResult.ok();
+        return JSONResult.ok(classificationService.getClassificationByPage(page, size));
     }
 
     @GetMapping("/{likeName}")
