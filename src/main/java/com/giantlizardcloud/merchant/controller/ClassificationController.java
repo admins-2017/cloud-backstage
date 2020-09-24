@@ -2,7 +2,9 @@ package com.giantlizardcloud.merchant.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.merchant.entity.Classification;
@@ -40,17 +42,25 @@ public class ClassificationController {
 
     @GetMapping("/{likeName}")
     public JSONResult getClassificationByName(@PathVariable String likeName){
-        return JSONResult.ok();
+        List<Classification> list = classificationService.list(new QueryWrapper<Classification>()
+                .like("classification_name", likeName).or().eq("classification_code", likeName));
+        return JSONResult.ok(list);
     }
 
     @PostMapping
-    public JSONResult addClassification(){
-        return JSONResult.ok();
+    public JSONResult addClassification(Classification classification){
+        classificationService.save(classification);
+        return JSONResult.ok("新增分类完成");
     }
 
     @PutMapping
-    public JSONResult updateClassification(){
-        return JSONResult.ok();
+    public JSONResult updateClassification(Classification classification){
+        classificationService.update(new UpdateWrapper<Classification>()
+                .set(!"".equals(classification.getClassificationName()),"classification_name",classification.getClassificationName())
+                .set(!"".equals(classification.getClassificationCode()),"classification_code",classification.getClassificationCode())
+                .set(classification.getParentId()!=null&&classification.getParentId()!=0,"parent_id",classification.getParentId())
+                .eq("classification_id",classification.getClassificationId()));
+        return JSONResult.ok("修改分类完成");
     }
 
     @DeleteMapping
