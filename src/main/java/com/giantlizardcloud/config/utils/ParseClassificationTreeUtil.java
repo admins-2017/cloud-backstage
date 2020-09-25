@@ -33,7 +33,6 @@ public class ParseClassificationTreeUtil {
             Classification classification = iterator.next();
             ClassificationVo classificationVo = new ClassificationVo();
             BeanUtils.copyProperties(classification, classificationVo);
-            log.info("classificationVo:{}", classificationVo);
             result.add(classificationVo);
             iterator.remove();
         }
@@ -43,13 +42,11 @@ public class ParseClassificationTreeUtil {
         Iterator<Classification> childrenIterator = list.iterator();
         while (childrenIterator.hasNext()) {
             Classification classification = childrenIterator.next();
-            if (1 == classification.getParentId()) {
+//            if (1 == classification.getParentId()) {
                 ClassificationVo classificationVo = new ClassificationVo();
                 BeanUtils.copyProperties(classification, classificationVo);
-                log.info("classificationVo:{}", classificationVo);
                 childrenList.add(classificationVo);
-                childrenIterator.remove();
-            }
+//            }
         }
 
         // 2、递归获取所有二级分类的子分类
@@ -79,7 +76,6 @@ public class ParseClassificationTreeUtil {
             if (parent.getClassificationId().equals(classification.getParentId())) {
                 ClassificationVo classificationVo = new ClassificationVo();
                 BeanUtils.copyProperties(classification, classificationVo);
-                log.info("classificationVo:{}", classificationVo);
                 parent.getChildren().add(classificationVo);
                 iterator.remove();
             }

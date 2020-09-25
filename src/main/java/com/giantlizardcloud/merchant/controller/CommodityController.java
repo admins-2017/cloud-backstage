@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -99,6 +100,14 @@ public class CommodityController {
         return JSONResult.ok(result);
     }
 
+    /**
+     * 根据分类id获取分类下所有商品
+     */
+    @GetMapping("{id}")
+    public JSONResult getCommodityByClassification(@PathVariable Long id){
+        List<Commodity> commodityList =commodityService.getCommodityByClassification(id);
+        return JSONResult.ok(commodityList);
+    }
 
 }
 

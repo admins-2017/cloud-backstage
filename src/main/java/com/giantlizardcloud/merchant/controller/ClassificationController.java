@@ -56,16 +56,13 @@ public class ClassificationController {
     @PutMapping
     public JSONResult updateClassification(Classification classification){
         classificationService.update(new UpdateWrapper<Classification>()
-                .set(!"".equals(classification.getClassificationName()),"classification_name",classification.getClassificationName())
-                .set(!"".equals(classification.getClassificationCode()),"classification_code",classification.getClassificationCode())
+                .set(!"".equals(classification.getClassificationName())&&classification.getClassificationName()!=null,"classification_name",classification.getClassificationName())
+                .set(!"".equals(classification.getClassificationCode())&&classification.getClassificationCode()!=null,"classification_code",classification.getClassificationCode())
                 .set(classification.getParentId()!=null&&classification.getParentId()!=0,"parent_id",classification.getParentId())
                 .eq("classification_id",classification.getClassificationId()));
         return JSONResult.ok("修改分类完成");
     }
 
-    @DeleteMapping
-    public JSONResult deleteClassification(){
-        return JSONResult.ok();
-    }
+
 
 }
