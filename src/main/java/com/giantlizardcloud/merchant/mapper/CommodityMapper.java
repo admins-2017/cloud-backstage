@@ -30,4 +30,12 @@ public interface CommodityMapper extends BaseMapper<Commodity> {
     Integer getCommodityCountByCondition(FindCommodityByConditionDto dto);
 
     List<CommodityWithClassificationVo> getCommodityByCondition(FindCommodityByConditionDto dto);
+
+    @Select("select m.*,mc.classification_code,mc.classification_name,su.username as insert_username,su2.username as update_username from merchant_commodity m\n" +
+            "LEFT JOIN merchant_classification mc on m.classification_id = mc.classification_id \n" +
+            "LEFT JOIN sys_user su on su.user_id = m.insert_user \n" +
+            "LEFT JOIN sys_user su2 on su2.user_id = m.update_user WHERE mc.classification_id = #{id}")
+    List<CommodityWithClassificationVo> getAllCommodityByClassificationId(@Param("id") Long id);
+
+    List<CommodityWithClassificationVo> getAllCommodityInClassificationIds(@Param("ids") List<Object> classifications);
 }

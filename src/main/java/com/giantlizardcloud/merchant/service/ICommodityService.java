@@ -22,5 +22,5 @@ public interface ICommodityService extends IService<Commodity> {
 
     IPage<CommodityWithClassificationVo> getCommodityByCondition(FindCommodityByConditionDto dto);
 
-    List<Commodity> getCommodityByClassification(Long id);
+    List<CommodityWithClassificationVo> getCommodityByClassification(Long id);
 }

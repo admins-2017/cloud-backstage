@@ -51,13 +51,13 @@ public class CommodityServiceImpl extends ServiceImpl<CommodityMapper, Commodity
     }
 
     @Override
-    public List<Commodity> getCommodityByClassification(Long id) {
+    public List<CommodityWithClassificationVo> getCommodityByClassification(Long id) {
         List<Object> classifications = classificationService.listObjs(new QueryWrapper<Classification>().select("classification_id").eq("parent_id", id));
-        List<Commodity> list = null;
+        List<CommodityWithClassificationVo> list = null;
         if (classifications.size()==0){
-            list = this.list(new QueryWrapper<Commodity>().eq("classification_id",id));
+            list = this.baseMapper.getAllCommodityByClassificationId(id);
         }else{
-            list = this.list(new QueryWrapper<Commodity>().in("classification_id",classifications));
+            list = this.baseMapper.getAllCommodityInClassificationIds(classifications);
         }
         return list;
     }

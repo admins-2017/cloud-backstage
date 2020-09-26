@@ -62,14 +62,14 @@ public class CommodityController {
 
     @PutMapping
     public JSONResult updateCommodityDetail(UpdateCommodityDto dto) {
-        commodityService.update(new UpdateWrapper<Commodity>()
+        boolean update = commodityService.update(new UpdateWrapper<Commodity>()
                 .set(dto.getCommodityName() != null && !dto.getCommodityName().equals(""), "commodity_name", dto.getCommodityName())
                 .set(dto.getCommodityNumber() != null && !dto.getCommodityNumber().equals(""), "commodity_number", dto.getCommodityNumber())
                 .set(dto.getCommodityPicture() != null && !dto.getCommodityPicture().equals(""), "commodity_picture", dto.getCommodityPicture())
                 .set(dto.getCommoditySellingPrice() != null && !dto.getCommoditySellingPrice().equals(""), "commodity_selling_price", dto.getCommoditySellingPrice())
                 .set(dto.getCommodityUnit() != null && !dto.getCommodityUnit().equals(""), "commodity_unit", dto.getCommodityUnit())
                 .set(dto.getCommodityDescription() != null && !dto.getCommodityDescription().equals(""), "commodity_description", dto.getCommodityDescription())
-                .set(dto.getClassificationId() != null && !dto.getClassificationId().equals(""), "classification_id", dto.getClassificationId())
+                .set(dto.getClassificationId() != null, "classification_id", dto.getClassificationId())
                 .set("update_time", LocalDateTime.now())
                 .set("update_user", SecurityUntil.getUserId())
                 .eq("commodity_id", dto.getCommodityId()));
@@ -78,8 +78,8 @@ public class CommodityController {
 
     @PutMapping("/{id}/{status}")
     public JSONResult updateCommodityStatus(@PathVariable Long id, @PathVariable Integer status) {
-        /**
-         * status 1 下架 2 停用 3 上架 4 恢复商品
+        /*
+          status 1 下架 2 停用 3 上架 4 恢复商品
          */
         String result = "";
         switch (status) {
@@ -105,8 +105,7 @@ public class CommodityController {
      */
     @GetMapping("{id}")
     public JSONResult getCommodityByClassification(@PathVariable Long id){
-        List<Commodity> commodityList =commodityService.getCommodityByClassification(id);
-        return JSONResult.ok(commodityList);
+        return JSONResult.ok(commodityService.getCommodityByClassification(id));
     }
 
 }
