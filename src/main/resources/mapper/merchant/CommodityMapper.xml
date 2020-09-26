@@ -75,4 +75,16 @@
             and m.update_user = #{updateUser}
         </if>
     </select>
+    <!--  根据多个分类id查询分类下所有商品  -->
+    <select id="getAllCommodityInClassificationIds"
+            resultType="com.giantlizardcloud.merchant.vo.CommodityWithClassificationVo">
+        select m.*,mc.classification_code,mc.classification_name,su.username as insert_username,su2.username as update_username from merchant_commodity m
+            LEFT JOIN merchant_classification mc on m.classification_id = mc.classification_id
+            LEFT JOIN sys_user su on su.user_id = m.insert_user
+            LEFT JOIN sys_user su2 on su2.user_id = m.update_user
+            where mc.classification_id in
+             <foreach item='item' index='index' collection='ids' open='(' separator=',' close=')'>
+                #{item}
+             </foreach>
+    </select>
 </mapper>
