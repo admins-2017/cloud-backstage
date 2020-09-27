@@ -68,6 +68,47 @@ public class ParseClassificationTreeUtil {
         return vo;
     }
 
+    public static List<ClassificationVo> parseMenuTree(List<Classification> parentList, List<Classification> list) {
+        List<ClassificationVo> result = new ArrayList<>();
+        List<ClassificationVo> childrenList = new ArrayList<>();
+
+        /**
+         *  使用迭代器进行一级分类获取 并将已经添加到result中后将分类删除
+         */
+        Iterator<Classification> iterator = parentList.iterator();
+        while (iterator.hasNext()) {
+            Classification classification = iterator.next();
+            ClassificationVo classificationVo = new ClassificationVo();
+            BeanUtils.copyProperties(classification, classificationVo);
+            result.add(classificationVo);
+            iterator.remove();
+        }
+        /**
+         *  使用迭代器进行二级分类获取 并将已经添加到childrenList中后将分类删除
+         */
+        Iterator<Classification> childrenIterator = list.iterator();
+        while (childrenIterator.hasNext()) {
+            Classification classification = childrenIterator.next();
+//            if (1 == classification.getParentId()) {
+            ClassificationVo classificationVo = new ClassificationVo();
+            BeanUtils.copyProperties(classification, classificationVo);
+            childrenList.add(classificationVo);
+//            }
+        }
+
+        // 2、递归获取所有二级分类的子分类
+        for (ClassificationVo parent : childrenList) {
+            parent = recursiveTree(parent, list);
+        }
+
+        // 2、递归获取子分类
+        for (ClassificationVo parent : result) {
+            parent = recursiveTree2(parent, childrenList);
+        }
+
+        return result;
+    }
+
     public static ClassificationVo recursiveTree(ClassificationVo parent, List<Classification> list) {
         //使用迭代器根据父级id进行递归子节点 并将以添加的分类删除
         Iterator<Classification> iterator = list.iterator();

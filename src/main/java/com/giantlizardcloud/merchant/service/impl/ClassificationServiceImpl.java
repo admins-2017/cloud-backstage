@@ -30,4 +30,12 @@ public class ClassificationServiceImpl extends ServiceImpl<ClassificationMapper,
         Page<ClassificationVo> voPage = ParseClassificationTreeUtil.parseMenuTree(parentPage, list);
         return voPage;
     }
+
+    @Override
+    public List<ClassificationVo> getAllClassification() {
+        List<Classification> parentList = this.list(new QueryWrapper<Classification>().eq("parent_id", 0));
+        List<Classification> list = this.list(new QueryWrapper<Classification>().ne("parent_id", 0));
+        List<ClassificationVo> voList = ParseClassificationTreeUtil.parseMenuTree(parentList, list);
+        return voList;
+    }
 }

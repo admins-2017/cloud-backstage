@@ -18,4 +18,6 @@ import java.util.List;
 public interface IClassificationService extends IService<Classification> {
 
     Page<ClassificationVo> getClassificationByPage(Integer page, Integer size);
+
+    List<ClassificationVo> getAllClassification();
 }

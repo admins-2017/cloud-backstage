@@ -35,6 +35,12 @@ public class ClassificationController {
         this.classificationService = classificationService;
     }
 
+    @GetMapping("")
+    public JSONResult getAllClassification(){
+        List<ClassificationVo> vos=classificationService.getAllClassification();
+        return JSONResult.ok(vos);
+    }
+
     @GetMapping("/{page}/{size}")
     public JSONResult getAll(@PathVariable Integer page,@PathVariable Integer size){
         return JSONResult.ok(classificationService.getClassificationByPage(page, size));
