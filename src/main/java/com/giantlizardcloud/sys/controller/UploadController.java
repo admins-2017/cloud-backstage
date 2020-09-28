@@ -50,17 +50,20 @@ public class UploadController {
     @ApiOperation(value = "单个图片上传到七牛云")
     public JSONResult uploadImg(@RequestParam(value = "file") MultipartFile upFile) {
         String fileName = upFile.getOriginalFilename();
+        log.info("fileName:"+fileName);
         File file = new File(url + fileName);
-        String result="";
+        log.info("file:"+file);
+        String url;
         try{
             //将MulitpartFile文件转化为file文件格式
             upFile.transferTo(file);
-             result = fileService.uploadFile(file);
-
+            String result = fileService.uploadFile(file);
+            url="http://"+path+'/'+result;
+            file.delete();
+            return JSONResult.ok(url);
         }catch (Exception e){
-            e.printStackTrace();
+            return JSONResult.errorException(e.getMessage());
         }
-        return JSONResult.ok(result);
     }
 
 
