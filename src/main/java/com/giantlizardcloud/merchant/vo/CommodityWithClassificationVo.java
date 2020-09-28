@@ -2,6 +2,7 @@ package com.giantlizardcloud.merchant.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,6 +43,7 @@ public class CommodityWithClassificationVo {
     private Long classificationId;
 
     @ApiModelProperty(value = "商品添加时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime insertTime;
 
     @ApiModelProperty(value = "商品添加人员",example = "1")
@@ -51,6 +53,7 @@ public class CommodityWithClassificationVo {
     private String insertUsername;
 
     @ApiModelProperty(value = "商品修改时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime updateTime;
 
     @ApiModelProperty(value = "商品修改人员",example = "1")
