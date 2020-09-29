@@ -95,6 +95,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
+    public List<UserDetailsWithRoleAndShopVo> getAllUser() {
+        return this.baseMapper.getAllUser();
+    }
+
+    @Override
     public IPage<UserDetailsWithRoleAndShopVo> getUserByName(String name,Page<UserDetailsWithRoleAndShopVo> voPage) {
         name= name+"%";
         return this.baseMapper.getUserByName(name,voPage);

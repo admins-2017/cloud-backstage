@@ -41,6 +41,12 @@ public class ClassificationController {
         return JSONResult.ok(vos);
     }
 
+    @GetMapping("/all")
+    public JSONResult getAllClassificationNode(){
+        List<Classification> vos=classificationService.list(new QueryWrapper<Classification>().eq("classification_level",2));
+        return JSONResult.ok(vos);
+    }
+
     @GetMapping("/{page}/{size}")
     public JSONResult getAll(@PathVariable Integer page,@PathVariable Integer size){
         return JSONResult.ok(classificationService.getClassificationByPage(page, size));

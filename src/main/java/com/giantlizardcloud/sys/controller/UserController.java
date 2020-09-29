@@ -159,6 +159,13 @@ public class UserController {
         return JSONResult.ok(users);
     }
 
+    @GetMapping("/all")
+    @ApiOperation(value="获取所有用户",notes = "页码，条数")
+    public JSONResult getAllUserByCommodity(){
+        List<UserDetailsWithRoleAndShopVo> users=userService.getAllUser();
+        return JSONResult.ok(users);
+    }
+
     @GetMapping("/{query}/{page}/{size}")
     @ApiOperation(value="根据用户名获取信息",notes = "用户名，页码，条数")
     public JSONResult getUserByName(@PathVariable String query,@PathVariable Integer page,@PathVariable Integer size){

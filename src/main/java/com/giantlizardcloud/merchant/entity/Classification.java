@@ -40,5 +40,7 @@ public class Classification implements Serializable {
     @ApiModelProperty(value = "分类父类id 0为一级分类",example = "1")
     private Long parentId;
 
+    @ApiModelProperty(value = "0为一级目录 1 为菜单 2为子节点",example = "1")
+    private Integer classificationLevel;
 
 }

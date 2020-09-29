@@ -7,8 +7,6 @@
     io-threads: 4
     worker-threads: 20
   port: 8082
-
-
 #mybatis-plus
  mybatis-plus:
   mapper-locations: /mapper/*/*Mapper.xml
@@ -20,7 +18,7 @@
     url: jdbc:mysql://123.206.195.122:3306/rf-backstage?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: kdw0517
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
   redis:
     database: 2
@@ -45,12 +43,12 @@
   # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
   expiration: 8640
   # 配置不需要认证的接口
-  antMatchers: /user/test,/login/**,/user/code,/swagger-ui.html,/webjars/**,/swagger-resources/**,/v2/*,/sms/send,/user/verify/**
+  antMatchers: /user/test,/menu/basisTree,/login/**,/user/code,/swagger-ui.html,/webjars/**,/swagger-resources/**,/v2/*,/sms/send,/user/verify/**
 # 七牛云配置
  qiniu:
   accessKey: UbCrflztjlJGdhBTis77726z4UtxGc2CjcW107KN
   secretKey: __XybZxprcQ87YP-EtDV2gUEj3FF6vUwyIn8GID3
   bucket: rf-backstage
-  path: qf30yvzam.hn-bkt.clouddn.com
+  path: qhe98h6jl.hn-bkt.clouddn.com
 
- baseUploadUrl: /Users/kang/temp
+ baseUploadUrl: E:/temp

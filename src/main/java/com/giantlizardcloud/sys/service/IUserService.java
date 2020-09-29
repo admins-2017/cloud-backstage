@@ -39,6 +39,8 @@ public interface IUserService extends IService<User> {
 
     IPage<UserDetailsWithRoleAndShopVo> getAllUser(Page<UserDetailsWithRoleAndShopVo> voPage);
 
+    List<UserDetailsWithRoleAndShopVo> getAllUser();
+
     IPage<UserDetailsWithRoleAndShopVo> getUserByName(String name,Page<UserDetailsWithRoleAndShopVo> voPage);
 
     IPage<UserDetailsWithRoleAndShopVo> getUserByShop(Long shopId,Page<UserDetailsWithRoleAndShopVo> voPage);

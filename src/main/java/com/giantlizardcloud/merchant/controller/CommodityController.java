@@ -46,7 +46,7 @@ public class CommodityController {
     }
 
     @GetMapping
-    public JSONResult getCommodityByCondition(FindCommodityByConditionDto dto) {
+    public JSONResult getCommodityByCondition( FindCommodityByConditionDto dto) {
         log.info(dto.toString());
         IPage<CommodityWithClassificationVo> list = commodityService.getCommodityByCondition(dto);
         return JSONResult.ok(list);
