@@ -35,7 +35,7 @@ public class ClassificationController {
         this.classificationService = classificationService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public JSONResult getAllClassification(){
         List<ClassificationVo> vos=classificationService.getAllClassification();
         return JSONResult.ok(vos);
