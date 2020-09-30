@@ -55,7 +55,7 @@ public class ClassificationController {
     @GetMapping("/{likeName}")
     public JSONResult getClassificationByName(@PathVariable String likeName){
         List<Classification> list = classificationService.list(new QueryWrapper<Classification>()
-                .like("classification_name", likeName).or().eq("classification_code", likeName));
+                .eq("classification_name", likeName).or().eq("classification_code", likeName));
         return JSONResult.ok(list);
     }
 
