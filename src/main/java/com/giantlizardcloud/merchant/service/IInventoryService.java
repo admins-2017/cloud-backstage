@@ -2,6 +2,9 @@ package com.giantlizardcloud.merchant.service;
 
 import com.giantlizardcloud.merchant.entity.Inventory;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IInventoryService extends IService<Inventory> {
 
+    List<CommodityWithShopVo> getShopUnderCommodity(Long shopId);
 }
