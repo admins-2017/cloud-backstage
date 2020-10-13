@@ -1,17 +1,21 @@
 package com.giantlizardcloud.merchant.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.merchant.dto.QueryInventory;
 import com.giantlizardcloud.merchant.entity.Inventory;
 import com.giantlizardcloud.merchant.mapper.InventoryMapper;
 import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
+import com.giantlizardcloud.merchant.vo.InventoryVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author jobob
@@ -21,7 +25,16 @@ import java.util.List;
 public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory> implements IInventoryService {
 
     @Override
-    public List<CommodityWithShopVo> getShopUnderCommodity(Long shopId) {
-        return this.baseMapper.getShopUnderCommodity(shopId);
+    public InventoryVo getShopUnderCommodity(QueryInventory query) {
+        Page<CommodityWithShopVo> commodityWithShopVoPage = new Page<>(query.getPage(), query.getSize());
+//        IPage<CommodityWithShopVo> shopUnderCommodity = this.baseMapper.getShopUnderCommodity(commodityWithShopVoPage,query.getShopId());
+        InventoryVo vo = new InventoryVo();
+        vo.setVos(this.baseMapper.getShopUnderCommodity(commodityWithShopVoPage,query.getShopId()));
+        vo.setCommodityNumber(this.baseMapper.getCountByCommodity(query.getShopId()));
+        vo.setStockNumber(this.baseMapper.getCountByOutOfStock(query.getShopId()));
+        vo.setWarnNumber(this.baseMapper.getCountByInventoryWarn(query.getShopId()));
+        vo.setInventoryNumber(this.baseMapper.getCountInventoryNumber(query.getShopId()));
+
+        return vo;
     }
 }

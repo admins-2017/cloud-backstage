@@ -2,4 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.merchant.mapper.InventoryMapper">
 
+    <sql id="allColumn">
+        SELECT mi.inventory_id,mi.commodity_id,mi.shop_id,mi.inventory_number,mc.commodity_name,mc.commodity_number,mc.commodity_picture,mc.commodity_selling_price,mc.commodity_unit,mc.commodity_status,mc.commodity_description,mc.classification_id,ms.shop_name ,ms.shop_address , mcl.classification_name FROM merchant_inventory mi
+        LEFT JOIN merchant_commodity mc ON mi.commodity_id = mc.commodity_id
+        LEFT JOIN merchant_shop ms ON mi.shop_id = ms.shop_id
+        LEFT JOIN merchant_classification mcl ON mc.classification_id = mcl.classification_id
+    </sql>
+
+    <select id="getShopUnderCommodity" resultType="com.giantlizardcloud.merchant.vo.CommodityWithShopVo">
+        <include refid="allColumn"></include>
+        <if test="shopId != null">
+            WHERE mi.shop_id = #{shopId}
+        </if>
+    </select>
+
+    <select id="getCountByCommodity" resultType="java.lang.Integer">
+        select COUNT( DISTINCT commodity_id) from merchant_inventory
+        <if test="shopId != null">
+            WHERE shop_id = #{shopId}
+        </if>
+    </select>
+
+    <select id="getCountByOutOfStock" resultType="java.lang.Integer">
+        select COUNT(*) from merchant_inventory where inventory_number = 0
+        <if test="shopId != null">
+            AND shop_id = #{shopId}
+        </if>
+    </select>
+
+    <select id="getCountByInventoryWarn" resultType="java.lang.Integer">
+        select COUNT(*) from merchant_inventory where inventory_number &lt; 10
+        <if test="shopId != null">
+            AND shop_id = #{shopId}
+        </if>
+    </select>
+
+    <select id="getCountInventoryNumber" resultType="java.lang.Integer">
+        select SUM(inventory_number) from merchant_inventory
+        <if test="shopId != null">
+            WHERE shop_id = #{shopId}
+        </if>
+    </select>
 </mapper>

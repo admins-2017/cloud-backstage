@@ -1,7 +1,9 @@
 package com.giantlizardcloud.merchant.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.merchant.dto.QueryInventory;
 import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
-    @GetMapping
+    @GetMapping("/all/{page}/{size}")
     public JSONResult getDetailByIndex(){
         return JSONResult.ok();
     }
@@ -39,9 +41,8 @@ public class InventoryController {
      * 查询商铺下所有商品的库存
      * @return 返回json格式的查询结果
      */
-    @GetMapping("/{id}")
-    public JSONResult getCommodityByShop(@PathVariable("id") Long shopId){
-        List<CommodityWithShopVo> vos = inventoryService.getShopUnderCommodity(shopId);
-        return JSONResult.ok(vos);
+    @GetMapping
+    public JSONResult getCommodityByShop(QueryInventory query){
+        return JSONResult.ok( inventoryService.getShopUnderCommodity(query));
     }
 }
