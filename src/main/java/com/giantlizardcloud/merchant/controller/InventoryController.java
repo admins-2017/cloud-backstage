@@ -6,6 +6,7 @@ import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.merchant.dto.QueryInventory;
 import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
+import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +33,22 @@ public class InventoryController {
         this.inventoryService = inventoryService;
     }
 
-    @GetMapping("/all/{page}/{size}")
-    public JSONResult getDetailByIndex(){
-        return JSONResult.ok();
+    @GetMapping("/status/{status}")
+    public JSONResult getDetailByIndex(@PathVariable Integer status,Long shopId){
+
+        if (status == 1){
+            List<InventoryGetCommodityClassVo> vos =  inventoryService.getInventoryCommodity(shopId);
+            return JSONResult.ok(vos);
+        }else if (status ==2){
+            List<CommodityWithShopVo> vos = inventoryService.getZeroInventory(shopId);
+            return JSONResult.ok(vos);
+        }else if (status == 3) {
+            List<CommodityWithShopVo> vos = inventoryService.getWarnInventory(shopId);
+            return JSONResult.ok(vos);
+        }else {
+            List<CommodityWithShopVo> vos = inventoryService.getAmpleInventory(shopId);
+            return JSONResult.ok(vos);
+        }
     }
 
     /**

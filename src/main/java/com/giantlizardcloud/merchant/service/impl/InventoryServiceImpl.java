@@ -1,6 +1,5 @@
 package com.giantlizardcloud.merchant.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.merchant.dto.QueryInventory;
 import com.giantlizardcloud.merchant.entity.Inventory;
@@ -8,6 +7,7 @@ import com.giantlizardcloud.merchant.mapper.InventoryMapper;
 import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
+import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
 import com.giantlizardcloud.merchant.vo.InventoryVo;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +36,25 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
         vo.setInventoryNumber(this.baseMapper.getCountInventoryNumber(query.getShopId()));
 
         return vo;
+    }
+
+    @Override
+    public List<InventoryGetCommodityClassVo> getInventoryCommodity(Long shopId) {
+        return this.baseMapper.getInventoryCommodity(shopId);
+    }
+
+    @Override
+    public List<CommodityWithShopVo> getZeroInventory(Long shopId) {
+        return this.baseMapper.getZeroInventory(shopId);
+    }
+
+    @Override
+    public List<CommodityWithShopVo> getWarnInventory(Long shopId) {
+        return this.baseMapper.getWarnInventory(shopId);
+    }
+
+    @Override
+    public List<CommodityWithShopVo> getAmpleInventory(Long shopId) {
+        return this.baseMapper.getAmpleInventory(shopId);
     }
 }

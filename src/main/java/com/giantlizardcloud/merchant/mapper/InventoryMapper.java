@@ -2,12 +2,11 @@ package com.giantlizardcloud.merchant.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.giantlizardcloud.merchant.dto.QueryInventory;
 import com.giantlizardcloud.merchant.entity.Inventory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
+import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -27,23 +26,36 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
 
     /**
      * 库存为0 缺货
-     * @param shopId
-     * @return
+     * @param shopId 商铺id
+     * @return 统计数量结果
      */
     Integer getCountByOutOfStock(@Param("shopId") Long shopId);
 
     /**
      * 库存警告 低于10
-     * @param shopId
-     * @return
+     * @param shopId 商铺id
+     * @return 统计数量结果
      */
     Integer getCountByInventoryWarn(@Param("shopId") Long shopId);
 
     /**
      * 库存总量
-     * @param shopId
-     * @return
+     * @param shopId 商铺id
+     * @return 统计数量结果
      */
     Integer getCountInventoryNumber(@Param("shopId") Long shopId);
+
+    /**
+     * @param shopId 商铺id
+     * @return 统计数量结果
+     * @return
+     */
+    List<InventoryGetCommodityClassVo> getInventoryCommodity(@Param("shopId") Long shopId);
+
+    List<CommodityWithShopVo> getZeroInventory(@Param("shopId") Long shopId);
+
+    List<CommodityWithShopVo> getWarnInventory(@Param("shopId") Long shopId);
+
+    List<CommodityWithShopVo> getAmpleInventory(@Param("shopId") Long shopId);
 
 }
