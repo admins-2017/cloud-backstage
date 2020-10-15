@@ -1,8 +1,14 @@
 package com.giantlizardcloud;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.giantlizardcloud.config.json.JsonUtils;
+import com.giantlizardcloud.merchant.entity.Classification;
+import com.giantlizardcloud.merchant.entity.Commodity;
+import com.giantlizardcloud.merchant.service.IClassificationService;
+import com.giantlizardcloud.merchant.service.ICommodityService;
 import com.giantlizardcloud.sys.entity.User;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.reflect.Method;
@@ -11,6 +17,12 @@ import java.util.List;
 
 @SpringBootTest
 class CloudBackstageApplicationTests {
+
+    @Autowired
+    private IClassificationService classificationService;
+
+    @Autowired
+    private ICommodityService commodityService;
 
     @Test
     void contextLoads() {
@@ -56,4 +68,9 @@ class CloudBackstageApplicationTests {
         System.out.println(s);
     }
 
+    @Test
+    public void testGetCommodityByClassificationId(){
+        Long id = 20L;
+
+    }
 }
