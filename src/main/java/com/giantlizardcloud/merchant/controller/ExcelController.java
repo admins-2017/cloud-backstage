@@ -6,7 +6,10 @@ import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.alibaba.fastjson.JSON;
 import com.giantlizardcloud.config.poi.entity.UserVo;
 import com.giantlizardcloud.config.poi.util.FileUtils;
+import com.giantlizardcloud.merchant.service.IInventoryService;
+import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,9 +29,12 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/common/excel")
+@RequestMapping("/excel")
 @Slf4j
 public class ExcelController {
+
+    @Autowired
+    private IInventoryService inventoryService;
 
     /**
      * 导出
@@ -37,28 +43,9 @@ public class ExcelController {
      * @param response
      */
     @RequestMapping(value = "/export", method = RequestMethod.GET)
-    public void toExport(HttpServletResponse response) {
-        List<UserVo> users = new ArrayList<UserVo>();
-        //...
-        UserVo user = new UserVo();
-        user.setNickName("张三");
-        user.setUserIntro("我是张三，认识下！");
-        user.setUserSex(1);
-        user.setCreateTime(new Date());
-        users.add(user);
-        user = new UserVo();
-        user.setNickName("李四");
-        user.setUserIntro("我是李四，认识下！");
-        user.setUserSex(2);
-        user.setCreateTime(new Date());
-        users.add(user);
-        user = new UserVo();
-        user.setNickName("王五");
-        user.setUserIntro("我是王五，认识下！");
-        user.setUserSex(1);
-        user.setCreateTime(new Date());
-        users.add(user);
-        FileUtils.exportExcel(users, "测试导出 title" , "测试导出 sheet", UserVo.class, "测试导出.xls", response);
+    public void toExport(HttpServletResponse response,Long shopId) {
+        List<InventoryGetCommodityClassVo> vos = inventoryService.getInventoryCommodity(shopId);
+        FileUtils.exportExcel(vos, " 商品种类明细" , "", InventoryGetCommodityClassVo.class, "商品种类明细.xls", response);
     }
 
     /**

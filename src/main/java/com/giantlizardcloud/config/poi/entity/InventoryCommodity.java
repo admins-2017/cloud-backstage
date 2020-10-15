@@ -29,7 +29,7 @@ public class InventoryCommodity {
     private String commodityUnit;
 
     @ApiModelProperty(value = "商品描述")
-    @Excel(name = "商品描述",  isImportField = "true_st")
+    @Excel(name = "商品描述",  isStatistics = true)
     private String commodityDescription;
 
     @ApiModelProperty(value = "商品分类名称")
