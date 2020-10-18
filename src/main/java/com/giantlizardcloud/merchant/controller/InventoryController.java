@@ -69,7 +69,15 @@ public class InventoryController {
     public void ExportInventory(HttpServletResponse response, @PathVariable Integer status, Long shopId) {
         String name = "";
         if (status == 0) {
-
+            List<CommodityWithShopVo> vos = inventoryService.exportAllCommodityByShopId(shopId);
+            if (vos.size()!=0){
+                if (shopId != null) {
+                    name = vos.get(0).getShopName()+"-商品明细";
+                }else {
+                    name = "商品明细";
+                }
+                FileUtils.exportExcel(vos, name, "", CommodityWithShopVo.class, name+".xls", response);
+            }
         } else if (status == 1) {
             List<InventoryGetCommodityClassVo> vos = inventoryService.getInventoryCommodity(shopId);
             if (vos.size()!=0){
@@ -95,9 +103,9 @@ public class InventoryController {
             List<CommodityWithShopVo> vos = inventoryService.getWarnInventory(shopId);
             if (vos.size()!=0){
                 if (shopId != null) {
-                    name = vos.get(0).getShopName()+"-缺货商品明细";
+                    name = vos.get(0).getShopName()+"-库存不足明细";
                 }else {
-                    name = "缺货商品明细";
+                    name = "库存不足明细";
                 }
                 FileUtils.exportExcel(vos, name, "", CommodityWithShopVo.class, name+".xls", response);
             }
@@ -105,9 +113,9 @@ public class InventoryController {
             List<CommodityWithShopVo> vos = inventoryService.getAmpleInventory(shopId);
             if (vos.size()!=0){
                 if (shopId != null) {
-                    name = vos.get(0).getShopName()+"-缺货商品明细";
+                    name = vos.get(0).getShopName()+"-库存充足明细";
                 }else {
-                    name = "缺货商品明细";
+                    name = "库存充足明细";
                 }
                 FileUtils.exportExcel(vos, name, "", CommodityWithShopVo.class, name+".xls", response);
             }

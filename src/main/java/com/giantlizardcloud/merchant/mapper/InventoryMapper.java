@@ -58,4 +58,6 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
 
     List<CommodityWithShopVo> getAmpleInventory(@Param("shopId") Long shopId);
 
+    List<CommodityWithShopVo> exportAllCommodityByShopId(@Param("shopId") Long shopId);
+
 }

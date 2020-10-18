@@ -29,4 +29,7 @@ public interface IInventoryService extends IService<Inventory> {
     List<CommodityWithShopVo> getWarnInventory(Long shopId);
 
     List<CommodityWithShopVo> getAmpleInventory(Long shopId);
+
+    List<CommodityWithShopVo> exportAllCommodityByShopId(Long shopId);
+
 }

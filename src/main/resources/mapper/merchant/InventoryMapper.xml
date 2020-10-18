@@ -16,6 +16,13 @@
         </if>
     </select>
 
+    <select id="exportAllCommodityByShopId" resultType="com.giantlizardcloud.merchant.vo.CommodityWithShopVo">
+        <include refid="allColumn"></include>
+        <if test="shopId != null">
+            WHERE mi.shop_id = #{shopId}
+        </if>
+    </select>
+
     <select id="getCountByCommodity" resultType="java.lang.Integer">
         select COUNT( DISTINCT commodity_id) from merchant_inventory
         <if test="shopId != null">

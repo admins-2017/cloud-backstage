@@ -57,4 +57,9 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
     public List<CommodityWithShopVo> getAmpleInventory(Long shopId) {
         return this.baseMapper.getAmpleInventory(shopId);
     }
+
+    @Override
+    public List<CommodityWithShopVo> exportAllCommodityByShopId(Long shopId) {
+        return this.baseMapper.exportAllCommodityByShopId(shopId);
+    }
 }
