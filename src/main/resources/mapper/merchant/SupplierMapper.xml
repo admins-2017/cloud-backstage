@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.giantlizardcloud.merchant.mapper.SupplierMapper">
+
+    <resultMap id="getPage" type="com.giantlizardcloud.vo.supplierWithUserVo">
+        <id column="supplier_id" property="supplierId"/>
+        <result column="supplier_name" property="supplierName"/>
+        <result column="supplier_capital" property="supplierCapital"/>
+        <result column=" supplier_address" property="supplierAddress"/>
+        <result column=" supplier_person" property="supplierPerson"/>
+        <result column="supplier_telephone" property="supplierTelephone"/>
+        <result column="supplier_email" property="supplierEmail"/>
+        <result column="supplier_business" property="supplierBusiness"/>
+        <result column="supplier_cooperated" property="supplierCooperated"/>
+        <result column="supplier_status" property="supplierStatus"/>
+
+    </resultMap>
+
+
+
+
+    <select id="selectAllSupplierWithUser" resultMap="getPage">
+        select supplier_id, supplier_name, supplier_capital, supplier_address, supplier_person, supplier_telephone,supplier_email, supplier_business,
+        supplier_cooperated,supplier_status
+        from merchant_supplier
+        where 1= 1 and supplier_status=1
+        <if test="supplierName != null">
+             AND supplier_name like  concat('%',#{supplierName},'%')
+        </if>
+        LIMIT #{page},#{size}
+    </select>
+
+</mapper>
