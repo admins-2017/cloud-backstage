@@ -1,9 +1,10 @@
 package com.giantlizardcloud.merchant.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,7 +17,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author jobob
- * @since 2020-09-24
+ * @since 2020-10-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -28,7 +29,7 @@ public class Client implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "客户ID")
-    @TableId(value = "client_id", type = IdType.AUTO)
+    @TableId(value = "client_id")
     private Long clientId;
 
     @ApiModelProperty(value = "名字")
@@ -43,21 +44,22 @@ public class Client implements Serializable {
     @ApiModelProperty(value = "性别")
     private Boolean clientGender;
 
-    @ApiModelProperty(value = "身份证")
-    private String clientIdntity;
+    @ApiModelProperty(value = "生日")
+    private LocalDateTime clientBirthday;
 
-    @ApiModelProperty(value = "消费次数")
-    private Integer clientNumbercsp;
+    @ApiModelProperty(value = "客户状态 0 为正常 1为删除")
+    private Integer clientStatus;
 
-    @ApiModelProperty(value = "消费金额")
+    @ApiModelProperty(value = "客户欠款")
     private Double clientConsumption;
 
-    @ApiModelProperty(value = "持卡类型")
-    private String clientCardtype;
+    @ApiModelProperty(value = "客户邮箱")
+    private String clientEmail;
 
-    private String clientDest;
+    @ApiModelProperty(value = "客户简介")
+    private String clientDesc;
 
-    @ApiModelProperty(value = "商品Id")
+    @ApiModelProperty(value = "商铺Id")
     private Long shopId;
 
 
