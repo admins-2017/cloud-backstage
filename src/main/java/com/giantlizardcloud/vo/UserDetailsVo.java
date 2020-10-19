@@ -3,6 +3,9 @@ package com.giantlizardcloud.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * @author kang
+ */
 @Data
 public class UserDetailsVo {
     @ApiModelProperty(value = "用户ID",example = "1")

@@ -3,6 +3,9 @@ package com.giantlizardcloud.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * @author kang
+ */
 @Data
 public class InsertSupplierDto {
 

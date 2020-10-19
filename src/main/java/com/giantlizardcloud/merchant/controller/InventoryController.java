@@ -11,6 +11,7 @@ import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.giantlizardcloud.merchant.service.IShopService;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
 import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/inventory")
+@Api(value = "仓库管理", tags = "仓库明细对应操作")
 public class InventoryController {
 
     private final IInventoryService inventoryService;

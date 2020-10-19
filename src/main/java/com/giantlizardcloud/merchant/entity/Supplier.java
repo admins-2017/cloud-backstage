@@ -50,15 +50,13 @@ public class Supplier implements Serializable {
     @ApiModelProperty(value = "供应商主营业务")
     private String supplierBusiness;
 
-    @ApiModelProperty(value = "与供应商曾是否合作   0为未合作   1为合作")
+    @ApiModelProperty(value = "与供应商曾是否合作   1为未合作   0为合作")
     private Boolean supplierCooperated;
 
-
-    @ApiModelProperty(value = "供应商   0为删除  1为未删除")
+    @ApiModelProperty(value = "供应商   1为删除  0为未删除")
     private Boolean supplierStatus;
 
     @ApiModelProperty(value = "预留商铺id")
     private Long shopId;
-
 
 }

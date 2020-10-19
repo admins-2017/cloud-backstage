@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author 康东伟
+ */
 @Data
 public class ShopWithUserVo {
     @ApiModelProperty(value = "商铺id",example = "1")

@@ -8,6 +8,7 @@ import com.giantlizardcloud.config.poi.entity.UserVo;
 import com.giantlizardcloud.config.poi.util.FileUtils;
 import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,10 +32,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/excel")
 @Slf4j
+@Api(value = "excel管理", tags = "excel对应操作")
 public class ExcelController {
 
-    @Autowired
-    private IInventoryService inventoryService;
+    private final IInventoryService inventoryService;
+
+    public ExcelController(IInventoryService inventoryService) {
+        this.inventoryService = inventoryService;
+    }
 
     /**
      * 导出

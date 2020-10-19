@@ -18,6 +18,11 @@ import java.util.List;
  */
 public interface SupplierMapper extends BaseMapper<Supplier> {
 
+
+      /**
+       * 根据状态获取
+       * @return 供应商
+       */
       @Select("select sup.supplier_id,sup.supplier_name,sup.supplier_capital,\n" +
               "sup.supplier_address,sup.supplier_person,sup.supplier_telephone,\n" +
               "sup.supplier_email,sup.supplier_business,sup.supplier_cooperated,\n" +
@@ -28,6 +33,13 @@ public interface SupplierMapper extends BaseMapper<Supplier> {
               "where sup.supplier_status = 1")
       List<SupplierVo> getAllSupplierBySupplierStatus();
 
+      /**
+       * 模糊查询供应商
+       * @param supplierName 供应商名
+       * @param page 页码
+       * @param size 条数
+       * @return 供应商集合
+       */
       List<Supplier> selectAllSupplierWithUser(@Param("supplierName") String supplierName, @Param("page") Integer page, @Param("size") Integer size);
 
 }

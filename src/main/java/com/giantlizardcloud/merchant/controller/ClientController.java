@@ -5,7 +5,6 @@ package com.giantlizardcloud.merchant.controller;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.config.json.JSONResult;
-import com.giantlizardcloud.merchant.dto.ClientDto;
 import com.giantlizardcloud.merchant.entity.Client;
 import com.giantlizardcloud.merchant.service.IClientService;
 import com.giantlizardcloud.merchant.vo.ClientWithShopVo;
@@ -30,18 +29,17 @@ import java.util.List;
 @Slf4j
 public class ClientController {
 
-    private IClientService clientService;
+    private final IClientService clientService;
 
     public ClientController(IClientService clientService){
 
         this.clientService=clientService;
 
     }
-    /*
-    * JSONResult.ok(clientService.page(new Page<>(page,size)
-                ,new QueryWrapper<Client>().eq("client_name","郝树星")));
-    * */
-    //分页查询
+
+    /**
+     * 分页查询
+     */
     @GetMapping("/{page}/{size}")
     public JSONResult  getAllClient(@PathVariable Integer page, @PathVariable Integer size){
 
@@ -51,7 +49,9 @@ public class ClientController {
 
     }
 
-    //查询所有客户
+    /**
+     * 查询所有客户
+     */
     @GetMapping
     @ApiOperation(value="获取所有客户")
     public JSONResult getAll(){
@@ -76,11 +76,7 @@ public class ClientController {
     @PutMapping("/{clientId}")
     @ApiOperation(value="修改客户信息",notes = "clientId客户Id")
     public JSONResult updateClient(@PathVariable Long  clientId , Client client){
-
         log.info(client.toString());
-
-       // clientService.update(client,new UpdateWrapper<Client>());
-        //clientService.update(clientDto,new UpdateWrapper<Client>().eq("client_id",clientId));
         clientService.update(client,new UpdateWrapper<Client>().eq("client_id",clientId));
         return  JSONResult.ok("修改完成");
 
@@ -89,9 +85,7 @@ public class ClientController {
 
     @DeleteMapping("/{clientId}")
     @ApiOperation(value="删除客户",notes = "clientId客户Id")
-    public JSONResult DeleteClient(@PathVariable Long clientId){
-        System.out.println(clientId);
-        //clientService.update(new UpdateWrapper<Client>().eq("client_id",clientId));
+    public JSONResult deleteClient(@PathVariable Long clientId){
             clientService.removeById(clientId);
         return JSONResult.ok("删除成功");
     }
