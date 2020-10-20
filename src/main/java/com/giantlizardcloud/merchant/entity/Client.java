@@ -28,7 +28,7 @@ public class Client implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "客户ID")
+    @ApiModelProperty(value = "客户ID",example = "1")
     @TableId(value = "client_id")
     private Long clientId;
 
@@ -41,16 +41,16 @@ public class Client implements Serializable {
     @ApiModelProperty(value = "客户地址")
     private String clientAddress;
 
-    @ApiModelProperty(value = "性别")
+    @ApiModelProperty(value = "性别",example = "1")
     private Boolean clientGender;
 
     @ApiModelProperty(value = "生日")
     private LocalDateTime clientBirthday;
 
-    @ApiModelProperty(value = "客户状态 0 为正常 1为删除")
+    @ApiModelProperty(value = "客户状态 0 为正常 1为删除",example = "0")
     private Integer clientStatus;
 
-    @ApiModelProperty(value = "客户欠款")
+    @ApiModelProperty(value = "客户欠款",example = "1")
     private Double clientConsumption;
 
     @ApiModelProperty(value = "客户邮箱")
@@ -59,8 +59,7 @@ public class Client implements Serializable {
     @ApiModelProperty(value = "客户简介")
     private String clientDesc;
 
-    @ApiModelProperty(value = "商铺Id")
+    @ApiModelProperty(value = "商铺Id",example = "1")
     private Long shopId;
-
 
 }

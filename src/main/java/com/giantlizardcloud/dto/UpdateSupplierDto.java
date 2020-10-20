@@ -3,6 +3,9 @@ package com.giantlizardcloud.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * @author Administrator
+ */
 @Data
 public class UpdateSupplierDto {
 
@@ -30,7 +33,7 @@ public class UpdateSupplierDto {
     @ApiModelProperty(value = "供应商主营业务")
     private String supplierBusiness;
 
-    @ApiModelProperty(value = "与供应商曾是否合作   0为未合作   1为合作")
+    @ApiModelProperty(value = "与供应商曾是否合作   0为未合作   1为合作",example = "1")
     private Boolean supplierCooperated;
 
     @ApiModelProperty(value = "供应商   0为删除  1为未删除")

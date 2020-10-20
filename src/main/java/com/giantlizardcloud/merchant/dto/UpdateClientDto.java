@@ -5,10 +5,13 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author kang
+ */
 @Data
 public class UpdateClientDto {
 
-    @ApiModelProperty(value = "客户ID")
+    @ApiModelProperty(value = "客户ID",example = "1")
     private Long clientId;
 
     @ApiModelProperty(value = "名字")
@@ -20,7 +23,7 @@ public class UpdateClientDto {
     @ApiModelProperty(value = "客户地址")
     private String clientAddress;
 
-    @ApiModelProperty(value = "性别")
+    @ApiModelProperty(value = "性别" ,example = "1")
     private Boolean clientGender;
 
     @ApiModelProperty(value = "生日")

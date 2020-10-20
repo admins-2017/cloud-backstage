@@ -20,7 +20,7 @@ public class InventoryCommodity {
     @Excel(name = "商品编码", isImportField = "true_st")
     private String commodityNumber;
 
-    @ApiModelProperty(value = "建议售价")
+    @ApiModelProperty(value = "建议售价",example = "1")
     @Excel(name = "建议售价", isImportField = "true_st")
     private BigDecimal commoditySellingPrice;
 
