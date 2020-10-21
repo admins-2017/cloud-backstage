@@ -3,6 +3,7 @@ package com.giantlizardcloud.merchant.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModel;
@@ -41,14 +42,14 @@ public class Client implements Serializable {
     @ApiModelProperty(value = "客户地址")
     private String clientAddress;
 
-    @ApiModelProperty(value = "性别",example = "1")
+    @ApiModelProperty(value = "性别 false 男  true 女",example = "1")
     private Boolean clientGender;
 
     @ApiModelProperty(value = "生日")
-    private LocalDateTime clientBirthday;
+    private LocalDate clientBirthday;
 
-    @ApiModelProperty(value = "客户状态 0 为正常 1为删除",example = "0")
-    private Integer clientStatus;
+    @ApiModelProperty(value = "客户状态 0 为删除  1为正常",example = "0")
+    private Boolean clientStatus;
 
     @ApiModelProperty(value = "客户欠款",example = "1")
     private Double clientConsumption;

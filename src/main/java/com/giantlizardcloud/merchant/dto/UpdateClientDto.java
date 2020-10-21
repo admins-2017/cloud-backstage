@@ -3,6 +3,7 @@ package com.giantlizardcloud.merchant.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -27,7 +28,7 @@ public class UpdateClientDto {
     private Boolean clientGender;
 
     @ApiModelProperty(value = "生日")
-    private LocalDateTime clientBirthday;
+    private LocalDate clientBirthday;
 
     @ApiModelProperty(value = "客户邮箱")
     private String clientEmail;

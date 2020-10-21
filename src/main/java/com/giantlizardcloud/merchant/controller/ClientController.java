@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.UpdateClientDto;
 import com.giantlizardcloud.merchant.entity.Client;
 import com.giantlizardcloud.merchant.entity.Supplier;
@@ -36,11 +37,12 @@ public class ClientController {
 
     @GetMapping
     public JSONResult getAllClient() {
-        return JSONResult.ok(clientService.list(new QueryWrapper<Client>().eq("client_status", 0)));
+        return JSONResult.ok(clientService.list(new QueryWrapper<Client>().eq("client_status", 1)));
     }
 
     @PostMapping
     public JSONResult addClient(@RequestBody Client client) {
+        client.setClientId(new IdWorker().nextId());
         clientService.save(client);
         return JSONResult.ok("添加客户成功");
     }
@@ -63,9 +65,10 @@ public class ClientController {
     public JSONResult removeClientById(@PathVariable Long id, @PathVariable int status) {
         clientService.update(new UpdateWrapper<Client>().set("client_status", status).eq("client_id", id));
         if (status==0){
-            return JSONResult.ok("恢复客户成功");
-        }else {
             return JSONResult.ok("删除客户成功");
+        }else {
+            return JSONResult.ok("恢复客户成功");
+
         }
     }
 

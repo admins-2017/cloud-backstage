@@ -29,7 +29,7 @@ import java.util.List;
  * @since 2020-09-14
  */
 @RestController
-@RequestMapping("/merchant/supplier")
+@RequestMapping("/supplier")
 @Api(value = "供应商管理", tags = "供应商对应操作")
 @Slf4j
 public class SupplierController {
@@ -50,9 +50,7 @@ public class SupplierController {
     @GetMapping("/{page}/{size}")
     @ApiOperation(value = "获取所有状态供应商（分页）")
     public JSONResult getAllSupplierByPage(@PathVariable Integer page, @PathVariable Integer size) {
-        IPage<Supplier> suppliers = supplierService.page(new Page<>(page, size));
-        supplierService.page(new Page<>(page, size));
-        return JSONResult.ok(suppliers);
+        return JSONResult.ok(supplierService.page(new Page<>(page, size)));
     }
 
 
