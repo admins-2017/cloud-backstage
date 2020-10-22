@@ -9,6 +9,7 @@ import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.dto.InsertSupplierDto;
 import com.giantlizardcloud.dto.UpdateSupplierDto;
+import com.giantlizardcloud.merchant.dto.QuerySupplierDto;
 import com.giantlizardcloud.merchant.entity.Supplier;
 import com.giantlizardcloud.merchant.service.ISupplierService;
 import com.giantlizardcloud.vo.SupplierVo;
@@ -54,10 +55,15 @@ public class SupplierController {
     }
 
 
-    @GetMapping("/{page}/{size}/{name}")
+    @GetMapping("/query")
     @ApiOperation(value = "根据供应商名模糊查询获取供应商", notes = "供应商名")
-    public JSONResult getSupplierLikeName(@PathVariable String name, @PathVariable Integer page, @PathVariable Integer size) {
-        IPage<Supplier> suppliers = supplierService.page(new Page<>(page, size), new QueryWrapper<Supplier>().likeRight("supplier_name", name));
+    public JSONResult getSupplierLikeName(QuerySupplierDto dto) {
+        IPage<Supplier> suppliers =
+                supplierService.page(new Page<>(dto.getPage(), dto.getSize())
+                        , new QueryWrapper<Supplier>().like(!"".equals(dto.getSupplierName())&&null!=dto.getSupplierName(), "supplier_name", dto.getSupplierName())
+                                .like(!"".equals(dto.getSupplierTelephone())&&null!=dto.getSupplierTelephone(),"supplier_telephone",dto.getSupplierTelephone())
+                                .like(!"".equals(dto.getSupplierEmail())&&null!=dto.getSupplierEmail(),"supplier_email",dto.getSupplierEmail())
+                                .eq(null!=dto.getSupplierStatus(),"supplier_status",dto.getSupplierStatus()));
         return JSONResult.ok(suppliers);
     }
 
@@ -97,7 +103,6 @@ public class SupplierController {
                 .set(dto.getSupplierEmail() != null && !"".equals(dto.getSupplierEmail()), "supplier_email", dto.getSupplierEmail())
                 .set(dto.getSupplierBusiness() != null && !"".equals(dto.getSupplierBusiness()), "supplier_business", dto.getSupplierBusiness())
                 .set(dto.getSupplierCooperated() != null, "supplier_ cooperated", dto.getSupplierCooperated())
-                .set(dto.getSupplierStatus() != null, "supplier_status", dto.getSupplierStatus())
                 .eq("supplier_id", dto.getSupplierId()));
         return JSONResult.ok("修改供应商成功");
     }

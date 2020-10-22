@@ -35,9 +35,6 @@ public class UpdateSupplierDto {
 
     @ApiModelProperty(value = "与供应商曾是否合作   0为未合作   1为合作",example = "1")
     private Boolean supplierCooperated;
-
-    @ApiModelProperty(value = "供应商   0为删除  1为未删除")
-    private Boolean supplierStatus;
 }
 
 
