@@ -63,6 +63,7 @@ public class SupplierController {
 
     @PostMapping
     public JSONResult insertSupplier(InsertSupplierDto dto) {
+        System.out.println(dto.toString());
         Supplier supplier = new Supplier();
         BeanUtils.copyProperties(dto, supplier);
         supplier.setSupplierId(new IdWorker().nextId());
@@ -74,12 +75,12 @@ public class SupplierController {
     @PutMapping("/status/{status}/{supplierId}")
     @ApiOperation(value = "启停供应商")
     public JSONResult updateStatusSupplierByStop(@PathVariable Integer status, @PathVariable Long supplierId) {
-        log.info(supplierId.toString());
-        if (status == 0) {
-            supplierService.update(new UpdateWrapper<Supplier>().set("supplier_status", 0).eq("supplier_id", supplierId));
+        System.out.println(supplierId);
+        if (status == 1) {
+            supplierService.update(new UpdateWrapper<Supplier>().set("supplier_status", 1).eq("supplier_id", supplierId));
             return JSONResult.ok("恢复供应商成功");
         } else {
-            supplierService.update(new UpdateWrapper<Supplier>().set("supplier_status", 1).eq("supplier_id", supplierId));
+            supplierService.update(new UpdateWrapper<Supplier>().set("supplier_status", 0).eq("supplier_id", supplierId));
             return JSONResult.ok("停用供应商成功");
         }
     }

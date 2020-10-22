@@ -12,7 +12,7 @@ public class InsertSupplierDto {
     @ApiModelProperty(value = "供应商名字")
     private String supplierName;
 
-    @ApiModelProperty(value = "供应商注册资金",example = "1")
+    @ApiModelProperty(value = "供应商注册资金", example = "1")
     private Double supplierCapital;
 
     @ApiModelProperty(value = "供应生产地址")
@@ -30,13 +30,6 @@ public class InsertSupplierDto {
     @ApiModelProperty(value = "供应商主营业务")
     private String supplierBusiness;
 
-    @ApiModelProperty(value = "与供应商曾是否合作   0为未合作   1为合作",example = "1")
+    @ApiModelProperty(value = "与供应商曾是否合作   0为未合作   1为合作", example = "1")
     private Boolean supplierCooperated;
-
-    @ApiModelProperty(value = "供应商   0为删除  1为未删除",example = "1")
-    private Boolean supplierStatus;
-
-    @ApiModelProperty(value = "预留商铺id",example = "1")
-    private Long shopId;
-
 }
