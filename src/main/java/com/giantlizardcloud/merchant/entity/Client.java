@@ -6,11 +6,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -46,6 +48,8 @@ public class Client implements Serializable {
     private Boolean clientGender;
 
     @ApiModelProperty(value = "生日")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate clientBirthday;
 
     @ApiModelProperty(value = "客户状态 0 为删除  1为正常",example = "0")

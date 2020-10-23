@@ -102,7 +102,7 @@ public class SupplierController {
                 .set(dto.getSupplierTelephone() != null && !"".equals(dto.getSupplierTelephone()), "supplier_telephone", dto.getSupplierTelephone())
                 .set(dto.getSupplierEmail() != null && !"".equals(dto.getSupplierEmail()), "supplier_email", dto.getSupplierEmail())
                 .set(dto.getSupplierBusiness() != null && !"".equals(dto.getSupplierBusiness()), "supplier_business", dto.getSupplierBusiness())
-                .set(dto.getSupplierCooperated() != null, "supplier_ cooperated", dto.getSupplierCooperated())
+                .set(dto.getSupplierCooperated() != null, "supplier_cooperated", dto.getSupplierCooperated())
                 .eq("supplier_id", dto.getSupplierId()));
         return JSONResult.ok("修改供应商成功");
     }
