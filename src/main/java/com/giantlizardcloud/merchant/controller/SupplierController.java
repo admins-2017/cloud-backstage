@@ -6,12 +6,14 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.config.poi.util.FileUtils;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.dto.InsertSupplierDto;
 import com.giantlizardcloud.dto.UpdateSupplierDto;
 import com.giantlizardcloud.merchant.dto.QuerySupplierDto;
 import com.giantlizardcloud.merchant.entity.Supplier;
 import com.giantlizardcloud.merchant.service.ISupplierService;
+import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
 import com.giantlizardcloud.vo.SupplierVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -78,6 +81,7 @@ public class SupplierController {
     }
 
 
+
     @PutMapping("/status/{status}/{supplierId}")
     @ApiOperation(value = "启停供应商")
     public JSONResult updateStatusSupplierByStop(@PathVariable Integer status, @PathVariable Long supplierId) {
@@ -107,5 +111,17 @@ public class SupplierController {
         return JSONResult.ok("修改供应商成功");
     }
 
+    @GetMapping("/export")
+    public void exportSupplier(HttpServletResponse response,QuerySupplierDto dto){
+        List<Supplier> vos = supplierService.list(new QueryWrapper<Supplier>().like(!"".equals(dto.getSupplierName()) && null != dto.getSupplierName(), "supplier_name", dto.getSupplierName())
+                .like(!"".equals(dto.getSupplierTelephone()) && null != dto.getSupplierTelephone(), "supplier_telephone", dto.getSupplierTelephone())
+                .like(!"".equals(dto.getSupplierEmail()) && null != dto.getSupplierEmail(), "supplier_email", dto.getSupplierEmail())
+                .eq(null != dto.getSupplierStatus(), "supplier_status", dto.getSupplierStatus()));
+        if (vos.size()>0){
+            FileUtils.exportExcel(vos, "供应商详情" , "", Supplier.class, "供应商.xls", response);
+        }else{
+            FileUtils.exportExcel(null, "供应商详情" , "", Supplier.class, "供应商.xls", response);
+        }
+    }
 
 }

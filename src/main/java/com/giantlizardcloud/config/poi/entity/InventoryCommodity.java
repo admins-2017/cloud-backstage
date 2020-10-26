@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * @author 康
+ */
 @Data
 public class InventoryCommodity {
 

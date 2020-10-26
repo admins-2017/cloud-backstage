@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.config.poi.util.FileUtils;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.QueryClientDto;
 import com.giantlizardcloud.merchant.dto.UpdateClientDto;
@@ -12,6 +13,9 @@ import com.giantlizardcloud.merchant.entity.Client;
 import com.giantlizardcloud.merchant.entity.Supplier;
 import com.giantlizardcloud.merchant.service.IClientService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * <p>
@@ -79,6 +83,19 @@ public class ClientController {
         } else {
             return JSONResult.ok("恢复客户成功");
 
+        }
+    }
+
+    @GetMapping("/export")
+    public void exportClient(HttpServletResponse response,QueryClientDto dto){
+        List<Client> vos = clientService.list(new QueryWrapper<Client>().like(!"".equals(dto.getClientName()) && null != dto.getClientName(), "client_name", dto.getClientName())
+                .like(!"".equals(dto.getClientPhone()) && null != dto.getClientPhone(), "client_phone", dto.getClientPhone())
+                .like(!"".equals(dto.getClientEmail()) && null != dto.getClientEmail(), "client_email", dto.getClientEmail())
+                .eq(null != dto.getClientStatus(), "client_status", dto.getClientStatus()));
+        if (vos.size()>0){
+            FileUtils.exportExcel(vos, "客户详情" , "", Client.class, "客户.xls", response);
+        }else{
+            FileUtils.exportExcel(null, "客户详情" , "", Client.class, "客户.xls", response);
         }
     }
 
