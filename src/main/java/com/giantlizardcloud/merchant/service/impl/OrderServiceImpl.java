@@ -7,6 +7,7 @@ import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
 import com.giantlizardcloud.merchant.entity.Client;
 import com.giantlizardcloud.merchant.entity.Order;
+import com.giantlizardcloud.merchant.entity.OrderDetails;
 import com.giantlizardcloud.merchant.mapper.OrderMapper;
 import com.giantlizardcloud.merchant.service.IClientService;
 import com.giantlizardcloud.merchant.service.IInventoryService;
@@ -71,6 +72,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             vos.setCurrent((total/size)+1);
         }
         return vos;
+    }
+
+    @Override
+    public void invalidOrder(Long orderId) {
+        Order order = this.baseMapper.selectOne(new QueryWrapper<Order>().eq("order_id",orderId));
+        this.baseMapper.update(null,new UpdateWrapper<Order>().set("order_status",3).eq("order_id",orderId));
+        List<OrderDetails> detailsList = detailsService.list(new QueryWrapper<OrderDetails>().eq("order_id", orderId));
+        //回增库存
+        detailsList.forEach(orderDetails -> inventoryService.increaseInventory(orderDetails.getShopId(),orderDetails.getCommodityId(),orderDetails.getOrderDetailNumber()));
+        if (order.getOrderUnpaidAmount() != 0){
+            clientService.update(null, new UpdateWrapper<Client>().setSql("client_consumption = client_consumption -"
+                    + order.getOrderUnpaidAmount()).eq("client_id", order.getClientId()));
+        }
     }
 
     public OrderServiceImpl(IOrderDetailsService detailsService, IInventoryService inventoryService, IClientService clientService) {

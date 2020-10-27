@@ -65,4 +65,12 @@ public interface IInventoryService extends IService<Inventory> {
      * @param orderDetailNumber 扣除数量
      */
     void deductInventory(Long shopId, Integer commodityId, Integer orderDetailNumber);
+
+    /**
+     * 增加库存
+     * @param shopId 商铺id
+     * @param commodityId 商品id
+     * @param orderDetailNumber 增加数量
+     */
+    void increaseInventory(Long shopId, Integer commodityId, Integer orderDetailNumber);
 }

@@ -2,4 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.merchant.mapper.OrderDetailsMapper">
 
+	<select id="getDetailByOrderId" resultType="com.giantlizardcloud.merchant.vo.OrderDetailsVo">
+		SELECT
+			mods.order_detail_id,
+			mods.order_id,
+			mods.commodity_id,
+			mods.shop_id,
+			mods.order_detail_number,
+			mods.order_detail_price,
+			mc.commodity_name,
+			(mods.order_detail_price/mods.order_detail_number)as unit_price,
+			mc.commodity_number,
+			mc.commodity_unit,
+			ms.shop_name
+		FROM
+			merchant_order_details mods
+			LEFT JOIN merchant_commodity mc ON mods.commodity_id = mc.commodity_id
+			LEFT JOIN merchant_shop ms ON mods.shop_id = ms.shop_id
+		WHERE
+			mods.order_id = #{orderId}
+	</select>
 </mapper>

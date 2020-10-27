@@ -38,8 +38,15 @@ public class OrderController {
         return JSONResult.ok(vos);
     }
 
-    @DeleteMapping
-    public JSONResult invalidOrder(){
+    @PostMapping("/returned")
+    public JSONResult orderReturned(){
         return JSONResult.ok();
     }
+
+    @DeleteMapping("/{orderId}")
+    public JSONResult invalidOrder(@PathVariable Long orderId){
+        orderService.invalidOrder(orderId);
+        return JSONResult.ok();
+    }
+
 }

@@ -67,4 +67,10 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
         this.baseMapper.update(null, new UpdateWrapper<Inventory>().setSql(" inventory_number = inventory_number -" + orderDetailNumber)
                 .eq("shop_id", shopId).eq("commodity_id", commodityId));
     }
+
+    @Override
+    public void increaseInventory(Long shopId, Integer commodityId, Integer orderDetailNumber) {
+        this.baseMapper.update(null, new UpdateWrapper<Inventory>().setSql(" inventory_number = inventory_number +" + orderDetailNumber)
+                .eq("shop_id", shopId).eq("commodity_id", commodityId));
+    }
 }

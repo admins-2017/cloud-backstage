@@ -4,6 +4,7 @@ import com.giantlizardcloud.merchant.entity.Order;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.giantlizardcloud.merchant.vo.OrderAndClientAndUserVO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -25,4 +26,12 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return 结果集
      */
     List<OrderAndClientAndUserVO> getPage(@Param("page") Integer page, @Param("size") Integer size,@Param("status") Integer status);
+
+    /**
+     * 查询订单是否结清
+     * @param orderId 订单id
+     * @return 查询未结清金额
+     */
+    @Select("SELECT order_unpaid_amount FROM merchant_order WHERE order_id = #{orderId}")
+    Double selectUnpaidAmount(@Param("orderId") Long orderId);
 }

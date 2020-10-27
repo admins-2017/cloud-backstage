@@ -2,10 +2,13 @@ package com.giantlizardcloud.merchant.vo;
 
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.giantlizardcloud.vo.UserDetailsVo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author kang
@@ -66,4 +69,6 @@ public class OrderAndClientAndUserVO {
 
     @ApiModelProperty(value = "用户名")
     private String username;
+
+    private List<OrderDetailsVo> children= new ArrayList<>();
 }
