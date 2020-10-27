@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.giantlizardcloud.merchant.mapper.OrderMapper">
+
+    <select id="getPage" resultType="com.giantlizardcloud.merchant.vo.OrderAndClientAndUserVO">
+    SELECT
+        mo.order_id,
+        mo.order_number,
+        mo.order_date,
+        mo.client_id,
+        mo.order_total_amount,
+        mo.order_discount_rate,
+        mo.order_amount_after_discount,
+        mo.order_actual_payment,
+        mo.order_unpaid_amount,
+        mo.order_settlement_method,
+        mo.order_settlement_account,
+        mo.order_remarks,
+        mo.order_status,
+        mo.order_operator_user,
+        mo.order_insert_time,
+        mc.client_name,
+        mc.client_phone,
+        su.username
+    FROM
+        merchant_order mo
+        LEFT JOIN merchant_client mc ON mo.client_id = mc.client_id
+        LEFT JOIN sys_user su ON mo.order_operator_user = su.user_id
+        WHERE mo.order_status = #{status}
+        LIMIT #{page} ,#{size}
+    </select>
+
+</mapper>

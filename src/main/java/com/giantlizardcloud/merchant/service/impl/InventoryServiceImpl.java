@@ -1,5 +1,6 @@
 package com.giantlizardcloud.merchant.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.merchant.dto.QueryInventory;
 import com.giantlizardcloud.merchant.entity.Inventory;
@@ -27,14 +28,12 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
     @Override
     public InventoryVo getShopUnderCommodity(QueryInventory query) {
         Page<CommodityWithShopVo> commodityWithShopVoPage = new Page<>(query.getPage(), query.getSize());
-//        IPage<CommodityWithShopVo> shopUnderCommodity = this.baseMapper.getShopUnderCommodity(commodityWithShopVoPage,query.getShopId());
         InventoryVo vo = new InventoryVo();
-        vo.setVos(this.baseMapper.getShopUnderCommodity(commodityWithShopVoPage,query.getShopId()));
+        vo.setVos(this.baseMapper.getShopUnderCommodity(commodityWithShopVoPage, query.getShopId()));
         vo.setCommodityNumber(this.baseMapper.getCountByCommodity(query.getShopId()));
         vo.setStockNumber(this.baseMapper.getCountByOutOfStock(query.getShopId()));
         vo.setWarnNumber(this.baseMapper.getCountByInventoryWarn(query.getShopId()));
         vo.setInventoryNumber(this.baseMapper.getCountInventoryNumber(query.getShopId()));
-
         return vo;
     }
 
@@ -61,5 +60,11 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
     @Override
     public List<CommodityWithShopVo> exportAllCommodityByShopId(Long shopId) {
         return this.baseMapper.exportAllCommodityByShopId(shopId);
+    }
+
+    @Override
+    public void deductInventory(Long shopId, Integer commodityId, Integer orderDetailNumber) {
+        this.baseMapper.update(null, new UpdateWrapper<Inventory>().setSql(" inventory_number = inventory_number -" + orderDetailNumber)
+                .eq("shop_id", shopId).eq("commodity_id", commodityId));
     }
 }

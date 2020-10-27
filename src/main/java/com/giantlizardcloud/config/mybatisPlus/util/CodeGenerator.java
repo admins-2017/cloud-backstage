@@ -16,6 +16,7 @@ import java.util.Scanner;
 
 /**
  * mybatis-plus 模板生成文件
+ * @author kang
  */
 
 public class CodeGenerator {
