@@ -58,4 +58,61 @@
         LIMIT #{page} ,#{size}
     </select>
 
+    <select id="getPageByCondition" resultMap="getPage">
+        SELECT
+        mo.order_id,
+        mo.order_number,
+        mo.order_date,
+        mo.client_id,
+        mo.order_total_amount,
+        mo.order_discount_rate,
+        mo.order_amount_after_discount,
+        mo.order_actual_payment,
+        mo.order_unpaid_amount,
+        mo.order_settlement_method,
+        mo.order_settlement_account,
+        mo.order_remarks,
+        mo.order_status,
+        mo.order_operator_user,
+        mo.order_insert_time,
+        mc.client_name,
+        mc.client_phone,
+        su.username as operator_user,
+		sui.username as insert_username
+    FROM
+        merchant_order mo
+        LEFT JOIN merchant_client mc ON mo.client_id = mc.client_id
+        LEFT JOIN sys_user su ON mo.order_operator_user = su.user_id
+        LEFT JOIN sys_user sui ON mo.insert_user = sui.user_id
+        WHERE 1 = 1
+        <if test=" orderNumber != '' and  orderNumber != null">
+           AND mo.order_number = #{orderNumber}
+        </if>
+        <if test=" orderDate != '' and  orderDate != null">
+            AND mo.order_date = #{orderDate}
+        </if>
+        <if test=" clientId != '' and  clientId != null">
+            AND mo.client_id = #{clientId}
+        </if>
+        <if test=" orderUnpaidAmount != '' and  orderUnpaidAmount != null">
+        AND mo.order_unpaid_amount = #{orderUnpaidAmount}
+        </if>
+        <if test=" orderSettlementMethod != '' and  orderSettlementMethod != null">
+            AND mo.order_settlement_method = #{orderSettlementMethod}
+        </if>
+        <if test=" orderStatus != '' and  orderStatus != null">
+            AND mo.order_status = #{orderStatus}
+        </if>
+        <if test=" orderOperatorUser != '' and  orderOperatorUser != null">
+            AND mo.order_operator_user = #{orderOperatorUser}
+        </if>
+        <if test=" orderInsertTime != '' and  orderInsertTime != null">
+            AND mo.order_insert_time = #{orderInsertTime}
+        </if>
+        <if test=" insertUser != '' and  insertUser != null">
+            AND mo.insert_time = #{insertUser}
+        </if>
+        LIMIT #{page} ,#{size}
+    </select>
+
 </mapper>

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
+import com.giantlizardcloud.merchant.dto.QueryOrderByConditionDto;
 import com.giantlizardcloud.merchant.entity.Client;
 import com.giantlizardcloud.merchant.entity.Order;
 import com.giantlizardcloud.merchant.entity.OrderDetails;
@@ -113,12 +114,30 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public InitOrderVo initOrder() {
-        InitOrderVo vo = new InitOrderVo("xsd-"+new IdWorker().nextId()
+        return new InitOrderVo("xsd-"+new IdWorker().nextId()
                 ,clientService.list(new QueryWrapper<Client>().eq("client_status", 1))
                 ,shopService.list(new QueryWrapper<Shop>().le("shop_status",2))
                 ,userService.list(new QueryWrapper<User>().select("user_id","username").eq("status","NORMAL"))
         );
-        return vo;
+    }
+
+    @Override
+    public Page<OrderAndClientAndUserVO> getPageByCondition(QueryOrderByConditionDto dto) {
+//        Integer newPage = (page - 1) * size;
+        List<OrderAndClientAndUserVO> list = this.baseMapper.getPageByCondition(dto);
+//        Page<OrderAndClientAndUserVO> vos = new Page<>(page, size);
+//        Integer total = this.baseMapper.selectCount(new QueryWrapper<Order>().eq("order_status", status));
+//        vos.setTotal(total);
+//        vos.setRecords(list);
+//        vos.setPages(page);
+//        vos.setSize(size);
+//        if ((total%size)==0){
+//            vos.setCurrent(total/size);
+//        }else {
+//            vos.setCurrent((total/size)+1);
+//        }
+//        return vos;
+        return null;
     }
 
     public OrderServiceImpl(IOrderDetailsService detailsService, IInventoryService inventoryService, IClientService clientService, IShopService shopService, IUserService userService) {

@@ -1,5 +1,6 @@
 package com.giantlizardcloud.merchant.mapper;
 
+import com.giantlizardcloud.merchant.dto.QueryOrderByConditionDto;
 import com.giantlizardcloud.merchant.entity.Order;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.giantlizardcloud.merchant.vo.OrderAndClientAndUserVO;
@@ -34,4 +35,11 @@ public interface OrderMapper extends BaseMapper<Order> {
      */
     @Select("SELECT order_unpaid_amount FROM merchant_order WHERE order_id = #{orderId}")
     Double selectUnpaidAmount(@Param("orderId") Long orderId);
+
+    /**
+     * 根据查询条件分页获取订单及详情
+     * @param dto 查询条件
+     * @return 结果集
+     */
+    List<OrderAndClientAndUserVO> getPageByCondition(QueryOrderByConditionDto dto);
 }

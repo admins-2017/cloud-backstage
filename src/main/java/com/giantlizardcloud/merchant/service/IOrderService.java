@@ -2,6 +2,7 @@ package com.giantlizardcloud.merchant.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
+import com.giantlizardcloud.merchant.dto.QueryOrderByConditionDto;
 import com.giantlizardcloud.merchant.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.giantlizardcloud.merchant.vo.InitOrderVo;
@@ -30,7 +31,7 @@ public interface IOrderService extends IService<Order> {
      * @param status 状态
      * @return 订单及详情和客户和用户结果集
      */
-    Page<OrderAndClientAndUserVO> getPage(Integer page, Integer size, Integer status);
+        Page<OrderAndClientAndUserVO> getPage(Integer page, Integer size, Integer status);
 
     /**
      * 作废订单
@@ -49,4 +50,6 @@ public interface IOrderService extends IService<Order> {
      * @return 销售单vo
      */
     InitOrderVo initOrder();
+
+    Page<OrderAndClientAndUserVO> getPageByCondition(QueryOrderByConditionDto dto);
 }
