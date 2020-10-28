@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
 import com.giantlizardcloud.merchant.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.giantlizardcloud.merchant.vo.InitOrderVo;
 import com.giantlizardcloud.merchant.vo.OrderAndClientAndUserVO;
 
 /**
@@ -36,4 +37,16 @@ public interface IOrderService extends IService<Order> {
      * @param orderId 订单id
      */
     void invalidOrder(Long orderId);
+
+    /**
+     * 销售退货单及详情退回
+     * @param dto
+     */
+    void returnedOrder(AddOrderAndDetailDto dto);
+
+    /**
+     * 初始化销售单
+     * @return 销售单vo
+     */
+    InitOrderVo initOrder();
 }

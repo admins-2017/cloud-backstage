@@ -20,7 +20,8 @@
         <result column="order_insert_time" property="orderInsertTime"/>
         <result column="client_name" property="clientName"/>
         <result column="client_phone" property="clientPhone"/>
-        <result column="username" property="username"/>
+        <result column="operator_user" property="operatorUser"/>
+        <result column="insert_username" property="insertUsername"/>
         <!-- 根据 getPageWithConditions 方法返回值再到MerchantPurchaseDetailsMapper 中的getDetailsByNumber 查询 返回值添加到chidren中 传递参数为getPageWithConditions查询出来结果中的purchase_number字段的值-->
         <collection property="children" ofType="com.giantlizardcloud.merchant.vo.OrderDetailsVo"
                     select="com.giantlizardcloud.merchant.mapper.OrderDetailsMapper.getDetailByOrderId" column="order_id">
@@ -46,11 +47,13 @@
         mo.order_insert_time,
         mc.client_name,
         mc.client_phone,
-        su.username
+        su.username as operator_user,
+		sui.username as insert_username
     FROM
         merchant_order mo
         LEFT JOIN merchant_client mc ON mo.client_id = mc.client_id
         LEFT JOIN sys_user su ON mo.order_operator_user = su.user_id
+        LEFT JOIN sys_user sui ON mo.insert_user = sui.user_id
         WHERE mo.order_status = #{status}
         LIMIT #{page} ,#{size}
     </select>

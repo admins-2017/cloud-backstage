@@ -67,8 +67,11 @@ public class OrderAndClientAndUserVO {
     @ApiModelProperty(value = "电话号")
     private String clientPhone;
 
-    @ApiModelProperty(value = "用户名")
-    private String username;
+    @ApiModelProperty(value = "订单操作用户")
+    private String operatorUser;
 
-    private List<OrderDetailsVo> children= new ArrayList<>();
+    @ApiModelProperty(value = "添加用户")
+    private String insertUsername;
+
+    private List<OrderDetailsVo> children;
 }

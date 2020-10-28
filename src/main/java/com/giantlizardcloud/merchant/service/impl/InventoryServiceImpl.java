@@ -8,6 +8,7 @@ import com.giantlizardcloud.merchant.mapper.InventoryMapper;
 import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
+import com.giantlizardcloud.merchant.vo.InventoryAndCommodityVo;
 import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
 import com.giantlizardcloud.merchant.vo.InventoryVo;
 import org.springframework.stereotype.Service;
@@ -72,5 +73,10 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
     public void increaseInventory(Long shopId, Integer commodityId, Integer orderDetailNumber) {
         this.baseMapper.update(null, new UpdateWrapper<Inventory>().setSql(" inventory_number = inventory_number +" + orderDetailNumber)
                 .eq("shop_id", shopId).eq("commodity_id", commodityId));
+    }
+
+    @Override
+    public List<InventoryAndCommodityVo> getCommodityByShopId(Long shopId) {
+        return this.baseMapper.getCommodityByShopId(shopId);
     }
 }

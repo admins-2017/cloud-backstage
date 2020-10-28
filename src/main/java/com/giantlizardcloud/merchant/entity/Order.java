@@ -68,12 +68,13 @@ public class Order implements Serializable {
     private Integer orderStatus;
 
     @ApiModelProperty(value = "销售单操作用户",example = "1")
-    @TableField(fill = FieldFill.INSERT)
     private Long orderOperatorUser;
 
     @ApiModelProperty(value = "销售单操作时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime orderInsertTime;
 
-
+    @ApiModelProperty(value = "销售单添加用户")
+    @TableField(fill = FieldFill.INSERT)
+    private Long insertUser;
 }

@@ -1,5 +1,7 @@
 package com.giantlizardcloud.merchant.dto;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.giantlizardcloud.merchant.entity.OrderDetails;
 import io.swagger.annotations.ApiModelProperty;
@@ -56,6 +58,9 @@ public class AddOrderAndDetailDto {
 
     @ApiModelProperty(value = "销售单状态(1 销售 2 退货 3 作废 )")
     private Integer orderStatus;
+
+    @ApiModelProperty(value = "销售单操作用户",example = "1")
+    private Long orderOperatorUser;
 
     private List<OrderDetails> details;
 }

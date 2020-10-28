@@ -8,13 +8,14 @@ import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
 import com.giantlizardcloud.merchant.entity.Client;
 import com.giantlizardcloud.merchant.entity.Order;
 import com.giantlizardcloud.merchant.entity.OrderDetails;
+import com.giantlizardcloud.merchant.entity.Shop;
 import com.giantlizardcloud.merchant.mapper.OrderMapper;
-import com.giantlizardcloud.merchant.service.IClientService;
-import com.giantlizardcloud.merchant.service.IInventoryService;
-import com.giantlizardcloud.merchant.service.IOrderDetailsService;
-import com.giantlizardcloud.merchant.service.IOrderService;
+import com.giantlizardcloud.merchant.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.giantlizardcloud.merchant.vo.InitOrderVo;
 import com.giantlizardcloud.merchant.vo.OrderAndClientAndUserVO;
+import com.giantlizardcloud.sys.entity.User;
+import com.giantlizardcloud.sys.service.IUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private final IOrderDetailsService detailsService;
     private final IInventoryService inventoryService;
     private final IClientService clientService;
+    private final IShopService shopService;
+    private final IUserService userService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -75,6 +78,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void invalidOrder(Long orderId) {
         Order order = this.baseMapper.selectOne(new QueryWrapper<Order>().eq("order_id",orderId));
         this.baseMapper.update(null,new UpdateWrapper<Order>().set("order_status",3).eq("order_id",orderId));
@@ -87,9 +91,41 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
     }
 
-    public OrderServiceImpl(IOrderDetailsService detailsService, IInventoryService inventoryService, IClientService clientService) {
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void returnedOrder(AddOrderAndDetailDto dto) {
+        Order returnOrder = new Order();
+        BeanUtils.copyProperties(dto, returnOrder);
+        long orderId = new IdWorker().nextId();
+        returnOrder.setOrderId(orderId);
+        this.save(returnOrder);
+        dto.getDetails().forEach((details -> {
+            inventoryService.increaseInventory(details.getShopId(), details.getCommodityId(), details.getOrderDetailNumber());
+            details.setOrderId(orderId);
+            detailsService.save(details);
+        }));
+        /* 判断是否结清,未结清则给客户增加欠款 */
+        if (0 < dto.getOrderUnpaidAmount()) {
+            clientService.update(null, new UpdateWrapper<Client>().setSql("client_consumption = client_consumption -"
+                    + dto.getOrderUnpaidAmount()).eq("client_id", dto.getClientId()));
+        }
+    }
+
+    @Override
+    public InitOrderVo initOrder() {
+        InitOrderVo vo = new InitOrderVo("xsd-"+new IdWorker().nextId()
+                ,clientService.list(new QueryWrapper<Client>().eq("client_status", 1))
+                ,shopService.list(new QueryWrapper<Shop>().le("shop_status",2))
+                ,userService.list(new QueryWrapper<User>().select("user_id","username").eq("status","NORMAL"))
+        );
+        return vo;
+    }
+
+    public OrderServiceImpl(IOrderDetailsService detailsService, IInventoryService inventoryService, IClientService clientService, IShopService shopService, IUserService userService) {
         this.detailsService = detailsService;
         this.inventoryService = inventoryService;
         this.clientService = clientService;
+        this.shopService =shopService;
+        this.userService = userService;
     }
 }

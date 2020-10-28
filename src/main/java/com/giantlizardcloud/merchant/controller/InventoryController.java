@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.poi.util.FileUtils;
 import com.giantlizardcloud.merchant.dto.QueryInventory;
+import com.giantlizardcloud.merchant.entity.Commodity;
 import com.giantlizardcloud.merchant.entity.Shop;
 import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.giantlizardcloud.merchant.service.IShopService;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
+import com.giantlizardcloud.merchant.vo.InventoryAndCommodityVo;
 import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +57,12 @@ public class InventoryController {
             List<CommodityWithShopVo> vos = inventoryService.getAmpleInventory(shopId);
             return JSONResult.ok(vos);
         }
+    }
+
+    @GetMapping("/{shopId}")
+    public JSONResult getCommodityByShopId(@PathVariable Long shopId){
+        List<InventoryAndCommodityVo> list =  inventoryService.getCommodityByShopId(shopId);
+        return JSONResult.ok(list);
     }
 
     /**

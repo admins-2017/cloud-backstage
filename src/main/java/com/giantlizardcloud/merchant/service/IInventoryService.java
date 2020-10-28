@@ -4,6 +4,7 @@ import com.giantlizardcloud.merchant.dto.QueryInventory;
 import com.giantlizardcloud.merchant.entity.Inventory;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.giantlizardcloud.merchant.vo.CommodityWithShopVo;
+import com.giantlizardcloud.merchant.vo.InventoryAndCommodityVo;
 import com.giantlizardcloud.merchant.vo.InventoryGetCommodityClassVo;
 import com.giantlizardcloud.merchant.vo.InventoryVo;
 
@@ -73,4 +74,11 @@ public interface IInventoryService extends IService<Inventory> {
      * @param orderDetailNumber 增加数量
      */
     void increaseInventory(Long shopId, Integer commodityId, Integer orderDetailNumber);
+
+    /**
+     * 根据商铺id获取商铺下的商品
+     * @param shopId 商铺id
+     * @return 结果集
+     */
+    List<InventoryAndCommodityVo> getCommodityByShopId(Long shopId);
 }

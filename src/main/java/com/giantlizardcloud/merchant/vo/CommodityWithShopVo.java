@@ -8,6 +8,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+/**
+ * @author kang
+ */
 @Data
 public class CommodityWithShopVo {
 
