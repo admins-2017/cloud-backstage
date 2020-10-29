@@ -123,7 +123,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public Page<OrderAndClientAndUserVO> getPageByCondition(QueryOrderByConditionDto dto) {
-//        Integer newPage = (page - 1) * size;
+        Integer newPage = (dto.getPage() - 1) * dto.getSize();
         List<OrderAndClientAndUserVO> list = this.baseMapper.getPageByCondition(dto);
 //        Page<OrderAndClientAndUserVO> vos = new Page<>(page, size);
 //        Integer total = this.baseMapper.selectCount(new QueryWrapper<Order>().eq("order_status", status));

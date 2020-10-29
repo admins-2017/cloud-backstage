@@ -2,6 +2,7 @@ package com.giantlizardcloud.merchant.vo;
 
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.giantlizardcloud.vo.UserDetailsVo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class OrderAndClientAndUserVO {
     private String orderNumber;
 
     @ApiModelProperty(value = "销售单时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime orderDate;
 
     @ApiModelProperty(value = "销售客户id")
@@ -59,6 +61,7 @@ public class OrderAndClientAndUserVO {
     private Long orderOperatorUser;
 
     @ApiModelProperty(value = "销售单操作时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private LocalDateTime orderInsertTime;
 
     @ApiModelProperty(value = "名字")

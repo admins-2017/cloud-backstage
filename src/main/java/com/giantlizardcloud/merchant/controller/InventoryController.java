@@ -2,11 +2,9 @@ package com.giantlizardcloud.merchant.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.poi.util.FileUtils;
 import com.giantlizardcloud.merchant.dto.QueryInventory;
-import com.giantlizardcloud.merchant.entity.Commodity;
 import com.giantlizardcloud.merchant.entity.Shop;
 import com.giantlizardcloud.merchant.service.IInventoryService;
 import com.giantlizardcloud.merchant.service.IShopService;
@@ -43,19 +41,17 @@ public class InventoryController {
 
     @GetMapping("/status/{status}")
     public JSONResult getDetailByIndex(@PathVariable Integer status, Long shopId) {
+        int zeroStatus = 2;
+        int warnStatus = 3;
 
         if (status == 1) {
-            List<InventoryGetCommodityClassVo> vos = inventoryService.getInventoryCommodity(shopId);
-            return JSONResult.ok(vos);
-        } else if (status == 2) {
-            List<CommodityWithShopVo> vos = inventoryService.getZeroInventory(shopId);
-            return JSONResult.ok(vos);
-        } else if (status == 3) {
-            List<CommodityWithShopVo> vos = inventoryService.getWarnInventory(shopId);
-            return JSONResult.ok(vos);
+            return JSONResult.ok(inventoryService.getInventoryCommodity(shopId));
+        } else if (status == zeroStatus) {
+            return JSONResult.ok(inventoryService.getZeroInventory(shopId));
+        } else if (status == warnStatus) {
+            return JSONResult.ok(inventoryService.getWarnInventory(shopId));
         } else {
-            List<CommodityWithShopVo> vos = inventoryService.getAmpleInventory(shopId);
-            return JSONResult.ok(vos);
+            return JSONResult.ok(inventoryService.getAmpleInventory(shopId));
         }
     }
 
@@ -76,8 +72,10 @@ public class InventoryController {
     }
 
     @GetMapping("/export/{status}")
-    public void ExportInventory(HttpServletResponse response, @PathVariable Integer status, Long shopId) {
-        String name = "";
+    public void exportInventory(HttpServletResponse response, @PathVariable Integer status, Long shopId) {
+        int zeroStatus = 2;
+        int warnStatus = 3;
+        String name;
         if (status == 0) {
             List<CommodityWithShopVo> vos = inventoryService.exportAllCommodityByShopId(shopId);
             if (vos.size()!=0){
@@ -99,7 +97,7 @@ public class InventoryController {
                 }
                 FileUtils.exportExcel(vos, name, "", InventoryGetCommodityClassVo.class, name+".xls", response);
             }
-        } else if (status == 2) {
+        } else if (status == zeroStatus) {
             List<CommodityWithShopVo> vos = inventoryService.getZeroInventory(shopId);
             if (vos.size()!=0){
                 if (shopId != null) {
@@ -109,7 +107,7 @@ public class InventoryController {
                 }
                 FileUtils.exportExcel(vos, name, "", CommodityWithShopVo.class, name+".xls", response);
             }
-        } else if (status == 3) {
+        } else if (status == warnStatus) {
             List<CommodityWithShopVo> vos = inventoryService.getWarnInventory(shopId);
             if (vos.size()!=0){
                 if (shopId != null) {

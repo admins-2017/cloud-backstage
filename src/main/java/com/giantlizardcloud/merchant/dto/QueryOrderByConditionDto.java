@@ -5,14 +5,20 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author kang
+ */
 @Data
 public class QueryOrderByConditionDto {
 
     @ApiModelProperty(value = "销售单号")
     private String orderNumber;
 
-    @ApiModelProperty(value = "销售单时间")
-    private LocalDateTime orderDate;
+    @ApiModelProperty(value = "销售单开始时间")
+    private String orderStartDate;
+
+    @ApiModelProperty(value = "销售单结束时间")
+    private String orderEndDate;
 
     @ApiModelProperty(value = "销售客户id")
     private Long clientId;
@@ -29,8 +35,11 @@ public class QueryOrderByConditionDto {
     @ApiModelProperty(value = "销售单操作用户",example = "1")
     private Long orderOperatorUser;
 
-    @ApiModelProperty(value = "销售单操作时间")
-    private LocalDateTime orderInsertTime;
+    @ApiModelProperty(value = "销售单操作开始时间")
+    private String orderInsertStartTime;
+
+    @ApiModelProperty(value = "销售单操作结束时间")
+    private String orderInsertEndTime;
 
     @ApiModelProperty(value = "销售单添加用户")
     private Long insertUser;

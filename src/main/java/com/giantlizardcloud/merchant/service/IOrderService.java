@@ -41,7 +41,7 @@ public interface IOrderService extends IService<Order> {
 
     /**
      * 销售退货单及详情退回
-     * @param dto
+     * @param dto 退货单详情
      */
     void returnedOrder(AddOrderAndDetailDto dto);
 
@@ -51,5 +51,10 @@ public interface IOrderService extends IService<Order> {
      */
     InitOrderVo initOrder();
 
+    /**
+     * 根据条件查询订单及详情
+     * @param dto 查询条件
+     * @return 结果集
+     */
     Page<OrderAndClientAndUserVO> getPageByCondition(QueryOrderByConditionDto dto);
 }

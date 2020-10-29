@@ -79,7 +79,7 @@
         mc.client_phone,
         su.username as operator_user,
 		sui.username as insert_username
-    FROM
+        FROM
         merchant_order mo
         LEFT JOIN merchant_client mc ON mo.client_id = mc.client_id
         LEFT JOIN sys_user su ON mo.order_operator_user = su.user_id
@@ -88,14 +88,14 @@
         <if test=" orderNumber != '' and  orderNumber != null">
            AND mo.order_number = #{orderNumber}
         </if>
-        <if test=" orderDate != '' and  orderDate != null">
-            AND mo.order_date = #{orderDate}
+        <if test=" orderStartDate != '' and  orderStartDate != null and orderEndDate != '' and  orderEndDate != null">
+            AND mo.order_date BETWEEN #{orderStartDate} AND #{orderEndDate}
         </if>
         <if test=" clientId != '' and  clientId != null">
             AND mo.client_id = #{clientId}
         </if>
         <if test=" orderUnpaidAmount != '' and  orderUnpaidAmount != null">
-        AND mo.order_unpaid_amount = #{orderUnpaidAmount}
+        AND mo.order_unpaid_amount &gt;  0
         </if>
         <if test=" orderSettlementMethod != '' and  orderSettlementMethod != null">
             AND mo.order_settlement_method = #{orderSettlementMethod}
@@ -106,11 +106,11 @@
         <if test=" orderOperatorUser != '' and  orderOperatorUser != null">
             AND mo.order_operator_user = #{orderOperatorUser}
         </if>
-        <if test=" orderInsertTime != '' and  orderInsertTime != null">
-            AND mo.order_insert_time = #{orderInsertTime}
+        <if test=" orderInsertStartTime != '' and  orderInsertStartTime != null and orderInsertEndTime != '' and  orderInsertEndTime != null">
+            AND mo.order_insert_time BETWEEN #{orderInsertStartTime} AND #{orderInsertEndTime}
         </if>
         <if test=" insertUser != '' and  insertUser != null">
-            AND mo.insert_time = #{insertUser}
+            AND mo.insert_user = #{insertUser}
         </if>
         LIMIT #{page} ,#{size}
     </select>
