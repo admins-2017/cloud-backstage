@@ -69,6 +69,6 @@ public interface InventoryMapper extends BaseMapper<Inventory> {
      */
     @Select("SELECT mi.inventory_id,mi.inventory_number,mi.commodity_id,mc.commodity_name,mc.commodity_number,mc.commodity_selling_price,mc.commodity_unit FROM merchant_inventory mi\n" +
             "\tLEFT JOIN merchant_commodity mc ON mi.commodity_id = mc.commodity_id\n" +
-            "\tWHERE shop_id = #{shopId}")
+            "\tWHERE mi.inventory_number > 0 and shop_id = #{shopId}")
     List<InventoryAndCommodityVo> getCommodityByShopId(@Param("shopId") Long shopId);
 }
