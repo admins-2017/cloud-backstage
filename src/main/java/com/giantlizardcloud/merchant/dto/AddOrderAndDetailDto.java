@@ -29,7 +29,7 @@ public class AddOrderAndDetailDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderDate;
 
-    @ApiModelProperty(value = "销售客户id")
+    @ApiModelProperty(value = "销售客户id",example = "1")
     private Long clientId;
 
     @ApiModelProperty(value = "销售单合计金额(总金额)")
@@ -56,7 +56,7 @@ public class AddOrderAndDetailDto {
     @ApiModelProperty(value = "销售单备注信息")
     private String orderRemarks;
 
-    @ApiModelProperty(value = "销售单状态(1 销售 2 退货 3 作废 )")
+    @ApiModelProperty(value = "销售单状态(1 销售 2 退货 3 作废 )",example = "1")
     private Integer orderStatus;
 
     @ApiModelProperty(value = "销售单操作用户",example = "1")

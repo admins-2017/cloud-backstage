@@ -3,6 +3,9 @@ package com.giantlizardcloud.merchant.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+/**
+ * @author kang
+ */
 @Data
 public class OrderDetailsVo {
 
