@@ -1,11 +1,15 @@
 package com.giantlizardcloud.merchant.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
 import com.giantlizardcloud.merchant.dto.QueryOrderByConditionDto;
 import com.giantlizardcloud.merchant.service.IOrderService;
+import com.giantlizardcloud.merchant.vo.OrderAndClientAndUserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -57,6 +61,7 @@ public class OrderController {
 
     @GetMapping
     public JSONResult getOrderByCondition(QueryOrderByConditionDto dto){
+        log.info(dto.toString());
         return JSONResult.ok(orderService.getPageByCondition(dto));
     }
 

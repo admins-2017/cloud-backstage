@@ -89,7 +89,7 @@
         <if test=" orderNumber != '' and  orderNumber != null">
            AND mo.order_number = #{orderNumber}
         </if>
-        <if test=" orderStartDate != '' and  orderStartDate != null and orderEndDate != '' and  orderEndDate != null">
+        <if test=" orderStartDate != ''  and orderStartDate != 'undefined' and orderEndDate != '' and orderEndDate != 'undefined'">
             AND mo.order_date BETWEEN #{orderStartDate} AND #{orderEndDate}
         </if>
         <if test=" clientId != '' and  clientId != null">
@@ -115,6 +115,43 @@
         </if>
         ORDER BY mo.order_date DESC
         LIMIT #{page} ,#{size}
+    </select>
+    <select id="selectConditionCount" resultType="java.lang.Integer">
+        SELECT
+            count(1)
+        FROM
+        merchant_order mo
+        LEFT JOIN merchant_client mc ON mo.client_id = mc.client_id
+        LEFT JOIN sys_user su ON mo.order_operator_user = su.user_id
+        LEFT JOIN sys_user sui ON mo.insert_user = sui.user_id
+        WHERE 1 = 1
+        <if test=" orderNumber != '' and  orderNumber != null">
+            AND mo.order_number = #{orderNumber}
+        </if>
+        <if test=" orderStartDate != ''  and orderStartDate != 'undefined' and orderEndDate != '' and orderEndDate != 'undefined'">
+            AND mo.order_date BETWEEN #{orderStartDate} AND #{orderEndDate}
+        </if>
+        <if test=" clientId != '' and  clientId != null">
+            AND mo.client_id = #{clientId}
+        </if>
+        <if test=" orderUnpaidAmount != '' and  orderUnpaidAmount != null">
+            AND mo.order_unpaid_amount &gt;  0
+        </if>
+        <if test=" orderSettlementMethod != '' and  orderSettlementMethod != null">
+            AND mo.order_settlement_method = #{orderSettlementMethod}
+        </if>
+        <if test=" orderStatus != '' and  orderStatus != null">
+            AND mo.order_status = #{orderStatus}
+        </if>
+        <if test=" orderOperatorUser != '' and  orderOperatorUser != null">
+            AND mo.order_operator_user = #{orderOperatorUser}
+        </if>
+        <if test=" orderInsertStartTime != '' and  orderInsertStartTime != null and orderInsertEndTime != '' and  orderInsertEndTime != null">
+            AND mo.order_insert_time BETWEEN #{orderInsertStartTime} AND #{orderInsertEndTime}
+        </if>
+        <if test=" insertUser != '' and  insertUser != null">
+            AND mo.insert_user = #{insertUser}
+        </if>
     </select>
 
 </mapper>

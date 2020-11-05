@@ -220,4 +220,9 @@ public class UserController {
         userService.update(new UpdateWrapper<User>().set("status","DEL").eq("user_id",uid));
         return JSONResult.ok("删除完成");
     }
+
+    @GetMapping("initSellUser")
+    public JSONResult initSellUser(){
+        return JSONResult.ok(userService.list(new QueryWrapper<User>().select("user_id","username").eq("status","NORMAL")));
+    }
 }

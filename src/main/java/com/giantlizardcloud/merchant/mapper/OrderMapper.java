@@ -42,4 +42,11 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return 结果集
      */
     List<OrderAndClientAndUserVO> getPageByCondition(QueryOrderByConditionDto dto);
+
+    /**
+     * 统计根据查询条件总记录数
+     * @param dto
+     * @return
+     */
+    Integer selectConditionCount(QueryOrderByConditionDto dto);
 }

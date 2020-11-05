@@ -17,6 +17,7 @@ import com.giantlizardcloud.merchant.vo.InitOrderVo;
 import com.giantlizardcloud.merchant.vo.OrderAndClientAndUserVO;
 import com.giantlizardcloud.sys.entity.User;
 import com.giantlizardcloud.sys.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,7 @@ import java.util.List;
  * @since 2020-10-27
  */
 @Service
+@Slf4j
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
     private final IOrderDetailsService detailsService;
@@ -124,20 +126,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     public Page<OrderAndClientAndUserVO> getPageByCondition(QueryOrderByConditionDto dto) {
         Integer newPage = (dto.getPage() - 1) * dto.getSize();
+        dto.setPage(newPage);
         List<OrderAndClientAndUserVO> list = this.baseMapper.getPageByCondition(dto);
-//        Page<OrderAndClientAndUserVO> vos = new Page<>(page, size);
-//        Integer total = this.baseMapper.selectCount(new QueryWrapper<Order>().eq("order_status", status));
-//        vos.setTotal(total);
-//        vos.setRecords(list);
-//        vos.setPages(page);
-//        vos.setSize(size);
-//        if ((total%size)==0){
-//            vos.setCurrent(total/size);
-//        }else {
-//            vos.setCurrent((total/size)+1);
-//        }
-//        return vos;
-        return null;
+        Page<OrderAndClientAndUserVO> vos = new Page<>(dto.getPage(),dto.getSize());
+        Integer total = this.baseMapper.selectConditionCount(dto);
+        vos.setTotal(total);
+        vos.setRecords(list);
+        if ((total%dto.getSize())==0){
+            vos.setCurrent(total/dto.getSize());
+        }else {
+            vos.setCurrent((total/dto.getSize())+1);
+        }
+        return vos;
     }
 
     public OrderServiceImpl(IOrderDetailsService detailsService, IInventoryService inventoryService, IClientService clientService, IShopService shopService, IUserService userService) {
