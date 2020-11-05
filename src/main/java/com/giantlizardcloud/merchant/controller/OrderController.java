@@ -4,6 +4,7 @@ import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
 import com.giantlizardcloud.merchant.dto.QueryOrderByConditionDto;
 import com.giantlizardcloud.merchant.service.IOrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/order")
+@Slf4j
 public class OrderController {
 
     private final IOrderService orderService;
@@ -26,6 +28,7 @@ public class OrderController {
 
     @PostMapping
     public JSONResult addOrder(@RequestBody AddOrderAndDetailDto dto){
+        log.info(dto.toString());
         orderService.addOrderAndOrderDetails(dto);
         return JSONResult.ok("新增订单成功");
     }
