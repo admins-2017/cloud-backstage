@@ -67,7 +67,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Integer newPage = (page - 1) * size;
         List<OrderAndClientAndUserVO> list = this.baseMapper.getPage(newPage, size,status);
         Page<OrderAndClientAndUserVO> vos = new Page<>(page, size);
-        Integer total = this.baseMapper.selectCount(new QueryWrapper<Order>().eq("order_status", status));
+        Integer total = this.baseMapper.selectCount(new QueryWrapper<>());
         vos.setTotal(total);
         vos.setRecords(list);
         vos.setPages(page);

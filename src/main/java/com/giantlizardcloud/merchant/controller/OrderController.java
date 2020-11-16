@@ -32,9 +32,13 @@ public class OrderController {
 
     @PostMapping
     public JSONResult addOrder(@RequestBody AddOrderAndDetailDto dto){
-        log.info(dto.toString());
-        orderService.addOrderAndOrderDetails(dto);
-        return JSONResult.ok("新增订单成功");
+        if(dto.getOrderStatus()==1){
+            orderService.addOrderAndOrderDetails(dto);
+            return JSONResult.ok("新增订单成功");
+        }else {
+            orderService.returnedOrder(dto);
+            return JSONResult.ok("销售退货成功");
+        }
     }
 
     @GetMapping("/init")

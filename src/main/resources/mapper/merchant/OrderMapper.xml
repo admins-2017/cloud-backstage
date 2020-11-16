@@ -54,7 +54,6 @@
         LEFT JOIN merchant_client mc ON mo.client_id = mc.client_id
         LEFT JOIN sys_user su ON mo.order_operator_user = su.user_id
         LEFT JOIN sys_user sui ON mo.insert_user = sui.user_id
-        WHERE mo.order_status = #{status}
         ORDER BY mo.order_date DESC
         LIMIT #{page} ,#{size}
     </select>
