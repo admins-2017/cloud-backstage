@@ -84,14 +84,11 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
         BeanUtils.copyProperties(dto,order);
         order.setPurchaseId(orderId);
         save(order);
-        /*
-          保存采购明细
-         */
         dto.getDetails().forEach( detail -> {
             /*
             将采购商品入库
              */
-            inventoryService.increaseInventory(detail.getShopId(),detail.getCommodityId(),detail.getPurchaseDetailNumber());
+            inventoryService.deductInventory(detail.getShopId(),detail.getCommodityId(),detail.getPurchaseDetailNumber());
             /*
             保存明细
              */
@@ -99,12 +96,22 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
             detailsService.save(detail);
         });
         /*
-        采购退货单 已结清的去掉所欠供应商货款 未结清的
+        采购退货单 已结清的减掉所欠供应商货款
          */
-        if (dto.getPurchaseUnpaidAmount() > 0){
+        if (dto.getPurchaseActualPayment() > 0){
             supplierService.update(new UpdateWrapper<Supplier>().eq("supplier_id",dto.getSupplierId())
-                    .setSql(" supplier_arrears = supplier_arrears +"+dto.getPurchaseUnpaidAmount()));
+                    .setSql(" supplier_arrears = supplier_arrears -"+dto.getPurchaseActualPayment()));
         }
+    }
+
+    @Override
+    public void invalidOrder(Long orderId) {
+        PurchaseOrder order = getOne(new QueryWrapper<PurchaseOrder>().eq("purchase_id", orderId));
+        /*
+        作废 将未结清所欠供应商货款减去
+         */
+
+
     }
 
     public PurchaseOrderServiceImpl(ISupplierService supplierService, IUserService userService,

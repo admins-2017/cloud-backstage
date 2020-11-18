@@ -34,9 +34,10 @@ public class PurchaseOrderController {
         }
     }
 
-    @DeleteMapping("/orderId")
-    public JSONResult invalidOrder(){
-        return JSONResult.ok();
+    @DeleteMapping("/{orderId}}")
+    public JSONResult invalidOrder(@PathVariable Long orderId){
+        purchaseOrderService.invalidOrder(orderId);
+        return JSONResult.ok("订单已作废");
     }
 
     @GetMapping("/{page}/{size}/{status}")

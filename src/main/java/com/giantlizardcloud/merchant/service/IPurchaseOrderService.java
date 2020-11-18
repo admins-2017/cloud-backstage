@@ -32,4 +32,10 @@ public interface IPurchaseOrderService extends IService<PurchaseOrder> {
      * @param dto 采购退货单明细
      */
     void returnPurchaseOrder(AddPurchaseOrderDto dto);
+
+    /**
+     * 作废订单并还原订单库存
+     * @param orderId
+     */
+    void invalidOrder(Long orderId);
 }
