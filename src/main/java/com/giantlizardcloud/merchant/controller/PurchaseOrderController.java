@@ -2,6 +2,10 @@ package com.giantlizardcloud.merchant.controller;
 
 
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.merchant.dto.AddPurchaseOrderDto;
+import com.giantlizardcloud.merchant.enums.PurchaseStatusEnum;
+import com.giantlizardcloud.merchant.service.IPurchaseOrderService;
+import com.giantlizardcloud.merchant.vo.InitPurchaseOrderVo;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,9 +20,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/purchase")
 public class PurchaseOrderController {
 
+    private final IPurchaseOrderService purchaseOrderService;
+
+
     @PostMapping
-    public JSONResult addPurchaseOrder(){
-        return JSONResult.ok();
+    public JSONResult addPurchaseOrder(@RequestBody AddPurchaseOrderDto dto){
+        if (dto.getPurchaseStatus().equals(PurchaseStatusEnum.SAVE.getCode())){
+            purchaseOrderService.savePurchaseOrder(dto);
+            return JSONResult.ok("已保存采购单");
+        }else {
+            purchaseOrderService.returnPurchaseOrder(dto);
+            return JSONResult.ok("已保存采购退货单");
+        }
     }
 
     @DeleteMapping("/orderId")
@@ -38,7 +51,10 @@ public class PurchaseOrderController {
 
     @GetMapping("/init")
     public JSONResult initOrder(){
-        return JSONResult.ok();
+        return JSONResult.ok(purchaseOrderService.init());
     }
 
+    public PurchaseOrderController(IPurchaseOrderService purchaseOrderService) {
+        this.purchaseOrderService = purchaseOrderService;
+    }
 }

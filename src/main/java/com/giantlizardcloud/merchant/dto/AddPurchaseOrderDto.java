@@ -1,39 +1,21 @@
-package com.giantlizardcloud.merchant.entity;
+package com.giantlizardcloud.merchant.dto;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-import io.swagger.annotations.ApiModel;
+import com.giantlizardcloud.merchant.entity.PurchaseOrderDetails;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
- * <p>
- * 
- * </p>
- *
- * @author jobob
- * @since 2020-11-17
+ * @author kang
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("merchant_purchase_order")
-@ApiModel(value="PurchaseOrder对象", description="采购单实体类")
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseOrder implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty(value = "采购订单id",example = "1")
-    private Long purchaseId;
+public class AddPurchaseOrderDto {
 
     @ApiModelProperty(value = "采购订单单号")
     private String purchaseNumber;
@@ -74,12 +56,6 @@ public class PurchaseOrder implements Serializable {
     @ApiModelProperty(value = "采购人员",example = "1")
     private Long purchaseOperatorUser;
 
-    @ApiModelProperty(value = "采购订单添加时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime purchaseInsertTime;
-
-    @ApiModelProperty(value = "采购顶单添加人员",example = "1")
-    private Long insertUser;
-
+    private List<PurchaseOrderDetails> details;
 
 }

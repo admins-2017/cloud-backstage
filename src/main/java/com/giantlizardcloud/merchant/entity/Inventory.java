@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -23,6 +24,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("merchant_inventory")
 @ApiModel(value="Inventory对象", description="")
+@NoArgsConstructor
 public class Inventory implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,5 +41,9 @@ public class Inventory implements Serializable {
     @ApiModelProperty(value = "库存数量")
     private Integer inventoryNumber;
 
-
+    public Inventory(Integer commodityId, Long shopId, Integer inventoryNumber) {
+        this.commodityId = commodityId;
+        this.shopId = shopId;
+        this.inventoryNumber = inventoryNumber;
+    }
 }

@@ -51,5 +51,10 @@ public class PurchaseOrderDetails implements Serializable {
     @ApiModelProperty(value = "采购详情价格")
     private BigDecimal purchaseDetailPrice;
 
-
+    public PurchaseOrderDetails(Integer commodityId, Long shopId, Integer purchaseDetailNumber, BigDecimal purchaseDetailPrice) {
+        this.commodityId = commodityId;
+        this.shopId = shopId;
+        this.purchaseDetailNumber = purchaseDetailNumber;
+        this.purchaseDetailPrice = purchaseDetailPrice;
+    }
 }

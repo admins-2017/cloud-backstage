@@ -1,5 +1,6 @@
 package com.giantlizardcloud.merchant.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.merchant.dto.QueryInventory;
@@ -71,8 +72,12 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
 
     @Override
     public void increaseInventory(Long shopId, Integer commodityId, Integer orderDetailNumber) {
-        this.baseMapper.update(null, new UpdateWrapper<Inventory>().setSql(" inventory_number = inventory_number +" + orderDetailNumber)
-                .eq("shop_id", shopId).eq("commodity_id", commodityId));
+        if (count(new QueryWrapper<Inventory>().eq("commodity_id", commodityId).eq("shop_id", shopId))==0){
+            save(new Inventory(commodityId,shopId,orderDetailNumber));
+        }else{
+            this.baseMapper.update(null, new UpdateWrapper<Inventory>().setSql(" inventory_number = inventory_number +" + orderDetailNumber)
+                    .eq("shop_id", shopId).eq("commodity_id", commodityId));
+        }
     }
 
     @Override

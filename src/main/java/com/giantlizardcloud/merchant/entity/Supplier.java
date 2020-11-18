@@ -71,4 +71,7 @@ public class Supplier implements Serializable {
     @Excel(name = "预留商铺id")
     private Long shopId;
 
+    @ApiModelProperty(value = "所欠供应商货款")
+    private Double supplierArrears;
+
 }

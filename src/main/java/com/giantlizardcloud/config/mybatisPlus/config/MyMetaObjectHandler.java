@@ -57,6 +57,9 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         if (metaObject.hasSetter("orderInsertTime")){
             this.strictInsertFill(metaObject, "orderInsertTime", LocalDateTime.class, LocalDateTime.now());
         }
+        if (metaObject.hasSetter("purchaseInsertTime")){
+            this.strictInsertFill(metaObject, "purchaseInsertTime", LocalDateTime.class, LocalDateTime.now());
+        }
     }
 
     /**
