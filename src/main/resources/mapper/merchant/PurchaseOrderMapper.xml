@@ -2,4 +2,114 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.merchant.mapper.PurchaseOrderMapper">
 
+    <resultMap id="page" type="com.giantlizardcloud.merchant.vo.PurchasePageVo">
+        <id column="purchase_id" property="purchaseId"/>
+        <result column="purchase_number" property="purchaseNumber"/>
+        <result column="purchase_date" property="purchaseDate"/>
+        <result column="supplier_id" property="supplierId"/>
+        <result column="purchase_total_amount" property="purchaseTotalAmount"/>
+        <result column="purchase_discount_rate" property="purchaseDiscountRate"/>
+        <result column="purchase_amount_after_discount" property="purchaseAmountAfterDiscount"/>
+        <result column="purchase_actual_payment" property="purchaseActualPayment"/>
+        <result column="purchase_unpaid_amount" property="purchaseUnpaidAmount"/>
+        <result column="purchase_settlement_method" property="purchaseSettlementMethod"/>
+        <result column="purchase_settlement_account" property="purchaseSettlementAccount"/>
+        <result column="purchase_remarks" property="purchaseRemarks"/>
+        <result column="purchase_status" property="purchaseStatus"/>
+        <result column="purchase_operator_user" property="purchaseOperatorUser"/>
+        <result column="purchase_insert_time" property="purchaseInsertTime"/>
+        <result column="insert_user" property="insertUser"/>
+        <result column="supplier_name" property="supplierName"/>
+        <result column="operator_user_name" property="operatorUserName"/>
+        <result column="insert_user_name" property="insertUserName"/>
+        <collection property="children" ofType="com.giantlizardcloud.merchant.vo.PurchaseOrderDetailsVo"
+                    select="com.giantlizardcloud.merchant.mapper.PurchaseOrderDetailsMapper.getDetailsByOrderId" column="purchase_id">
+        </collection>
+    </resultMap>
+
+
+    <sql id="purchaseWithUserAndSupplier">
+        SELECT
+            mpo.purchase_id,
+            mpo.purchase_number,
+            mpo.purchase_date,
+            mpo.supplier_id,
+            mpo.purchase_total_amount,
+            mpo.purchase_discount_rate,
+            mpo.purchase_amount_after_discount,
+            mpo.purchase_actual_payment,
+            mpo.purchase_unpaid_amount,
+            mpo.purchase_settlement_method,
+            mpo.purchase_settlement_account,
+            mpo.purchase_remarks,
+            mpo.purchase_status,
+            mpo.purchase_operator_user,
+            mpo.purchase_insert_time,
+            mpo.insert_user,
+            ms.supplier_name,
+            su.username AS operator_user_name,
+            su2.username AS insert_user_name
+        FROM
+            merchant_purchase_order mpo
+            LEFT JOIN merchant_supplier ms ON mpo.supplier_id = ms.supplier_id
+            LEFT JOIN sys_user su ON mpo.purchase_operator_user = su.user_id
+            LEFT JOIN sys_user su2 ON mpo.insert_user = su2.user_id
+    </sql>
+
+    <sql id="countPurchase">
+        SELECT
+         count(1)
+        FROM
+            merchant_purchase_order mpo
+            LEFT JOIN merchant_supplier ms ON mpo.supplier_id = ms.supplier_id
+            LEFT JOIN sys_user su ON mpo.purchase_operator_user = su.user_id
+            LEFT JOIN sys_user su2 ON mpo.insert_user = su2.user_id
+    </sql>
+
+
+    <select id="findOrderByPage" resultMap="page" parameterType="com.giantlizardcloud.merchant.dto.QueryPurchaseOrderDto">
+            <include refid="purchaseWithUserAndSupplier"/>
+            WHERE mpo.purchase_status = #{status}
+            ORDER  BY mpo.purchase_date DESC
+            limit #{page}, #{size}
+    </select>
+
+    <select id="findOrderByCondition" resultMap="page">
+        <include refid="purchaseWithUserAndSupplier"/>
+        where 1=1
+        <if test="number!= '' and number != null">
+            AND mpo.purchase_number = #{number}
+        </if>
+        <if test="supplier != '' and supplier != null ">
+            AND mpo.supplier_id = #{supplier}
+        </if>
+        <if test=" startTime != ''  and startTime != 'undefined' and startTime != null and endTime != '' and endTime != 'undefined' and endTime != null ">
+            AND mpo.purchase_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="user != '' and user != null">
+            AND mpo.purchase_operator_user = #{user}
+        </if>
+        ORDER  BY mpo.purchase_date DESC
+        limit #{page}, #{size}
+    </select>
+
+    <select id="countOrderByCondition" resultType="java.lang.Integer">
+        <include refid="countPurchase"/>
+        where 1=1
+        <if test="number!= '' and number != null">
+            AND mpo.purchase_number = #{number}
+        </if>
+        <if test="supplier != '' and supplier != null ">
+            AND mpo.supplier_id = #{supplier}
+        </if>
+        <if test=" startTime != ''  and startTime != 'undefined' and startTime != null and endTime != '' and endTime != 'undefined' and endTime != null ">
+            AND mpo.purchase_date BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="user != '' and user != null">
+            AND mpo.purchase_operator_user = #{user}
+        </if>
+        ORDER  BY mpo.purchase_date DESC
+        limit #{page}, #{size}
+    </select>
+
 </mapper>

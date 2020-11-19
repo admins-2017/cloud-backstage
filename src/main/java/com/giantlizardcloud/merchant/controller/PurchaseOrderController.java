@@ -3,9 +3,9 @@ package com.giantlizardcloud.merchant.controller;
 
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.merchant.dto.AddPurchaseOrderDto;
+import com.giantlizardcloud.merchant.dto.QueryPurchaseOrderDto;
 import com.giantlizardcloud.merchant.enums.PurchaseStatusEnum;
 import com.giantlizardcloud.merchant.service.IPurchaseOrderService;
-import com.giantlizardcloud.merchant.vo.InitPurchaseOrderVo;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -42,12 +42,12 @@ public class PurchaseOrderController {
 
     @GetMapping("/{page}/{size}/{status}")
     public JSONResult getOrderByPage(@PathVariable Integer page , @PathVariable Integer size , @PathVariable Integer status){
-        return JSONResult.ok();
+        return JSONResult.ok(purchaseOrderService.getOrderByPage(page,size,status));
     }
 
     @GetMapping
-    public JSONResult getOrderByCondition(){
-        return JSONResult.ok();
+    public JSONResult getOrderByCondition(QueryPurchaseOrderDto dto){
+        return JSONResult.ok(purchaseOrderService.getOrderByCondition(dto));
     }
 
     @GetMapping("/init")

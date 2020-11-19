@@ -16,7 +16,9 @@ public enum PurchaseStatusEnum {
     /**
      * 采购退货状态
      */
-    RETURN(2, "退回")
+    RETURN(2, "退回"),
+
+    INVALID(3,"作废"),
     ;
     private Integer code;
 

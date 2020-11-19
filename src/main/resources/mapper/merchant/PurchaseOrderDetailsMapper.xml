@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.merchant.mapper.PurchaseOrderDetailsMapper">
 
+    <select id="getDetailsByOrderId" resultType="com.giantlizardcloud.merchant.vo.PurchaseOrderDetailsVo">
+        SELECT
+            mpod.*,
+            convert((mpod.purchase_detail_price / mpod.purchase_detail_number),decimal(10,2) )as commodity_unit_price,
+            mc.commodity_name,
+            mc.commodity_number,
+            mc.commodity_unit,
+            ms.shop_name,
+            ms.shop_address
+        FROM
+            merchant_purchase_order_details mpod
+            LEFT JOIN merchant_commodity mc ON mpod.commodity_id = mc.commodity_id
+            LEFT JOIN merchant_shop ms ON mpod.shop_id = ms.shop_id
+        where mpod.purchase_id = #{orderId}
+    </select>
 </mapper>
