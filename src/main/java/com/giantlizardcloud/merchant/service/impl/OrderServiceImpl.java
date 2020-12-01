@@ -3,13 +3,12 @@ package com.giantlizardcloud.merchant.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.config.redis.RedisOperator;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
 import com.giantlizardcloud.merchant.dto.QueryOrderByConditionDto;
-import com.giantlizardcloud.merchant.entity.Client;
-import com.giantlizardcloud.merchant.entity.Order;
-import com.giantlizardcloud.merchant.entity.OrderDetails;
-import com.giantlizardcloud.merchant.entity.Shop;
+import com.giantlizardcloud.merchant.entity.*;
+import com.giantlizardcloud.merchant.enums.IndexKeyEnum;
 import com.giantlizardcloud.merchant.mapper.OrderMapper;
 import com.giantlizardcloud.merchant.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -41,11 +41,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private final IClientService clientService;
     private final IShopService shopService;
     private final IUserService userService;
+    private final RedisOperator operator;
+    private final ICommodityService commodityService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addOrderAndOrderDetails(AddOrderAndDetailDto dto) {
         Order order = new Order();
+        LocalDate now = LocalDate.now();
         BeanUtils.copyProperties(dto, order);
         long orderId = new IdWorker().nextId();
         order.setOrderId(orderId);
@@ -54,12 +57,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             inventoryService.deductInventory(details.getShopId(), details.getCommodityId(), details.getOrderDetailNumber());
             details.setOrderId(orderId);
             detailsService.save(details);
+            Commodity commodity = commodityService.getOne(new QueryWrapper<Commodity>().select("commodity_name").eq("commodity_id", details.getCommodityId()));
+            operator.incrementScore(IndexKeyEnum.SALE.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                    ,commodity.getCommodityName(),details.getOrderDetailNumber());
         }));
         /* 判断是否结清,未结清则给客户增加欠款 */
         if (0 < dto.getOrderUnpaidAmount()) {
             clientService.update(null, new UpdateWrapper<Client>().setSql("client_consumption = client_consumption +"
                     + dto.getOrderUnpaidAmount()).eq("client_id", dto.getClientId()));
         }
+        operator.hashIncrBy(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.SALE_COUNT.getMessage(),1);
+        operator.hIncrByDouble(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.SALE_AMOUNT.getMessage(),dto.getOrderAmountAfterDiscount());
     }
 
     @Override
@@ -98,6 +108,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Transactional(rollbackFor = Exception.class)
     public void returnedOrder(AddOrderAndDetailDto dto) {
         Order returnOrder = new Order();
+        LocalDate now = LocalDate.now();
         BeanUtils.copyProperties(dto, returnOrder);
         long orderId = new IdWorker().nextId();
         returnOrder.setOrderId(orderId);
@@ -106,12 +117,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             inventoryService.increaseInventory(details.getShopId(), details.getCommodityId(), details.getOrderDetailNumber());
             details.setOrderId(orderId);
             detailsService.save(details);
+            Commodity commodity = commodityService.getOne(new QueryWrapper<Commodity>().select("commodity_name").eq("commodity_id", details.getCommodityId()));
+            operator.incrementScore(IndexKeyEnum.SALE.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                    ,commodity.getCommodityName(),-details.getOrderDetailNumber());
         }));
         /* 判断是否结清,未结清则给客户增加欠款 */
         if (0 < dto.getOrderUnpaidAmount()) {
             clientService.update(null, new UpdateWrapper<Client>().setSql("client_consumption = client_consumption -"
                     + dto.getOrderUnpaidAmount()).eq("client_id", dto.getClientId()));
         }
+        operator.hashIncrBy(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.SALE_COUNT.getMessage(),-1);
+        operator.hIncrByDouble(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.SALE_AMOUNT.getMessage(),-dto.getOrderAmountAfterDiscount());
     }
 
     @Override
@@ -140,11 +158,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return vos;
     }
 
-    public OrderServiceImpl(IOrderDetailsService detailsService, IInventoryService inventoryService, IClientService clientService, IShopService shopService, IUserService userService) {
+    public OrderServiceImpl(IOrderDetailsService detailsService, IInventoryService inventoryService,
+                            IClientService clientService, IShopService shopService, IUserService userService, RedisOperator operator,ICommodityService commodityService) {
         this.detailsService = detailsService;
         this.inventoryService = inventoryService;
         this.clientService = clientService;
         this.shopService =shopService;
         this.userService = userService;
+        this.operator = operator;
+        this.commodityService = commodityService;
     }
 }

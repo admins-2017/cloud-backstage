@@ -3,13 +3,12 @@ package com.giantlizardcloud.merchant.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.config.redis.RedisOperator;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.AddPurchaseOrderDto;
 import com.giantlizardcloud.merchant.dto.QueryPurchaseOrderDto;
-import com.giantlizardcloud.merchant.entity.PurchaseOrder;
-import com.giantlizardcloud.merchant.entity.PurchaseOrderDetails;
-import com.giantlizardcloud.merchant.entity.Shop;
-import com.giantlizardcloud.merchant.entity.Supplier;
+import com.giantlizardcloud.merchant.entity.*;
+import com.giantlizardcloud.merchant.enums.IndexKeyEnum;
 import com.giantlizardcloud.merchant.enums.PurchaseStatusEnum;
 import com.giantlizardcloud.merchant.mapper.PurchaseOrderMapper;
 import com.giantlizardcloud.merchant.service.*;
@@ -22,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -40,6 +40,7 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
     private final IShopService shopService;
     private final IPurchaseOrderDetailsService detailsService;
     private final IInventoryService inventoryService;
+    private final RedisOperator operator;
 
     @Override
     public InitPurchaseOrderVo init() {
@@ -53,6 +54,7 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
     @Transactional(rollbackFor = Exception.class)
     public void savePurchaseOrder(AddPurchaseOrderDto dto) {
         Long orderId = new IdWorker().nextId();
+        LocalDate now = LocalDate.now();
         /*
         保存采购单
          */
@@ -78,11 +80,16 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
             supplierService.update(new UpdateWrapper<Supplier>().eq("supplier_id",dto.getSupplierId())
                     .setSql(" supplier_arrears = supplier_arrears +"+dto.getPurchaseUnpaidAmount()));
         }
+        operator.hashIncrBy(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.PURCHASE_COUNT.getMessage(),1);
+        operator.hIncrByDouble(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.AMOUNT_OF_PAYOUT.getMessage(),dto.getPurchaseAmountAfterDiscount());
     }
 
     @Override
     public void returnPurchaseOrder(AddPurchaseOrderDto dto) {
         Long orderId = new IdWorker().nextId();
+        LocalDate now = LocalDate.now();
         /*
         保存采购退货单
          */
@@ -108,6 +115,10 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
             supplierService.update(new UpdateWrapper<Supplier>().eq("supplier_id",dto.getSupplierId())
                     .setSql(" supplier_arrears = supplier_arrears -"+dto.getPurchaseUnpaidAmount()));
         }
+        operator.hashIncrBy(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.PURCHASE_COUNT.getMessage(),-1);
+        operator.hIncrByDouble(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.AMOUNT_OF_PAYOUT.getMessage(),-dto.getPurchaseAmountAfterDiscount());
     }
 
     @Override
@@ -174,11 +185,13 @@ public class PurchaseOrderServiceImpl extends ServiceImpl<PurchaseOrderMapper, P
     }
 
     public PurchaseOrderServiceImpl(ISupplierService supplierService, IUserService userService,
-                                    IShopService shopService , IPurchaseOrderDetailsService purchaseOrderDetailsService, IInventoryService inventoryService) {
+                                    IShopService shopService , IPurchaseOrderDetailsService purchaseOrderDetailsService,
+                                    IInventoryService inventoryService,  RedisOperator operator) {
         this.supplierService = supplierService;
         this.userService = userService;
         this.shopService = shopService;
         this.detailsService = purchaseOrderDetailsService;
         this.inventoryService = inventoryService;
+        this.operator = operator;
     }
 }

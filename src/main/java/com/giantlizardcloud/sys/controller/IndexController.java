@@ -32,11 +32,12 @@ public class IndexController {
     @GetMapping
     public JSONResult index(){
         LocalDate now = LocalDate.now();
-        Set<ZSetOperations.TypedTuple<String>> testZSet = operator.reverseRankZset(IndexKeyEnum.SALE.getMessage(), 0, -1);
-        Map<Object, Object> hgetall = operator.hgetall(now.getYear() + "-" + now.getMonthValue());
+        Set<ZSetOperations.TypedTuple<String>> testZSet = operator.reverseRankZset(
+                IndexKeyEnum.SALE.getMessage()+":"+now.getYear() + "-" + now.getMonthValue(), 0, -1);
+        Map<Object, Object> map = operator.hgetall(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue());
         IndexDataVo indexDataVo = new IndexDataVo();
         indexDataVo.setCommodityList(testZSet);
-        indexDataVo.setNumber(hgetall);
+        indexDataVo.setNumber(map);
         return JSONResult.ok(indexDataVo);
     }
 }

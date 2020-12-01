@@ -1,7 +1,13 @@
 package com.giantlizardcloud.index;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.giantlizardcloud.config.redis.RedisOperator;
+import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
+import com.giantlizardcloud.merchant.dto.AddPurchaseOrderDto;
+import com.giantlizardcloud.merchant.entity.Commodity;
+import com.giantlizardcloud.merchant.entity.OrderDetails;
 import com.giantlizardcloud.merchant.enums.IndexKeyEnum;
+import com.giantlizardcloud.merchant.service.ICommodityService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +24,8 @@ public class IndexTests {
 
     @Autowired
     private RedisOperator operator;
+    @Autowired
+    private ICommodityService commodityService;
 
     @Test
     public void testZSet(){
@@ -34,6 +42,28 @@ public class IndexTests {
         testZSet.forEach( a-> {
             System.out.println(a.getValue() + ": " +a.getScore());
         });
+    }
+
+    @Test
+    public void testAdd(){
+        LocalDate now = LocalDate.now();
+        OrderDetails orderDetails = new OrderDetails();
+        orderDetails.setCommodityId(5);
+        orderDetails.setOrderDetailNumber(10);
+        Commodity commodity = commodityService.getOne(new QueryWrapper<Commodity>().select("commodity_name").eq("commodity_id", orderDetails.getCommodityId()));
+        operator.incrementScore(IndexKeyEnum.SALE.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,commodity.getCommodityName(),orderDetails.getOrderDetailNumber());
+    }
+
+    @Test
+    public void testPurchaseAdd(){
+        LocalDate now = LocalDate.now();
+        AddPurchaseOrderDto dto = new AddPurchaseOrderDto();
+        dto.setPurchaseAmountAfterDiscount(200.0);
+        operator.hashIncrBy(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.PURCHASE_COUNT.getMessage(),1);
+        operator.hIncrByDouble(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.AMOUNT_OF_PAYOUT.getMessage(),dto.getPurchaseAmountAfterDiscount());
     }
 
     @Test
@@ -61,5 +91,14 @@ public class IndexTests {
     public void testObject(){
         LocalDate now = LocalDate.now();
          operator.hashIncrBy(now.getYear() + "-" + now.getMonthValue(),"purchase",-1);
+    }
+
+    @Test
+    public void testEnum(){
+        LocalDate now = LocalDate.now();
+        AddOrderAndDetailDto dto = new AddOrderAndDetailDto();
+        dto.setOrderAmountAfterDiscount(200.0);
+        operator.hIncrByDouble(IndexKeyEnum.STATISTICS.getMessage()+":"+now.getYear() + "-" + now.getMonthValue()
+                ,IndexKeyEnum.SALE_AMOUNT.getMessage(),-dto.getOrderAmountAfterDiscount());
     }
 }
