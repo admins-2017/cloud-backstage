@@ -24,10 +24,13 @@ public class QuartzFactory implements Job {
         //获取对应的Bean
         Object object = SpringUtil.getBean(scheduleJob.getBeanName());
         try {
-            //利用反射执行对应方法
+            //利用反射执行对应方法 判断方法是否有参数
             if (scheduleJob.getMethodArgType() != null && !scheduleJob.getMethodArgType().equals("")) {
+                //判断参数类型为string
                 if(scheduleJob.getMethodArgType().equals("java.lang.String")){
+                    //根据方法名及参数类型获取方法实例
                     Method method = object.getClass().getMethod(scheduleJob.getMethodName(), Class.forName(scheduleJob.getMethodArgType()));
+                    //执行方法 并传入参数
                     method.invoke(object, scheduleJob.getMethodParams());
                 }else if(scheduleJob.getMethodArgType().equals("java.util.List,com.giantlizardcloud.sys.entity.User")){
                     //将字段的类型分割

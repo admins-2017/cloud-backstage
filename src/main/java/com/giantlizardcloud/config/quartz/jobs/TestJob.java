@@ -1,13 +1,16 @@
 package com.giantlizardcloud.config.quartz.jobs;
 
 
+import com.giantlizardcloud.config.redis.RedisOperator;
 import com.giantlizardcloud.sys.entity.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Demo class
@@ -19,6 +22,9 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class TestJob {
+
+    @Autowired
+    private RedisOperator operator;
 
     /**
      * 默认执行方法
@@ -52,5 +58,13 @@ public class TestJob {
     public void testObjectList(List<User> list){
         log.info("执行testObjectList");
         list.stream().forEach(System.out::println);
+    }
+
+    /**
+     * 定时统计
+     */
+    public void timingStatistics(){
+        LocalDate now = LocalDate.now();
+        Map<Object, Object> hgetall = operator.hgetall(now.getYear() + "-" + now.getMonthValue());
     }
  }

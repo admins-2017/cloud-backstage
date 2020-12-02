@@ -6,7 +6,9 @@ import com.giantlizardcloud.merchant.dto.AddOrderAndDetailDto;
 import com.giantlizardcloud.merchant.dto.AddPurchaseOrderDto;
 import com.giantlizardcloud.merchant.entity.Commodity;
 import com.giantlizardcloud.merchant.entity.OrderDetails;
+import com.giantlizardcloud.merchant.entity.Statistics;
 import com.giantlizardcloud.merchant.enums.IndexKeyEnum;
+import com.giantlizardcloud.merchant.mapper.StatisticsMapper;
 import com.giantlizardcloud.merchant.service.ICommodityService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.ZSetOperations;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @Slf4j
@@ -26,6 +30,8 @@ public class IndexTests {
     private RedisOperator operator;
     @Autowired
     private ICommodityService commodityService;
+    @Autowired
+    private StatisticsMapper mapper;
 
     @Test
     public void testZSet(){
@@ -81,10 +87,26 @@ public class IndexTests {
     @Test
     public void getAllObject(){
         LocalDate now = LocalDate.now();
-        Map<Object, Object> hgetall = operator.hgetall(now.getYear() + "-" + now.getMonthValue());
-        for(Object s:hgetall.keySet()){
-                         System.out.println("key : "+s+" value : "+hgetall.get(s));
-                   }
+        List<Map.Entry<Object, Object>> collect = operator.hgetall(IndexKeyEnum.STATISTICS.getMessage() + ":" + now.getYear() + "-" + now.getMonthValue())
+                .entrySet().stream().filter(e -> !"saleCount".equals(e.getKey()) && !"purchaseCount".equals(e.getKey()))
+                .collect(Collectors.toList());
+
+        System.out.println();
+        System.out.println();
+
+        mapper.insert(new Statistics(now.getYear(),now.getMonthValue(),
+                Double.valueOf(((Integer)collect.get(0).getValue()).toString())
+                ,Double.valueOf(((Integer)collect.get(1).getValue()).toString())));
+
+    }
+
+    @Test
+    public void testMapper(){
+        LocalDate now = LocalDate.now();
+        List<Statistics> statistics = mapper.selectList(new QueryWrapper<Statistics>().eq("statistics_year",now.getYear())
+                .lt("statistics_month",now.getMonthValue())
+                .orderByDesc("statistics_month").last("limit 6"));
+        statistics.forEach(System.out::println);
     }
 
     @Test
