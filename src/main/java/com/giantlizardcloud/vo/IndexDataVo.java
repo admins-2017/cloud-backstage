@@ -1,5 +1,6 @@
 package com.giantlizardcloud.vo;
 
+import com.giantlizardcloud.merchant.entity.Day;
 import com.giantlizardcloud.merchant.entity.Statistics;
 import lombok.Data;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -19,5 +20,7 @@ public class IndexDataVo {
     private Map<Object, Object> number;
 
     private List<Statistics> statistics;
+
+    private List<Day> lastWeekCounts;
 
 }

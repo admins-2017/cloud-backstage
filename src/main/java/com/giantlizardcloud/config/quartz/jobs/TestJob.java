@@ -2,6 +2,7 @@ package com.giantlizardcloud.config.quartz.jobs;
 
 
 import com.giantlizardcloud.config.redis.RedisOperator;
+import com.giantlizardcloud.merchant.service.IDayService;
 import com.giantlizardcloud.merchant.service.IStatisticsService;
 import com.giantlizardcloud.sys.entity.User;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +25,9 @@ import java.util.Map;
 @Slf4j
 public class TestJob {
 
-    @Autowired
-    private IStatisticsService statisticsService;
-
-    @Autowired
-    private RedisOperator operator;
+    private final IStatisticsService statisticsService;
+    private final RedisOperator operator;
+    private final IDayService dayService;
 
     /**
      * 默认执行方法
@@ -70,4 +69,17 @@ public class TestJob {
     public void timingStatistics(){
         statisticsService.insertStatistics();
     }
- }
+
+    /**
+     * 每日统计进销次数
+     */
+    public void countByDay(){
+        dayService.addCountByDay();
+    }
+
+    public TestJob(IStatisticsService statisticsService, RedisOperator operator ,IDayService dayService) {
+        this.statisticsService = statisticsService;
+        this.operator = operator;
+        this.dayService = dayService;
+    }
+}

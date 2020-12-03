@@ -4,6 +4,7 @@ import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.redis.RedisOperator;
 import com.giantlizardcloud.merchant.entity.Statistics;
 import com.giantlizardcloud.merchant.enums.IndexKeyEnum;
+import com.giantlizardcloud.merchant.service.IDayService;
 import com.giantlizardcloud.merchant.service.IStatisticsService;
 import com.giantlizardcloud.vo.IndexDataVo;
 import io.swagger.annotations.Api;
@@ -32,6 +33,7 @@ public class IndexController {
 
     private final RedisOperator operator;
     private final IStatisticsService statisticsService;
+    private final IDayService dayService;
 
     @GetMapping
     public JSONResult index(){
@@ -46,11 +48,13 @@ public class IndexController {
 //        将list倒序
         reverse(statistics);
         indexDataVo.setStatistics(statistics);
+        indexDataVo.setLastWeekCounts(dayService.getLastWeekCountByDay());
         return JSONResult.ok(indexDataVo);
     }
 
-    public IndexController(RedisOperator operator,IStatisticsService statisticsService) {
+    public IndexController(RedisOperator operator,IStatisticsService statisticsService ,IDayService dayService) {
         this.operator = operator;
         this.statisticsService = statisticsService;
+        this.dayService = dayService;
     }
 }
