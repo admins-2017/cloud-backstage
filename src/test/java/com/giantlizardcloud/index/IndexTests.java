@@ -17,10 +17,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.ZSetOperations;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.reverse;
 
 @SpringBootTest
 @Slf4j
@@ -106,6 +109,7 @@ public class IndexTests {
         List<Statistics> statistics = mapper.selectList(new QueryWrapper<Statistics>().eq("statistics_year",now.getYear())
                 .lt("statistics_month",now.getMonthValue())
                 .orderByDesc("statistics_month").last("limit 6"));
+        reverse(statistics);
         statistics.forEach(System.out::println);
     }
 

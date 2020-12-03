@@ -2,6 +2,7 @@ package com.giantlizardcloud.config.quartz.jobs;
 
 
 import com.giantlizardcloud.config.redis.RedisOperator;
+import com.giantlizardcloud.merchant.service.IStatisticsService;
 import com.giantlizardcloud.sys.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import java.util.Map;
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class TestJob {
+
+    @Autowired
+    private IStatisticsService statisticsService;
 
     @Autowired
     private RedisOperator operator;
@@ -64,7 +68,6 @@ public class TestJob {
      * 定时统计
      */
     public void timingStatistics(){
-        LocalDate now = LocalDate.now();
-        Map<Object, Object> hgetall = operator.hgetall(now.getYear() + "-" + now.getMonthValue());
+        statisticsService.insertStatistics();
     }
  }

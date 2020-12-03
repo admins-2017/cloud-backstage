@@ -19,7 +19,7 @@ public interface IStatisticsService extends IService<Statistics> {
      * 根据月份返回前六月统计信息
      * @return
      */
-    public List<Statistics> getStatisticsByMonth();
+    public List<Statistics> getStatisticsByMonth(Integer year,Integer month);
 
     /**
      * 添加当月统计详情

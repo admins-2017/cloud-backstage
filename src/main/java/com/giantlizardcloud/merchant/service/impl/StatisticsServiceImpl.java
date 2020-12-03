@@ -30,10 +30,9 @@ public class StatisticsServiceImpl extends ServiceImpl<StatisticsMapper, Statist
     private final RedisOperator operator;
 
     @Override
-    public List<Statistics> getStatisticsByMonth() {
-        LocalDate now = LocalDate.now();
-        return this.baseMapper.selectList(new QueryWrapper<Statistics>().eq("statistics_year",now.getYear())
-                .lt("statistics_month",now.getMonthValue())
+    public List<Statistics> getStatisticsByMonth(Integer year,Integer month) {
+        return this.baseMapper.selectList(new QueryWrapper<Statistics>().eq("statistics_year",year)
+                .lt("statistics_month",month)
                 .orderByDesc("statistics_month").last("limit 6"));
     }
 
