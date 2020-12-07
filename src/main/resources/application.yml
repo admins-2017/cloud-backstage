@@ -6,7 +6,7 @@
     direct-buffers: true
     io-threads: 4
     worker-threads: 20
-  port: 8082
+  port: 8080
 #mybatis-plus
  mybatis-plus:
   mapper-locations: /mapper/*/*Mapper.xml
@@ -43,12 +43,12 @@
   # 过期时间 单位秒 1天后过期=86400 7天后过期=604800
   expiration: 8640
   # 配置不需要认证的接口
-  antMatchers: /user/test,/menu/basisTree,/login/**,/user/code,/swagger-ui.html,/webjars/**,/swagger-resources/**,/v2/*,/sms/send,/user/verify/**
+  antMatchers: /user/test,/menu/basisTree,/login/**,/user/code,/swagger-ui.html,/webjars/**,/swagger-resources/**,/v2/*,/sms/send,/user/verify/**,/inventory/export/**
 # 七牛云配置
  qiniu:
   accessKey: UbCrflztjlJGdhBTis77726z4UtxGc2CjcW107KN
   secretKey: __XybZxprcQ87YP-EtDV2gUEj3FF6vUwyIn8GID3
-  bucket: rf-backstage
-  path: qhe98h6jl.hn-bkt.clouddn.com
+  bucket: kangdongwei
+  path: kangdongwei.cn
 
  baseUploadUrl: E:/temp
