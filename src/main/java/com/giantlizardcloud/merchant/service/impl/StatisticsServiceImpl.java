@@ -42,9 +42,11 @@ public class StatisticsServiceImpl extends ServiceImpl<StatisticsMapper, Statist
         List<Map.Entry<Object, Object>> collect = operator.hgetall(IndexKeyEnum.STATISTICS.getMessage() + ":" + now.getYear() + "-" + now.getMonthValue())
                 .entrySet().stream().filter(e -> !"saleCount".equals(e.getKey()) && !"purchaseCount".equals(e.getKey()))
                 .collect(Collectors.toList());
-        this.baseMapper.insert(new Statistics(now.getYear(),now.getMonthValue(),
-                Double.valueOf(((Integer)collect.get(0).getValue()).toString())
-                ,Double.valueOf(((Integer)collect.get(1).getValue()).toString())));
+        if (collect.size()>0) {
+            this.baseMapper.insert(new Statistics(now.getYear(), now.getMonthValue(),
+                    Double.valueOf(((Integer) collect.get(0).getValue()).toString())
+                    , Double.valueOf(((Integer) collect.get(1).getValue()).toString())));
+        }
     }
 
     public StatisticsServiceImpl(RedisOperator operator) {
