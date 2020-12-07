@@ -1,18 +1,14 @@
 package com.giantlizardcloud.config.quartz.jobs;
 
 
-import com.giantlizardcloud.config.redis.RedisOperator;
 import com.giantlizardcloud.merchant.service.IDayService;
 import com.giantlizardcloud.merchant.service.IStatisticsService;
 import com.giantlizardcloud.sys.entity.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Demo class
@@ -26,7 +22,6 @@ import java.util.Map;
 public class TestJob {
 
     private final IStatisticsService statisticsService;
-    private final RedisOperator operator;
     private final IDayService dayService;
 
     /**
@@ -59,8 +54,9 @@ public class TestJob {
     }
 
     public void testObjectList(List<User> list){
-        log.info("执行testObjectList");
-        list.stream().forEach(System.out::println);
+        for (User user : list) {
+            System.out.println(user);
+        }
     }
 
     /**
@@ -77,9 +73,8 @@ public class TestJob {
         dayService.addCountByDay();
     }
 
-    public TestJob(IStatisticsService statisticsService, RedisOperator operator ,IDayService dayService) {
+    public TestJob(IStatisticsService statisticsService,IDayService dayService) {
         this.statisticsService = statisticsService;
-        this.operator = operator;
         this.dayService = dayService;
     }
 }

@@ -62,7 +62,7 @@ public class DayServiceImpl extends ServiceImpl<DayMapper, Day> implements IDayS
                 ",sale_number,purchase_number,return_sale_number,return_purchase_number")
                 .between("day_year",monday.getYear(),sunday.getYear())
                 .between("day_month",monday.getMonthValue(),sunday.getMonthValue())
-                .in("day_date",list));
+                .in("day_date",list).orderByDesc("day_id").last("LIMIT 7"));
     }
 
     public DayServiceImpl(IOrderService orderService, IPurchaseOrderService purchaseOrderService) {
