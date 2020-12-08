@@ -2,6 +2,7 @@ package com.giantlizardcloud.sys.controller;
 
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.config.redis.RedisOperator;
+import com.giantlizardcloud.merchant.entity.Day;
 import com.giantlizardcloud.merchant.entity.Statistics;
 import com.giantlizardcloud.merchant.enums.IndexKeyEnum;
 import com.giantlizardcloud.merchant.service.IDayService;
@@ -48,7 +49,9 @@ public class IndexController {
 //        将list倒序
         reverse(statistics);
         indexDataVo.setStatistics(statistics);
-        indexDataVo.setLastWeekCounts(dayService.getLastWeekCountByDay());
+        List<Day> day = dayService.getLastWeekCountByDay();
+        reverse(day);
+        indexDataVo.setLastWeekCounts(day);
         return JSONResult.ok(indexDataVo);
     }
 
