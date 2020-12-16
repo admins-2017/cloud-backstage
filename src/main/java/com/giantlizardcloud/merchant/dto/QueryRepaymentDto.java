@@ -24,8 +24,11 @@ public class QueryRepaymentDto {
     @ApiModelProperty(value = "还款单还款方式")
     private Integer repaymentMethod;
 
-    @ApiModelProperty(value = "还款时间")
-    private LocalDateTime repaymentDate;
+    @ApiModelProperty(value = "还款开始时间")
+    private LocalDateTime repaymentStartDate;
+
+    @ApiModelProperty(value = "还款结束时间")
+    private LocalDateTime repaymentEndDate;
 
     @ApiModelProperty(value = "页码")
     private Integer page;

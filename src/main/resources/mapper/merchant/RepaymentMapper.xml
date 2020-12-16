@@ -2,4 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.merchant.mapper.RepaymentMapper">
 
+    <resultMap id="repaymentWithAnnex" type="com.giantlizardcloud.merchant.vo.RepaymentWithAnnexVo">
+        <id column="repayment_id" property="repaymentId"/>
+        <result column="repayment_number" property="repaymentNumber"/>
+        <result column="supplier_id" property="supplierId"/>
+        <result column="repayment_sum" property="repaymentSum"/>
+        <result column="repayment_status" property="repaymentStatus"/>
+        <result column="repayment_method" property="repaymentMethod"/>
+        <result column="repayment_account_number" property="repaymentAccountNumber"/>
+        <result column="repayment_date" property="repaymentDate"/>
+        <result column="repayment_remark" property="repaymentRemark"/>
+        <result column="insert_user" property="insertUser"/>
+        <result column="insert_time" property="insertTime"/>
+        <result column="repayment_invalid_user" property="repaymentInvalidUser"/>
+        <result column="repayment_invalid_time" property="repaymentInvalidTime"/>
+        <collection property="children" ofType="com.giantlizardcloud.merchant.entity.RepaymentAnnex"
+                    select="com.giantlizardcloud.merchant.mapper.RepaymentAnnexMapper.getAllByRepaymentId" column="repayment_id">
+        </collection>
+    </resultMap>
+    
+    <sql id="all_columns">
+        SELECT
+            repayment_id,
+            repayment_number,
+            supplier_id,
+            repayment_sum,
+            repayment_status,
+            repayment_method,
+            repayment_account_number,
+            repayment_date,
+            repayment_remark,
+            insert_user,
+            insert_time,
+            repayment_invalid_user,
+            repayment_invalid_time
+        FROM
+            merchant_repayment
+    </sql>
+
+    <select id="getRepayment" resultMap="repaymentWithAnnex">
+        <include refid="all_columns"></include>
+            where 1=1
+        <if test=" repaymentNumber != '' and  repaymentNumber != null">
+            AND repayment_number = #{repaymentNumber}
+        </if>
+        <if test=" supplierId != '' and  supplierId != null">
+            AND supplier_id = #{supplierId}
+        </if>
+        <if test=" repaymentStatus != '' and  repaymentStatus != null">
+            AND repayment_status = #{repaymentStatus}
+        </if>
+        <if test=" repaymentMethod != '' and  repaymentMethod != null">
+            AND repayment_method = #{repaymentMethod}
+        </if>
+        <if test=" repaymentStartDate != '' and  repaymentStartDate != null
+            and repaymentEndDate != '' and  repaymentEndDate != null">
+            AND repayment_date BETWEEN #{repaymentStartDate} AND #{repaymentEndDate}
+        </if>
+            ORDER BY repayment_id desc
+            LIMIT #{page},#{size}
+    </select>
 </mapper>

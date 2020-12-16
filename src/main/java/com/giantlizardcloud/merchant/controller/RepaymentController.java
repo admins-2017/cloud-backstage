@@ -27,13 +27,13 @@ public class RepaymentController {
     @PostMapping
     public JSONResult addRepayment(AddRepaymentDto dto){
         repaymentService.addRepayment(dto);
-        return JSONResult.ok();
+        return JSONResult.ok("添加还款单完成");
     }
 
     @PutMapping("/{id}")
     public JSONResult invalidRepayment(@PathVariable("id") Long rid){
         repaymentService.invalidRepayment(rid);
-        return JSONResult.ok();
+        return JSONResult.ok("作废还款单完成");
     }
 
     @GetMapping

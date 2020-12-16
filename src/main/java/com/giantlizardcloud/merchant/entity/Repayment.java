@@ -7,8 +7,10 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -23,7 +25,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("merchant_repayment")
-@ApiModel(value="Repayment对象", description="")
+@ApiModel(value="Repayment对象", description="还款单实体类")
 public class Repayment implements Serializable {
 
     private static final long serialVersionUID = 1L;
