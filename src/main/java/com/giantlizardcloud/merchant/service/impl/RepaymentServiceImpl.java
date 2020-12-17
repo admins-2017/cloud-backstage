@@ -1,5 +1,6 @@
 package com.giantlizardcloud.merchant.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.giantlizardcloud.config.security.until.SecurityUntil;
 import com.giantlizardcloud.config.utils.IdWorker;
@@ -11,6 +12,7 @@ import com.giantlizardcloud.merchant.mapper.RepaymentMapper;
 import com.giantlizardcloud.merchant.service.IRepaymentAnnexService;
 import com.giantlizardcloud.merchant.service.IRepaymentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.giantlizardcloud.merchant.service.ISupplierService;
 import com.giantlizardcloud.merchant.vo.RepaymentWithAnnexVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,7 @@ import java.util.List;
 public class RepaymentServiceImpl extends ServiceImpl<RepaymentMapper, Repayment> implements IRepaymentService {
 
     private final IRepaymentAnnexService annexService;
+    private final ISupplierService supplierService;
 
     @Override
     public List<RepaymentWithAnnexVo> getRepayment(QueryRepaymentDto dto) {
@@ -38,10 +41,14 @@ public class RepaymentServiceImpl extends ServiceImpl<RepaymentMapper, Repayment
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void invalidRepayment(Long rid) {
         baseMapper.update(null,new UpdateWrapper<Repayment>()
                 .set("repayment_status",2).set("repayment_invalid_user", SecurityUntil.getUserId())
                 .set("repayment_invalid_time",LocalDateTime.now()).eq("repayment_id",rid));
+        Repayment repayment = baseMapper.selectOne(new QueryWrapper<Repayment>()
+                .select("supplier_id", "repayment_sum").eq("repayment_id", rid));
+        supplierService.addSupplierArrears(repayment.getSupplierId(),repayment.getRepaymentSum());
     }
 
     @Override
@@ -52,14 +59,14 @@ public class RepaymentServiceImpl extends ServiceImpl<RepaymentMapper, Repayment
         long id = new IdWorker().nextId();
         repayment.setRepaymentId(id);
         baseMapper.insert(repayment);
-        System.out.println(dto.getChildren().size()> 0);
         if (dto.getChildren().size()> 0){
             dto.getChildren().forEach(s -> annexService.save(new RepaymentAnnex(s,id)));
         }
-
+        supplierService.minusSupplierArrears(dto.getSupplierId(),dto.getRepaymentSum());
     }
 
-    public RepaymentServiceImpl(IRepaymentAnnexService annexService) {
+    public RepaymentServiceImpl(IRepaymentAnnexService annexService,ISupplierService supplierService) {
         this.annexService = annexService;
+        this.supplierService = supplierService;
     }
 }

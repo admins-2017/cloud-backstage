@@ -2,6 +2,7 @@
 
 
  import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
  import com.baomidou.mybatisplus.core.metadata.IPage;
  import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
  import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -42,6 +43,18 @@
              supplierIPage.setTotal(this.baseMapper.selectCount(new QueryWrapper<Supplier>().like("supplier_name",supplierName)));
          }
          return supplierIPage;
+     }
+
+     @Override
+     public void minusSupplierArrears(Long supplierId,Double sums) {
+         update(null, new UpdateWrapper<Supplier>().setSql("supplier_arrears = supplier_arrears - "+sums)
+                 .eq("supplier_id",supplierId));
+     }
+
+     @Override
+     public void addSupplierArrears(Long supplierId,Double sums) {
+         update(null, new UpdateWrapper<Supplier>().setSql("supplier_arrears = supplier_arrears + "+sums)
+                 .eq("supplier_id",supplierId));
      }
 
 

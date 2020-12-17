@@ -59,7 +59,7 @@
             and repaymentEndDate != '' and  repaymentEndDate != null">
             AND repayment_date BETWEEN #{repaymentStartDate} AND #{repaymentEndDate}
         </if>
-            ORDER BY repayment_id desc
+            ORDER BY repayment_date desc
             LIMIT #{page},#{size}
     </select>
 </mapper>

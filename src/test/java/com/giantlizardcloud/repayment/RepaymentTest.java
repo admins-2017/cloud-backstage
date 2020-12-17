@@ -5,6 +5,7 @@ import com.giantlizardcloud.merchant.dto.AddRepaymentDto;
 import com.giantlizardcloud.merchant.dto.QueryRepaymentDto;
 import com.giantlizardcloud.merchant.entity.Repayment;
 import com.giantlizardcloud.merchant.service.IRepaymentService;
+import com.giantlizardcloud.merchant.service.ISupplierService;
 import com.giantlizardcloud.merchant.vo.RepaymentWithAnnexVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,8 @@ public class RepaymentTest {
 
     @Autowired
     private IRepaymentService service;
+    @Autowired
+    private ISupplierService supplierService;
 
     @Test
     public void testGetRepayment(){
@@ -31,6 +34,23 @@ public class RepaymentTest {
         List<RepaymentWithAnnexVo> repayment =
                 service.getRepayment(dto);
         repayment.forEach(System.out::println);
+    }
+
+    @Test
+    public void testAddSupplierArrears(){
+        supplierService.addSupplierArrears(5153136104785680L,100.0);
+    }
+
+    @Test
+    public void testMinusSupplierArrears(){
+        supplierService.minusSupplierArrears(5153136104785680L,100.0);
+    }
+
+    @Test
+    public void testSupplierArrears(){
+        Repayment repayment = service.getOne(new QueryWrapper<Repayment>()
+                .select("supplier_id", "repayment_sum").eq("repayment_id", 6));
+        supplierService.addSupplierArrears(repayment.getSupplierId(),repayment.getRepaymentSum());
     }
 
     @Test
