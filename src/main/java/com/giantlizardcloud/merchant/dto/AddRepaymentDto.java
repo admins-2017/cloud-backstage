@@ -4,7 +4,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+/**
+ * @author Administrator
+ */
 @Data
 public class AddRepaymentDto {
 
@@ -29,5 +33,5 @@ public class AddRepaymentDto {
     @ApiModelProperty(value = "还款单备注")
     private String repaymentRemark;
 
-
+    private List<String> children;
 }

@@ -1,8 +1,7 @@
 package com.giantlizardcloud.merchant.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -59,9 +58,11 @@ public class Repayment implements Serializable {
     private String repaymentRemark;
 
     @ApiModelProperty(value = "还款单添加人员")
+    @TableField(fill = FieldFill.INSERT)
     private Long insertUser;
 
     @ApiModelProperty(value = "还款单添加时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime insertTime;
 
     @ApiModelProperty(value = "还款单作废人员")

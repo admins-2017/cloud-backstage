@@ -17,8 +17,19 @@ import java.util.List;
  */
 public interface ISupplierService extends IService<Supplier> {
 
+    /**
+     * 根据状态查询供应商
+     * @return 供应商结果集
+     */
     List<SupplierVo> getAllSupplierBySupplierStatus();
 
+    /**
+     * 根据供应商分页
+     * @param supplierName 供应商名
+     * @param page 页码
+     * @param size 条数
+     * @return
+     */
     IPage<Supplier> selectAllSupplierWithUser(String supplierName, Integer page, Integer size);
 
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -35,16 +36,24 @@ public class RepaymentTest {
     @Test
     public void testAddRepayment(){
         AddRepaymentDto addRepaymentDto = new AddRepaymentDto();
-        addRepaymentDto.setSupplierId(2L);
-        addRepaymentDto.setRepaymentSum(2000.0);
+        addRepaymentDto.setSupplierId(3L);
+        addRepaymentDto.setRepaymentSum(3000.0);
         addRepaymentDto.setRepaymentRemark("测试2");
-        addRepaymentDto.setRepaymentNumber("hkd-202012161930002");
-        addRepaymentDto.setRepaymentMethod(2);
+        addRepaymentDto.setRepaymentNumber("hkd-202012161930003");
+        addRepaymentDto.setRepaymentMethod(1);
         addRepaymentDto.setRepaymentDate(LocalDateTime.now());
         addRepaymentDto.setRepaymentAccountNumber("102553221477855");
-
+        List<String> list = new ArrayList<>();
+        list.add("localhost:8080/c.jpg");
+        list.add("localhost:8080/d.jpg");
+        addRepaymentDto.setChildren(list);
         service.addRepayment(addRepaymentDto);
 
+    }
+
+    @Test
+    public void testUpdate(){
+        service.invalidRepayment(1L);
     }
 
 }
