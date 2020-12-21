@@ -2,10 +2,13 @@ package com.giantlizardcloud.merchant.controller;
 
 
 import com.giantlizardcloud.config.json.JSONResult;
+import com.giantlizardcloud.merchant.dto.AddSettleDto;
+import com.giantlizardcloud.merchant.dto.QuerySettleDto;
 import com.giantlizardcloud.merchant.service.ISettleService;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.giantlizardcloud.merchant.vo.SettleWithAnnexVo;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 /**
  * <p>
@@ -21,15 +24,21 @@ public class SettleController {
 
     private final ISettleService settleService;
 
-    public JSONResult addSettle(){
+    @PostMapping
+    public JSONResult addSettle(@RequestBody AddSettleDto dto){
+        settleService.addSettle(dto);
         return JSONResult.ok();
     }
 
-    public JSONResult invalidSettle(){
+    @PutMapping("/{id}")
+    public JSONResult invalidSettle(@PathVariable("id") Integer sid){
+        settleService.invalidSettle(sid);
         return JSONResult.ok();
     }
 
-    public JSONResult getSettle(){
+    @GetMapping
+    public JSONResult getSettle(@RequestBody QuerySettleDto dto){
+        List<SettleWithAnnexVo> list = settleService.getSettleByCondition(dto);
         return JSONResult.ok();
     }
 

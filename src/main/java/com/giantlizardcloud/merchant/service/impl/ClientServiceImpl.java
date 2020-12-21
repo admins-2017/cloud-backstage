@@ -17,4 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClientServiceImpl extends ServiceImpl<ClientMapper, Client> implements IClientService {
 
+    @Override
+    public void minusClientArrears(Long clientId, Double settleSum) {
+
+    }
+
+    @Override
+    public void addClientArrears(long clientId, Double settleSum) {
+
+    }
 }
