@@ -1,5 +1,7 @@
 package com.giantlizardcloud.merchant.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.AddSettleDto;
 import com.giantlizardcloud.merchant.dto.QuerySettleDto;
@@ -39,23 +41,23 @@ public class SettleServiceImpl extends ServiceImpl<SettleMapper, Settle> impleme
         long sid = new IdWorker().nextId();
         settle.setSettleId(sid);
         baseMapper.insert(settle);
-
-        dto.getUrls().forEach(s -> {
-            annexService.save(new SettleAnnex(s,sid));
-        });
-
+        for (String s : dto.getUrls()) {
+            annexService.save(new SettleAnnex(s, sid));
+        }
         clientService.minusClientArrears(dto.getClientId(),dto.getSettleSum());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void invalidSettle(Integer sid) {
-        clientService.addClientArrears(1L,100.0);
+        Settle settle = this.getOne(new QueryWrapper<Settle>().eq("settle_id", sid));
+        clientService.addClientArrears(settle.getClientId(),settle.getSettleSum());
+        update(new UpdateWrapper<Settle>().set("settle_status","2").eq("settle_id",sid));
     }
 
     @Override
     public List<SettleWithAnnexVo> getSettleByCondition(QuerySettleDto dto) {
-        return null;
+        return baseMapper.getSettleByCondition(dto);
     }
 
     public SettleServiceImpl(ISettleAnnexService annexService, IClientService clientService) {

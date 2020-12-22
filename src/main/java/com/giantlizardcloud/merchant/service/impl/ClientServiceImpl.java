@@ -1,5 +1,6 @@
 package com.giantlizardcloud.merchant.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.giantlizardcloud.merchant.entity.Client;
 import com.giantlizardcloud.merchant.mapper.ClientMapper;
 import com.giantlizardcloud.merchant.service.IClientService;
@@ -19,11 +20,11 @@ public class ClientServiceImpl extends ServiceImpl<ClientMapper, Client> impleme
 
     @Override
     public void minusClientArrears(Long clientId, Double settleSum) {
-
+        update(null,new UpdateWrapper<Client>().setSql("client_consumption = client_consumption - "+settleSum).eq("client_id",clientId));
     }
 
     @Override
     public void addClientArrears(long clientId, Double settleSum) {
-
+        update(null,new UpdateWrapper<Client>().setSql("client_consumption = client_consumption + "+settleSum).eq("client_id",clientId));
     }
 }

@@ -2,4 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.giantlizardcloud.merchant.mapper.SettleMapper">
 
+    <resultMap id="getSettle" type="com.giantlizardcloud.merchant.vo.SettleWithAnnexVo">
+        <id column="settle_id" property="settleId"></id>
+        <collection column="settleNumber" property="settleNumber"></collection>
+        <collection column="clientId" property="clientId"></collection>
+        <collection column="settleSum" property="settleSum"></collection>
+        <collection column="settleStatus" property="settleStatus"></collection>
+        <collection column="settleMethod" property="settleMethod"></collection>
+        <collection column="settleAccountNumber" property="settleAccountNumber"></collection>
+        <collection column="settleDate" property="settleDate"></collection>
+        <collection column="settleRemark" property="settleRemark"></collection>
+        <collection column="insertUser" property="insertUser"></collection>
+        <collection column="insertTime" property="insertTime"></collection>
+        <collection column="settleInvalidUser" property="settleInvalidUser"></collection>
+        <collection column="settleInvalidTime" property="settleInvalidTime"></collection>
+    </resultMap>
+
+    <sql id="getAllColumn">
+        SELECT
+            settle_id,
+            settle_number,
+            client_id,
+            settle_sum,
+            settle_status,
+            settle_method,
+            settle_account_number,
+            settle_date,
+            settle_remark,
+            insert_user,
+            insert_time,
+            settle_invalid_user,
+            settle_invalid_time
+        FROM
+            merchant_settle
+        WHERE 1=1
+    </sql>
+
+    <select id="getSettleByCondition" resultMap="getSettle">
+        <include refid="getAllColumn"></include>
+        <if test=" settleNumber != '' and  settleNumber != null">
+            AND settle_number = #{settleNumber}
+        </if>
+        <if test=" clientId != '' and  clientId != null">
+            AND client_id = #{clientId}
+        </if>
+        <if test=" settleStatus != '' and  settleStatus != null">
+            AND settle_status = #{settleStatus}
+        </if>
+        <if test=" settleMethod != '' and  settleMethod != null">
+            AND settle_method = #{settleMethod}
+        </if>
+        <if test=" settleStartDate != '' and  settleStartDate != null
+            and settleEndDate != '' and  settleEndDate != null">
+            AND settle_date BETWEEN #{settleStartDate} AND #{settleEndDate}
+        </if>
+        ORDER BY settle_date desc
+        LIMIT #{page},#{size}
+    </select>
 </mapper>

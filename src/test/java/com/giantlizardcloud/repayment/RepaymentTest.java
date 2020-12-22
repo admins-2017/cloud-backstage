@@ -5,6 +5,7 @@ import com.giantlizardcloud.merchant.dto.AddRepaymentDto;
 import com.giantlizardcloud.merchant.dto.QueryRepaymentDto;
 import com.giantlizardcloud.merchant.entity.Repayment;
 import com.giantlizardcloud.merchant.service.IRepaymentService;
+import com.giantlizardcloud.merchant.service.ISettleService;
 import com.giantlizardcloud.merchant.service.ISupplierService;
 import com.giantlizardcloud.merchant.vo.RepaymentWithAnnexVo;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,8 @@ public class RepaymentTest {
     private IRepaymentService service;
     @Autowired
     private ISupplierService supplierService;
+    @Autowired
+    private ISettleService settleService;
 
     @Test
     public void testGetRepayment(){
@@ -76,4 +79,8 @@ public class RepaymentTest {
         service.invalidRepayment(1L);
     }
 
+    @Test
+    public void testGetSettle(){
+        settleService.list();
+    }
 }
