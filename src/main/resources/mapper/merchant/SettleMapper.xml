@@ -4,18 +4,21 @@
 
     <resultMap id="getSettle" type="com.giantlizardcloud.merchant.vo.SettleWithAnnexVo">
         <id column="settle_id" property="settleId"></id>
-        <collection column="settleNumber" property="settleNumber"></collection>
-        <collection column="clientId" property="clientId"></collection>
-        <collection column="settleSum" property="settleSum"></collection>
-        <collection column="settleStatus" property="settleStatus"></collection>
-        <collection column="settleMethod" property="settleMethod"></collection>
-        <collection column="settleAccountNumber" property="settleAccountNumber"></collection>
-        <collection column="settleDate" property="settleDate"></collection>
-        <collection column="settleRemark" property="settleRemark"></collection>
-        <collection column="insertUser" property="insertUser"></collection>
-        <collection column="insertTime" property="insertTime"></collection>
-        <collection column="settleInvalidUser" property="settleInvalidUser"></collection>
-        <collection column="settleInvalidTime" property="settleInvalidTime"></collection>
+        <result column="settle_number" property="settleNumber"></result>
+        <result column="client_id" property="clientId"></result>
+        <result column="settle_sum" property="settleSum"></result>
+        <result column="settle_status" property="settleStatus"></result>
+        <result column="settle_method" property="settleMethod"></result>
+        <result column="settle_account_number" property="settleAccountNumber"></result>
+        <result column="settle_date" property="settleDate"></result>
+        <result column="settle_remark" property="settleRemark"></result>
+        <result column="insert_user" property="insertUser"></result>
+        <result column="insert_time" property="insertTime"></result>
+        <result column="settle_invalid_user" property="settleInvalidUser"></result>
+        <result column="settle_invalid_time" property="settleInvalidTime"></result>
+        <collection property="children" ofType="string"
+                    select="com.giantlizardcloud.merchant.mapper.SettleAnnexMapper.getAllAnnexBySettleId" column="settle_id">
+        </collection>
     </resultMap>
 
     <sql id="getAllColumn">

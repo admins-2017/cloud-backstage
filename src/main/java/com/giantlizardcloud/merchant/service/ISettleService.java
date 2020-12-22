@@ -28,7 +28,7 @@ public interface ISettleService extends IService<Settle> {
      * 作废结清单
      * @param sid 结清单id
      */
-    void invalidSettle(Integer sid);
+    void invalidSettle(Long sid);
 
     /**
      * 获取结清单详情

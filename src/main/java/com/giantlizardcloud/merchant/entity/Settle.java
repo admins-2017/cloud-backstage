@@ -29,7 +29,7 @@ public class Settle implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "结清证明id")
-    @TableId(value = "settle_id", type = IdType.AUTO)
+    @TableId(value = "settle_id")
     private Long settleId;
 
     @ApiModelProperty(value = "结清单单号")

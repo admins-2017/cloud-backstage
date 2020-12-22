@@ -31,7 +31,7 @@ public class SettleController {
     }
 
     @PutMapping("/{id}")
-    public JSONResult invalidSettle(@PathVariable("id") Integer sid){
+    public JSONResult invalidSettle(@PathVariable("id") Long sid){
         settleService.invalidSettle(sid);
         return JSONResult.ok();
     }

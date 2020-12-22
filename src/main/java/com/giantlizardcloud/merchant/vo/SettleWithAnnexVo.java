@@ -1,6 +1,5 @@
 package com.giantlizardcloud.merchant.vo;
 
-import com.giantlizardcloud.merchant.entity.SettleAnnex;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -52,5 +51,5 @@ public class SettleWithAnnexVo {
     @ApiModelProperty(value = "结清单作废时间")
     private LocalDateTime settleInvalidTime;
 
-    private List<SettleAnnex> children;
+    private List<String> children;
 }

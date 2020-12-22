@@ -40,6 +40,7 @@ public class SettleServiceImpl extends ServiceImpl<SettleMapper, Settle> impleme
         BeanUtils.copyProperties(dto,settle);
         long sid = new IdWorker().nextId();
         settle.setSettleId(sid);
+        System.out.println(settle.toString());
         baseMapper.insert(settle);
         for (String s : dto.getUrls()) {
             annexService.save(new SettleAnnex(s, sid));
@@ -49,7 +50,7 @@ public class SettleServiceImpl extends ServiceImpl<SettleMapper, Settle> impleme
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void invalidSettle(Integer sid) {
+    public void invalidSettle(Long sid) {
         Settle settle = this.getOne(new QueryWrapper<Settle>().eq("settle_id", sid));
         clientService.addClientArrears(settle.getClientId(),settle.getSettleSum());
         update(new UpdateWrapper<Settle>().set("settle_status","2").eq("settle_id",sid));
