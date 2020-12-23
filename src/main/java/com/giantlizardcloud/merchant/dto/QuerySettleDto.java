@@ -22,16 +22,16 @@ public class QuerySettleDto {
     private Long clientId;
 
     @ApiModelProperty(value = "结清单状态(1 结清 2 作废)")
-    private Boolean settleStatus;
+    private Integer settleStatus;
 
     @ApiModelProperty(value = "结清方式")
     private Integer settleMethod;
 
     @ApiModelProperty(value = "结清开始时间")
-    private LocalDateTime settleStartDate;
+    private String settleStartDate;
 
     @ApiModelProperty(value = "结清结束时间")
-    private LocalDateTime settleEndDate;
+    private String settleEndDate;
 
     @ApiModelProperty(value = "页码")
     private Integer page;

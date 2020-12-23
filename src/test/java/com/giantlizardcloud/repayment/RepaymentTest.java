@@ -33,6 +33,7 @@ public class RepaymentTest {
         QueryRepaymentDto dto = new QueryRepaymentDto();
         dto.setPage(0);
         dto.setSize(10);
+        dto.setRepaymentStatus(2);
 //        dto.setSupplierId(1L);
         List<RepaymentWithAnnexVo> repayment =
                 service.getRepayment(dto);

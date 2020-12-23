@@ -43,7 +43,7 @@ public class Repayment implements Serializable {
     private Double repaymentSum;
 
     @ApiModelProperty(value = "还款单状态(1 正常 2 作废)")
-    private Boolean repaymentStatus;
+    private Integer repaymentStatus;
 
     @ApiModelProperty(value = "还款单还款方式")
     private Integer repaymentMethod;

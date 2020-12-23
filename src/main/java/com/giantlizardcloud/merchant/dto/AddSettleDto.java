@@ -25,9 +25,6 @@ public class AddSettleDto {
     @ApiModelProperty(value = "结清金额")
     private Double settleSum;
 
-    @ApiModelProperty(value = "结清单状态(1 结清 2 作废)")
-    private Boolean settleStatus;
-
     @ApiModelProperty(value = "结清方式")
     private Integer settleMethod;
 

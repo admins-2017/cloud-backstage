@@ -42,7 +42,7 @@ public class Settle implements Serializable {
     private Double settleSum;
 
     @ApiModelProperty(value = "结清单状态(1 结清 2 作废)")
-    private Boolean settleStatus;
+    private Integer settleStatus;
 
     @ApiModelProperty(value = "结清方式")
     private Integer settleMethod;

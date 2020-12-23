@@ -40,7 +40,6 @@ public class SettleServiceImpl extends ServiceImpl<SettleMapper, Settle> impleme
         BeanUtils.copyProperties(dto,settle);
         long sid = new IdWorker().nextId();
         settle.setSettleId(sid);
-        System.out.println(settle.toString());
         baseMapper.insert(settle);
         for (String s : dto.getUrls()) {
             annexService.save(new SettleAnnex(s, sid));

@@ -24,12 +24,12 @@ public class SettleTest {
     public void insertSettle(){
         AddSettleDto dto = new AddSettleDto();
         dto.setClientId(5154422908323664L);
-        dto.setSettleAccountNumber("59563311491");
+        dto.setSettleAccountNumber("59563355231");
         dto.setSettleDate(LocalDateTime.now());
         dto.setSettleMethod(1);
-        dto.setSettleNumber("jqd-2020122219290006");
-        dto.setSettleRemark("测试结清一下6");
-        dto.setSettleSum(200.0);
+        dto.setSettleNumber("jqd-2020122219290007");
+        dto.setSettleRemark("测试结清一下7");
+        dto.setSettleSum(100.0);
         List<String> urls = new ArrayList<>();
         urls.add("localhost:8080/jqd-2020122219290001/a.jpg");
         urls.add("localhost:8080/jqd-2020122219290001/b.jpg");
@@ -47,6 +47,12 @@ public class SettleTest {
         QuerySettleDto dto = new QuerySettleDto();
         dto.setPage(0);
         dto.setSize(10);
+//        dto.setSettleNumber("jqd-2020122219290006");
+//        dto.setClientId(5154422908323664L);
+//        dto.setSettleMethod(1);
+//        dto.setSettleStartDate("2020-12-12 00:00:00");
+//        dto.setSettleEndDate("2020-12-20 23:59:54");
+        dto.setSettleStatus(2);
         List<SettleWithAnnexVo> list = settleService.getSettleByCondition(dto);
         list.forEach(System.out::println);
     }
