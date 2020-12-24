@@ -6,6 +6,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+/**
+ * @author 康东伟
+ */
 @Data
 public class RecordDto {
 

@@ -1,8 +1,6 @@
 package com.giantlizardcloud.sys.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.aspect.SysOperationLog;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.dto.RecordDto;
@@ -13,7 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <p>
@@ -35,33 +33,18 @@ public class OperationRecordController {
         this.recordService = recordService;
     }
 
-    @ApiOperation(value="分页获取操作记录",notes = "页码和条数")
-    @GetMapping("/{page}/{size}")
-    public JSONResult getRecordByPage(@PathVariable Integer page , @PathVariable Integer size){
-        Page<OperationRecord> recordPage = new Page<>(page, size);
-        Page<OperationRecord> records = recordService.page(recordPage);
-        return JSONResult.ok(records);
-    }
+//    @ApiOperation(value="分页获取操作记录",notes = "页码和条数")
+//    @GetMapping("/{page}/{size}")
+//    public JSONResult getRecordByPage(@PathVariable Integer page , @PathVariable Integer size){
+//        Page<OperationRecord> recordPage = new Page<>(page, size);
+//        Page<OperationRecord> records = recordService.page(recordPage);
+//        return JSONResult.ok(records);
+//    }
 
-    @PostMapping
+    @GetMapping
     @SysOperationLog(description = "查询操作记录")
     @ApiOperation(value="根据查询条件获取",notes = "记录dto")
     public JSONResult getRecordByCondition(RecordDto dto){
-        Page<OperationRecord> recordPage = new Page<>(dto.getPage(), dto.getSize());
-        log.info(dto.toString());
-        Page<OperationRecord> records;
-        if(!"".equals(dto.getEndTime())&&!"".equals(dto.getStartTime())){
-            records = recordService.page(recordPage,new QueryWrapper<OperationRecord>()
-                    .like(!"".equals(dto.getRequestUser()),"request_user",dto.getRequestUser())
-                    .eq(!"".equals(dto.getRequestType()),"request_type",dto.getRequestType())
-                    .between(!"".equals(dto.getEndTime())&&!"".equals(dto.getStartTime()),"request_time"
-                            ,LocalDate.parse(dto.getStartTime()), LocalDate.parse(dto.getEndTime())));
-        }else{
-            records = recordService.page(recordPage, new QueryWrapper<OperationRecord>()
-                    .like(!"".equals(dto.getRequestUser()), "request_user", dto.getRequestUser())
-                    .eq(!"".equals(dto.getRequestType()), "request_type", dto.getRequestType())
-            );
-        }
-        return JSONResult.ok(records);
+        return JSONResult.ok(recordService.getRecordByCondition(dto));
     }
 }
