@@ -2,6 +2,7 @@ package com.giantlizardcloud.sys.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.dto.job.QueryJobDto;
 import com.giantlizardcloud.dto.job.ScheduleJobWithDetail;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -72,8 +73,11 @@ public interface IScheduleJobService extends IService<ScheduleJob> {
 
     ScheduleJobWithDetail getTaskId(Integer id);
 
-    IPage<ScheduleJobWithDetail> getTaskByPage(Integer page , Integer size);
 
-    IPage<ScheduleJobWithDetail> getTaskByLikeName(Integer page , Integer size,String likeName);
-
+    /**
+     * 根据查询条件获取任务
+     * @param dto 查询条件
+     * @return 任务列表
+     */
+    IPage<ScheduleJobWithDetail> getJobByCondition(QueryJobDto dto);
 }

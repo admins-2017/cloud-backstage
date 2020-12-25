@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.quartz.config.QuartzFactory;
+import com.giantlizardcloud.dto.job.QueryJobDto;
 import com.giantlizardcloud.dto.job.ScheduleJobWithDetail;
 import com.giantlizardcloud.merchant.entity.Shop;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
@@ -148,22 +149,14 @@ public class ScheduleJobServiceImpl extends ServiceImpl<ScheduleJobMapper, Sched
     }
 
     @Override
-    public IPage<ScheduleJobWithDetail> getTaskByPage(Integer page , Integer size) {
-        page = (page-1)*size;
-        List<ScheduleJobWithDetail> tasks = this.baseMapper.getTaskByPage(page, size);
+    public IPage<ScheduleJobWithDetail> getJobByCondition(QueryJobDto dto) {
+        dto.setPage((dto.getPage()-1)*dto.getSize());
+        List<ScheduleJobWithDetail> tasks =this.baseMapper.getJobByCondition(dto);
         IPage<ScheduleJobWithDetail> jobs = new Page<>();
         jobs.setRecords(tasks);
-        jobs.setTotal(this.baseMapper.selectCount(new QueryWrapper<>()));
-        return jobs;
-    }
-
-    @Override
-    public IPage<ScheduleJobWithDetail> getTaskByLikeName(Integer page, Integer size, String likeName) {
-        page = (page-1)*size;
-        List<ScheduleJobWithDetail> tasks = this.baseMapper.getTaskByLikeName(page, size,likeName);
-        IPage<ScheduleJobWithDetail> jobs = new Page<>();
-        jobs.setRecords(tasks);
-        jobs.setTotal(this.baseMapper.selectCount(new QueryWrapper<ScheduleJob>().like("job_name",likeName)));
+        jobs.setTotal(this.baseMapper.selectCount(new QueryWrapper<ScheduleJob>()
+                .eq(dto.getStatus()!=null&&!dto.getStatus().equals(""),"status",dto.getStatus())
+                .like(dto.getLikeName()!=null && !dto.getLikeName().equals(""),"job_name",dto.getLikeName())));
         return jobs;
     }
 

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.dto.JobDto;
+import com.giantlizardcloud.dto.job.QueryJobDto;
 import com.giantlizardcloud.dto.job.ScheduleJobWithDetail;
 import com.giantlizardcloud.sys.entity.ScheduleDetail;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
@@ -103,16 +104,8 @@ public class ScheduleJobController {
         return JSONResult.ok();
     }
 
-
-    @GetMapping("/{page}/{size}")
-    public JSONResult findAllJob(@PathVariable Integer page ,@PathVariable Integer size){
-        IPage<ScheduleJobWithDetail> jobs = jobService.getTaskByPage(page, size);
-        return JSONResult.ok(jobs);
-    }
-
-    @GetMapping("/{page}/{size}/{likeName}")
-    public JSONResult findJobByCondition(@PathVariable Integer page ,@PathVariable Integer size,@PathVariable String likeName){
-        IPage<ScheduleJobWithDetail> taskByLikeName = jobService.getTaskByLikeName(page, size, likeName);
-        return JSONResult.ok(taskByLikeName);
+    @GetMapping("获取任务")
+    public JSONResult getJobByCondition(QueryJobDto dto){
+        return JSONResult.ok(jobService.getJobByCondition(dto));
     }
 }

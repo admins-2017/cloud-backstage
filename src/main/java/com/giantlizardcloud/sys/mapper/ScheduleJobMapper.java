@@ -2,6 +2,7 @@ package com.giantlizardcloud.sys.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.giantlizardcloud.dto.job.QueryJobDto;
 import com.giantlizardcloud.dto.job.ScheduleJobWithDetail;
 import com.giantlizardcloud.sys.entity.ScheduleJob;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -28,8 +29,13 @@ public interface ScheduleJobMapper extends BaseMapper<ScheduleJob> {
     @Select("select a.*,b.bean_name,b.method_name,b.method_arg_type from sys_schedule_job a LEFT JOIN sys_schedule_detail b on a.detail_id = b.id where a.id = #{id}")
     ScheduleJobWithDetail getTaskId(@Param("id") Integer id);
 
-    List<ScheduleJobWithDetail> getTaskByPage(@Param("page") Integer page ,@Param("size") Integer size);
+    /**
+     * 根据查询条件获取任务
+     * @param dto 查询条件
+     * @return 任务列表
+     */
+    List<ScheduleJobWithDetail> getJobByCondition(QueryJobDto dto);
 
-    List<ScheduleJobWithDetail> getTaskByLikeName(@Param("page") Integer page ,@Param("size") Integer size,@Param("likeName") String likeName);
+
 
 }
