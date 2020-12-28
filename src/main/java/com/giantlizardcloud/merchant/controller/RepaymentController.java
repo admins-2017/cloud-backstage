@@ -1,14 +1,13 @@
 package com.giantlizardcloud.merchant.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.merchant.dto.AddRepaymentDto;
 import com.giantlizardcloud.merchant.dto.QueryRepaymentDto;
 import com.giantlizardcloud.merchant.service.IRepaymentService;
 import com.giantlizardcloud.merchant.vo.RepaymentWithAnnexVo;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * <p>
@@ -38,8 +37,8 @@ public class RepaymentController {
 
     @GetMapping
     public JSONResult getRepayment( QueryRepaymentDto dto){
-        List<RepaymentWithAnnexVo> list = repaymentService.getRepayment(dto);
-        return JSONResult.ok(list);
+        IPage<RepaymentWithAnnexVo> vos = repaymentService.getRepayment(dto);
+        return JSONResult.ok(vos);
     }
 
     public RepaymentController(IRepaymentService repaymentService) {

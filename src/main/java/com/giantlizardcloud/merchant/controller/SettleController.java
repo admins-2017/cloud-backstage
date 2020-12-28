@@ -1,6 +1,7 @@
 package com.giantlizardcloud.merchant.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.config.json.JSONResult;
 import com.giantlizardcloud.merchant.dto.AddSettleDto;
 import com.giantlizardcloud.merchant.dto.QuerySettleDto;
@@ -38,8 +39,8 @@ public class SettleController {
 
     @GetMapping
     public JSONResult getSettle(@RequestBody QuerySettleDto dto){
-        List<SettleWithAnnexVo> list = settleService.getSettleByCondition(dto);
-        return JSONResult.ok();
+        IPage<SettleWithAnnexVo> vos = settleService.getSettleByCondition(dto);
+        return JSONResult.ok(vos);
     }
 
     public SettleController(ISettleService settleService) {

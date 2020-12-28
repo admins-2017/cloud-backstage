@@ -2,6 +2,8 @@ package com.giantlizardcloud.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.AddSettleDto;
 import com.giantlizardcloud.merchant.dto.QuerySettleDto;
@@ -56,8 +58,22 @@ public class SettleServiceImpl extends ServiceImpl<SettleMapper, Settle> impleme
     }
 
     @Override
-    public List<SettleWithAnnexVo> getSettleByCondition(QuerySettleDto dto) {
-        return baseMapper.getSettleByCondition(dto);
+    public IPage<SettleWithAnnexVo> getSettleByCondition(QuerySettleDto dto) {
+        dto.setPage((dto.getPage()-1)*dto.getSize());
+        List<SettleWithAnnexVo> settles = baseMapper.getSettleByCondition(dto);
+        IPage<SettleWithAnnexVo> vos = new Page<>();
+        vos.setRecords(settles);
+        vos.setTotal(count(new QueryWrapper<Settle>()
+                        .eq(dto.getSettleNumber()!=null&&!"".equals(dto.getSettleNumber()),"settle_number",dto.getSettleNumber())
+                        .eq(dto.getClientId()!=null,"client_id",dto.getClientId())
+                        .eq(dto.getSettleStatus()!=null, "settle_status",dto.getSettleStatus())
+                        .eq(dto.getSettleMethod()!= null , "settle_method", dto.getSettleMethod())
+                        .between(dto.getSettleEndDate()!=null&& dto.getSettleStartDate()!=null
+                                        &&!"".equals(dto.getSettleStartDate())&&!"".equals(dto.getSettleEndDate())
+                                ,"settle_date",dto.getSettleStartDate(),dto.getSettleEndDate())
+                )
+        );
+        return vos;
     }
 
     public SettleServiceImpl(ISettleAnnexService annexService, IClientService clientService) {

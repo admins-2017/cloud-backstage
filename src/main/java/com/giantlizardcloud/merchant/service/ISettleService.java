@@ -1,12 +1,11 @@
 package com.giantlizardcloud.merchant.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.merchant.dto.AddSettleDto;
 import com.giantlizardcloud.merchant.dto.QuerySettleDto;
 import com.giantlizardcloud.merchant.entity.Settle;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.giantlizardcloud.merchant.vo.SettleWithAnnexVo;
-
-import java.util.List;
 
 /**
  * <p>
@@ -35,5 +34,5 @@ public interface ISettleService extends IService<Settle> {
      * @param dto 查询条件
      * @return 结清单列表
      */
-    List<SettleWithAnnexVo> getSettleByCondition(QuerySettleDto dto);
+    IPage<SettleWithAnnexVo> getSettleByCondition(QuerySettleDto dto);
 }

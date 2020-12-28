@@ -44,13 +44,13 @@ public class RepaymentServiceImpl extends ServiceImpl<RepaymentMapper, Repayment
         IPage<RepaymentWithAnnexVo> repayments = new Page<>();
         repayments.setRecords(repayment);
         repayments.setTotal(count(new QueryWrapper<Repayment>()
-                .eq(!dto.getRepaymentNumber().equals(""),"repayment_number",dto.getRepaymentNumber())
+                .eq(dto.getRepaymentNumber()!=null&&!"".equals(dto.getRepaymentNumber()),"repayment_number",dto.getRepaymentNumber())
                 .eq(dto.getSupplierId()!=null,"supplier_id",dto.getSupplierId())
                 .eq(dto.getRepaymentStatus()!=null, "repayment_status",dto.getRepaymentStatus())
                 .eq(dto.getRepaymentMethod()!= null , "repayment_method", dto.getRepaymentMethod())
-                .between(!dto.getRepaymentEndDate().equals("")&&!dto.getRepaymentStartDate().equals("")
-                ,"repayment_date",dto.getRepaymentStartDate(),dto.getRepaymentEndDate())
-          )
+                .between(dto.getRepaymentStartDate()!=null&&dto.getRepaymentEndDate()!=null&&
+                        !"".equals(dto.getRepaymentEndDate())&&!"".equals(dto.getRepaymentStartDate())
+                ,"repayment_date",dto.getRepaymentStartDate(),dto.getRepaymentEndDate()))
         );
         return repayments;
     }
