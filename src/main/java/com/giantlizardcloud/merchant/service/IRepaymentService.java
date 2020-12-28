@@ -1,12 +1,11 @@
 package com.giantlizardcloud.merchant.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.merchant.dto.AddRepaymentDto;
 import com.giantlizardcloud.merchant.dto.QueryRepaymentDto;
 import com.giantlizardcloud.merchant.entity.Repayment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.giantlizardcloud.merchant.vo.RepaymentWithAnnexVo;
-
-import java.util.List;
 
 /**
  * <p>
@@ -23,7 +22,7 @@ public interface IRepaymentService extends IService<Repayment> {
      * @param dto 查询条件
      * @return 结果集
      */
-    List<RepaymentWithAnnexVo> getRepayment(QueryRepaymentDto dto);
+    IPage<RepaymentWithAnnexVo> getRepayment(QueryRepaymentDto dto);
 
     /**
      * 作废还款单

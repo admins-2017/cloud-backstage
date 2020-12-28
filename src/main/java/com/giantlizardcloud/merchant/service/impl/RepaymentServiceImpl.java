@@ -2,6 +2,8 @@ package com.giantlizardcloud.merchant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.giantlizardcloud.config.security.until.SecurityUntil;
 import com.giantlizardcloud.config.utils.IdWorker;
 import com.giantlizardcloud.merchant.dto.AddRepaymentDto;
@@ -36,8 +38,21 @@ public class RepaymentServiceImpl extends ServiceImpl<RepaymentMapper, Repayment
     private final ISupplierService supplierService;
 
     @Override
-    public List<RepaymentWithAnnexVo> getRepayment(QueryRepaymentDto dto) {
-        return baseMapper.getRepayment(dto);
+    public IPage<RepaymentWithAnnexVo> getRepayment(QueryRepaymentDto dto) {
+        dto.setPage((dto.getPage()-1)*dto.getSize());
+        List<RepaymentWithAnnexVo> repayment = baseMapper.getRepayment(dto);
+        IPage<RepaymentWithAnnexVo> repayments = new Page<>();
+        repayments.setRecords(repayment);
+        repayments.setTotal(count(new QueryWrapper<Repayment>()
+                .eq(!dto.getRepaymentNumber().equals(""),"repayment_number",dto.getRepaymentNumber())
+                .eq(dto.getSupplierId()!=null,"supplier_id",dto.getSupplierId())
+                .eq(dto.getRepaymentStatus()!=null, "repayment_status",dto.getRepaymentStatus())
+                .eq(dto.getRepaymentMethod()!= null , "repayment_method", dto.getRepaymentMethod())
+                .between(!dto.getRepaymentEndDate().equals("")&&!dto.getRepaymentStartDate().equals("")
+                ,"repayment_date",dto.getRepaymentStartDate(),dto.getRepaymentEndDate())
+          )
+        );
+        return repayments;
     }
 
     @Override
