@@ -1,6 +1,7 @@
 package com.giantlizardcloud.repayment;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.giantlizardcloud.merchant.dto.AddRepaymentDto;
 import com.giantlizardcloud.merchant.dto.QueryRepaymentDto;
 import com.giantlizardcloud.merchant.entity.Repayment;
@@ -31,13 +32,16 @@ public class RepaymentTest {
 //    @Test
 //    public void testGetRepayment(){
 //        QueryRepaymentDto dto = new QueryRepaymentDto();
-//        dto.setPage(0);
+//        dto.setPage(1);
 //        dto.setSize(10);
-//        dto.setRepaymentStatus(2);
-////        dto.setSupplierId(1L);
-//        List<RepaymentWithAnnexVo> repayment =
-//                service.getRepayment(dto);
-//        repayment.forEach(System.out::println);
+//        dto.setRepaymentStatus(1);
+//        dto.setSupplierId(1L);
+//        dto.setRepaymentStartDate("2020-12-15 00:00:00");
+//        dto.setRepaymentEndDate("2020-12-20 23:59:59");
+//        dto.setRepaymentNumber("hkd-202012161930003");
+//        IPage<RepaymentWithAnnexVo> repayment = service.getRepayment(dto);
+//        System.out.println(repayment.getTotal());
+//        repayment.getRecords().forEach(System.out::println);
 //    }
 //
 //    @Test
