@@ -6,8 +6,11 @@
     direct-buffers: true
     io-threads: 4
     worker-threads: 20
-  port: 8080
-#mybatis-plus
+  port: 443
+  ssl:
+    key-password: kdw051755
+    key-store: classpath:www.kangdongwei.cn.pfx
+ #mybatis-plus
  mybatis-plus:
   mapper-locations: /mapper/*/*Mapper.xml
   configuration:
