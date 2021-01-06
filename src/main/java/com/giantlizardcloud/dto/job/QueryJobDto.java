@@ -2,6 +2,9 @@ package com.giantlizardcloud.dto.job;
 
 import lombok.Data;
 
+/**
+ * @author kang
+ */
 @Data
 public class QueryJobDto {
 

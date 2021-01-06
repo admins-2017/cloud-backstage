@@ -104,7 +104,7 @@ public class ScheduleJobController {
         return JSONResult.ok();
     }
 
-    @GetMapping("获取任务")
+    @GetMapping
     public JSONResult getJobByCondition(QueryJobDto dto){
         return JSONResult.ok(jobService.getJobByCondition(dto));
     }
