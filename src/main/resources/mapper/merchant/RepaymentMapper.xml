@@ -13,8 +13,10 @@
         <result column="repayment_date" property="repaymentDate"/>
         <result column="repayment_remark" property="repaymentRemark"/>
         <result column="insert_user" property="insertUser"/>
+        <result column="insert_user_name" property="insertUserName"/>
         <result column="insert_time" property="insertTime"/>
         <result column="repayment_invalid_user" property="repaymentInvalidUser"/>
+        <result column="invalid_user_name" property="invalidUserName"/>
         <result column="repayment_invalid_time" property="repaymentInvalidTime"/>
         <collection property="children" ofType="com.giantlizardcloud.merchant.entity.RepaymentAnnex"
                     select="com.giantlizardcloud.merchant.mapper.RepaymentAnnexMapper.getAllByRepaymentId" column="repayment_id">
@@ -23,21 +25,30 @@
     
     <sql id="all_columns">
         SELECT
-            repayment_id,
-            repayment_number,
-            supplier_id,
-            repayment_sum,
-            repayment_status,
-            repayment_method,
-            repayment_account_number,
-            repayment_date,
-            repayment_remark,
-            insert_user,
-            insert_time,
-            repayment_invalid_user,
-            repayment_invalid_time
+            mr.repayment_id,
+            mr.repayment_number,
+            mr.supplier_id,
+            mr.repayment_sum,
+            mr.repayment_status,
+            mr.repayment_method,
+            mr.repayment_account_number,
+            mr.repayment_date,
+            mr.repayment_remark,
+            mr.insert_user,
+            mr.insert_time,
+            mr.repayment_invalid_user,
+            mr.repayment_invalid_time,
+            su.username as insert_user_name,
+			invalid.username as invalid_user_name,
+			ms.supplier_name as supplierName
         FROM
-            merchant_repayment
+            merchant_repayment mr
+        LEFT JOIN merchant_supplier ms
+			ON mr.supplier_id = ms.supplier_id
+		LEFT JOIN sys_user su
+			ON mr.insert_user = su.user_id
+		LEFT JOIN sys_user invalid
+			ON mr.repayment_invalid_user = invalid.user_id
     </sql>
 
     <select id="getRepayment" resultMap="repaymentWithAnnex">

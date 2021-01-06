@@ -6,6 +6,7 @@
         <id column="settle_id" property="settleId"></id>
         <result column="settle_number" property="settleNumber"></result>
         <result column="client_id" property="clientId"></result>
+        <result column="client_name" property="clientName"></result>
         <result column="settle_sum" property="settleSum"></result>
         <result column="settle_status" property="settleStatus"></result>
         <result column="settle_method" property="settleMethod"></result>
@@ -13,8 +14,10 @@
         <result column="settle_date" property="settleDate"></result>
         <result column="settle_remark" property="settleRemark"></result>
         <result column="insert_user" property="insertUser"></result>
+        <result column="insert_user_name" property="insertUserName"></result>
         <result column="insert_time" property="insertTime"></result>
         <result column="settle_invalid_user" property="settleInvalidUser"></result>
+        <result column="invalid_user_name" property="invalidUserName"></result>
         <result column="settle_invalid_time" property="settleInvalidTime"></result>
         <collection property="children" ofType="string"
                     select="com.giantlizardcloud.merchant.mapper.SettleAnnexMapper.getAllAnnexBySettleId" column="settle_id">
@@ -23,21 +26,30 @@
 
     <sql id="getAllColumn">
         SELECT
-            settle_id,
-            settle_number,
-            client_id,
-            settle_sum,
-            settle_status,
-            settle_method,
-            settle_account_number,
-            settle_date,
-            settle_remark,
-            insert_user,
-            insert_time,
-            settle_invalid_user,
-            settle_invalid_time
+            ms.settle_id,
+            ms.settle_number,
+            ms.client_id,
+            ms.settle_sum,
+            ms.settle_status,
+            ms.settle_method,
+            ms.settle_account_number,
+            ms.settle_date,
+            ms.settle_remark,
+            ms.insert_user,
+            ms.insert_time,
+            ms.settle_invalid_user,
+            ms.settle_invalid_time,
+            su.username as insert_user_name,
+			invalid.username as invalid_user_name,
+			mc.client_name as client_name
         FROM
-            merchant_settle
+            merchant_settle ms
+        LEFT JOIN merchant_client mc
+					ON ms.client_id = mc.client_id
+        LEFT JOIN sys_user su
+					ON ms.insert_user =  su.user_id
+		LEFT JOIN sys_user invalid
+					ON ms.insert_user =  invalid.user_id
         WHERE 1=1
     </sql>
 

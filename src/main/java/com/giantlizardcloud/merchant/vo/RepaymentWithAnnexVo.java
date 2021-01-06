@@ -18,16 +18,19 @@ public class RepaymentWithAnnexVo {
     @ApiModelProperty(value = "还款单单号")
     private String repaymentNumber;
 
-    @ApiModelProperty(value = "供应商id")
+    @ApiModelProperty(value = "供应商id",example = "1")
     private Long supplierId;
 
-    @ApiModelProperty(value = "还款单还款金额")
+    @ApiModelProperty(value = "供应商名")
+    private String supplierName;
+
+    @ApiModelProperty(value = "还款单还款金额",example = "1")
     private Double repaymentSum;
 
-    @ApiModelProperty(value = "还款单状态(1 正常 2 作废)")
+    @ApiModelProperty(value = "还款单状态(1 正常 2 作废)",example = "1")
     private Integer repaymentStatus;
 
-    @ApiModelProperty(value = "还款单还款方式")
+    @ApiModelProperty(value = "还款单还款方式",example = "1")
     private Integer repaymentMethod;
 
     @ApiModelProperty(value = "还款单还款账户")
@@ -39,14 +42,20 @@ public class RepaymentWithAnnexVo {
     @ApiModelProperty(value = "还款单备注")
     private String repaymentRemark;
 
-    @ApiModelProperty(value = "还款单添加人员")
+    @ApiModelProperty(value = "还款单添加人员",example = "1")
     private Long insertUser;
+
+    @ApiModelProperty(value = "还款单添加人员名称")
+    private String insertUserName;
 
     @ApiModelProperty(value = "还款单添加时间")
     private LocalDateTime insertTime;
 
-    @ApiModelProperty(value = "还款单作废人员")
+    @ApiModelProperty(value = "还款单作废人员",example = "1")
     private Long repaymentInvalidUser;
+
+    @ApiModelProperty(value = "还款单作废人员名称")
+    private String invalidUserName;
 
     @ApiModelProperty(value = "还款单作废时间")
     private LocalDateTime repaymentInvalidTime;

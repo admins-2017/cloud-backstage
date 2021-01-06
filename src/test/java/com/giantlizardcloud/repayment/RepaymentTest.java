@@ -21,24 +21,24 @@ import java.util.List;
 @SpringBootTest
 @Slf4j
 public class RepaymentTest {
-
+//
 //    @Autowired
 //    private IRepaymentService service;
 //    @Autowired
 //    private ISupplierService supplierService;
 //    @Autowired
 //    private ISettleService settleService;
-//
+////
 //    @Test
 //    public void testGetRepayment(){
 //        QueryRepaymentDto dto = new QueryRepaymentDto();
 //        dto.setPage(1);
 //        dto.setSize(10);
-//        dto.setRepaymentStatus(1);
-//        dto.setSupplierId(1L);
-//        dto.setRepaymentStartDate("2020-12-15 00:00:00");
-//        dto.setRepaymentEndDate("2020-12-20 23:59:59");
-//        dto.setRepaymentNumber("hkd-202012161930003");
+////        dto.setRepaymentStatus(1);
+////        dto.setSupplierId(1L);
+////        dto.setRepaymentStartDate("2020-12-15 00:00:00");
+////        dto.setRepaymentEndDate("2020-12-20 23:59:59");
+////        dto.setRepaymentNumber("hkd-202012161930003");
 //        IPage<RepaymentWithAnnexVo> repayment = service.getRepayment(dto);
 //        System.out.println(repayment.getTotal());
 //        repayment.getRecords().forEach(System.out::println);

@@ -15,13 +15,13 @@ public class AddRepaymentDto {
     @ApiModelProperty(value = "还款单单号")
     private String repaymentNumber;
 
-    @ApiModelProperty(value = "供应商id")
+    @ApiModelProperty(value = "供应商id",example = "1")
     private Long supplierId;
 
-    @ApiModelProperty(value = "还款单还款金额")
+    @ApiModelProperty(value = "还款单还款金额",example = "1")
     private Double repaymentSum;
 
-    @ApiModelProperty(value = "还款单还款方式")
+    @ApiModelProperty(value = "还款单还款方式",example = "1")
     private Integer repaymentMethod;
 
     @ApiModelProperty(value = "还款单还款账户")

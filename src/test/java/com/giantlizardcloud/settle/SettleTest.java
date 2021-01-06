@@ -17,7 +17,7 @@ import java.util.List;
 @SpringBootTest
 @Slf4j
 public class SettleTest {
-//
+
 //    @Autowired
 //    private ISettleService settleService;
 //
@@ -45,15 +45,15 @@ public class SettleTest {
 //
 //    @Test
 //    public void getSettleByCondition(){
-//        QuerySettleDto dto = new QuerySettleDto();
-//        dto.setPage(1);
-//        dto.setSize(10);
-//        dto.setSettleNumber("jqd-2020122219290006");
-//        dto.setClientId(5154422908323664L);
-//        dto.setSettleMethod(1);
-//        dto.setSettleStartDate("2020-12-12 00:00:00");
-//        dto.setSettleEndDate("2020-12-20 23:59:54");
-//        dto.setSettleStatus(1);
+////        QuerySettleDto dto = new QuerySettleDto();
+////        dto.setPage(1);
+////        dto.setSize(10);
+////        dto.setSettleNumber("jqd-2020122219290006");
+////        dto.setClientId(5154422908323664L);
+////        dto.setSettleMethod(1);
+////        dto.setSettleStartDate("2020-12-12 00:00:00");
+////        dto.setSettleEndDate("2020-12-20 23:59:54");
+////        dto.setSettleStatus(1);
 //        IPage<SettleWithAnnexVo> list = settleService.getSettleByCondition(dto);
 //        System.out.println(list.getTotal());
 //        list.getRecords().forEach(System.out::println);

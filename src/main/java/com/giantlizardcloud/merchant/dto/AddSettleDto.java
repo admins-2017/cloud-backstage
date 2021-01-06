@@ -19,13 +19,13 @@ public class AddSettleDto {
     @ApiModelProperty(value = "结清单单号")
     private String settleNumber;
 
-    @ApiModelProperty(value = "结清客户id")
+    @ApiModelProperty(value = "结清客户id",example = "1")
     private Long clientId;
 
-    @ApiModelProperty(value = "结清金额")
+    @ApiModelProperty(value = "结清金额",example = "1")
     private Double settleSum;
 
-    @ApiModelProperty(value = "结清方式")
+    @ApiModelProperty(value = "结清方式",example = "1")
     private Integer settleMethod;
 
     @ApiModelProperty(value = "结清账户")

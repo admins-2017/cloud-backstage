@@ -18,13 +18,13 @@ public class QuerySettleDto {
     @ApiModelProperty(value = "结清单单号")
     private String settleNumber;
 
-    @ApiModelProperty(value = "结清客户id")
+    @ApiModelProperty(value = "结清客户id",example = "1")
     private Long clientId;
 
-    @ApiModelProperty(value = "结清单状态(1 结清 2 作废)")
+    @ApiModelProperty(value = "结清单状态(1 结清 2 作废)",example = "1")
     private Integer settleStatus;
 
-    @ApiModelProperty(value = "结清方式")
+    @ApiModelProperty(value = "结清方式",example = "1")
     private Integer settleMethod;
 
     @ApiModelProperty(value = "结清开始时间")
@@ -33,9 +33,9 @@ public class QuerySettleDto {
     @ApiModelProperty(value = "结清结束时间")
     private String settleEndDate;
 
-    @ApiModelProperty(value = "页码")
+    @ApiModelProperty(value = "页码",example = "1")
     private Integer page;
 
-    @ApiModelProperty(value = "条数")
+    @ApiModelProperty(value = "条数",example = "1")
     private Integer size;
 }
